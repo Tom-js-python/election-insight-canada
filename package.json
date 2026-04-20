@@ -1,0 +1,10 @@
+{
+  "name": "election-insight-canada",
+  "version": "0.1.0",
+  "description": "A data-driven web application for exploring Canadian federal election results and estimating seat outcomes from polling data.",
+  "main": "~\\frontend\\public\\index.html",
+  "repository": "https://github.com/Tom-js-python/election-insight-canada.git",
+  "author": "Tom-js-python <tomrembrown@proton.me>",
+  "license": "Apache-2.0",
+  "private": true
+}

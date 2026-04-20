@@ -28,3 +28,7 @@ Thumbs.db
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# All data
+data/processed/
+data/raw/
