@@ -3,7 +3,7 @@
 - [x] Download and analyze Elections Canada CSV data
 - [x] Read multiple CSV files into Python
 - [x] Design normalized PostgreSQL schema
-- [ ] Create README, directory structure, and update old github repo
+- [x] Create README, directory structure, and update old github repo
 - [ ] Build database and tables
 - [ ] Write a Python script to load the raw CSV data into the normalized database for 2025 general election only
 - [ ] Using TDD, create an API endpoint that provides a simple data set with one row per riding giving the number of votes for each political party
