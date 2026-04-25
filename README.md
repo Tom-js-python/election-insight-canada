@@ -119,14 +119,14 @@ election-insight-canada/
 
 - [x] Download and analyze Elections Canada CSV data
 - [x] Design normalized PostgreSQL schema
-- [ ] Build database and tables
+- [x] Build database and tables
 - [ ] Load 2025 general election data
 
 ### 🔌 API
 
 - [ ] Endpoint: results by riding
 - [ ] Endpoint: swing ridings
-- [ ] Expand queries for deeper analysi
+- [ ] Expand queries for deeper analysis
 
 ### 🖥️ Frontend
 
@@ -169,6 +169,35 @@ Instructions for running the project locally will be added as development progre
 - Python 3
 - Node.js
 - Yarn
+
+### Build PostgreSQL initial database
+
+Run 'psql postgres' at the terminal
+
+In the psql terminal type:
+
+```text
+SHOW PORT;
+CREATE DATABASE election_insight_canada;
+CREATE ROLE eic_computer_access WITH ENCRYPTED PASSWORD (enter password here in quotes);
+GRANT ALL PRIVILEGES ON DATABASE election_insight_canada TO eic_computer_access;
+ALTER ROLE "eic_computer_access" WITH LOGIN;
+\connect election_insight_canada;
+GRANT ALL ON SCHEMA public TO eic_computer_access;
+exit
+```
+
+Copy the .env.development file in the backend directory to .env and modify parameters as needed inserting the port PostgreSQL is running on, and your password
+
+```text
+cp ./backend/.env.development ./backend/.env
+```
+
+Create the database tables
+
+```text
+yarn db:create-tables
+```
 
 ---
 

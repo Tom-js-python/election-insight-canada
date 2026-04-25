@@ -4,7 +4,7 @@
 - [x] Read multiple CSV files into Python
 - [x] Design normalized PostgreSQL schema
 - [x] Create README, directory structure, and update old github repo
-- [ ] Build database and tables
+- [x] Build database and tables
 - [ ] Write a Python script to load the raw CSV data into the normalized database for 2025 general election only
 - [ ] Using TDD, create an API endpoint that provides a simple data set with one row per riding giving the number of votes for each political party
 - [ ] Using TDD, create an API endpoint that gives a list of swing ridings, given the name of a political party, whether the party narrowly won or lost the riding, or both, and the margin, number of votes for the win or loss
@@ -13,7 +13,7 @@
 - [ ] Upload project and data to linode server, and get it working on remote server
 - [ ] Show the data graphically in a map on the Vue, Tailwind CSS, front-end, for restuls from the 2025 election
 - [ ] Make these tables and graphs interactive, for the 2025 general election only, with filters for party, province, and riding
-- [ ] Figure out and design some mathematical or machine learning model to estimate future results given national polling data
+- [ ] Figure out and design some mathematical or machine learning model to estimate future results given national polling data - using pandas, scipy, and numpy
 - [ ] Implement and test this estimation model on the backend
 - [ ] Build sliders for party percentage votes on the frontend to show these projections dynamically
 - [ ] Ensure the front end is responsive and works well on a variety of devices, including cell phones
