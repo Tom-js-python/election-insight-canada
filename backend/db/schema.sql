@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS elections;
 -- Start with tables that have no foreign keys - no dependencies on other tables
 
 CREATE TABLE elections (
-  id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id INT primary key GENERATED ALWAYS AS IDENTITY,
   election_date DATE NOT NULL UNIQUE,
   election_type TEXT NOT NULL CHECK (election_type IN ('general', 'by-election')),
   election_label TEXT NOT NULL UNIQUE
@@ -31,13 +31,13 @@ CREATE TABLE electoral_districts (
 );
 
 CREATE TABLE political_parties (
-  id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id INT primary key GENERATED ALWAYS AS IDENTITY,
   name_english TEXT NOT NULL UNIQUE,
   name_french TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE polling_divisions (
-  id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id INT primary key GENERATED ALWAYS AS IDENTITY,
   district_number INT NOT NULL REFERENCES electoral_districts(district_number),
   election_id INT NOT NULL REFERENCES elections(id),
   division_number TEXT NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE polling_divisions (
 );
 
 CREATE TABLE candidate_elections (
-  id GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id INT primary key GENERATED ALWAYS AS IDENTITY,
   election_id INT NOT NULL REFERENCES elections(id),
   family_name TEXT NOT NULL,
   middle_name TEXT,
