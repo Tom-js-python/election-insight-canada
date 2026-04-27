@@ -4,7 +4,8 @@
   "description": "A data-driven web application for exploring Canadian federal election results and estimating seat outcomes from polling data.",
   "main": "~\\frontend\\public\\index.html",
   "scripts": {
-    "db:create-tables": " cd backend && .venv/bin/python -m scripts.create_tables",
+    "db:create-tables": "cd backend && .venv/bin/python -m scripts.create_tables",
+    "db:load-2025-csv": "cd backend && .venv/bin/python -m scripts.load_2025_csv",
     "backend:install": "pip install -r backend/requirements.txt",
     "frontend:install": "yarn --cwd frontend install"
   },
