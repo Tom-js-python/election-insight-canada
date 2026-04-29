@@ -1,0 +1,2 @@
+INSERT INTO polling_divisions(district_number, election_id, division_number, division_name, void_poll_indicator, no_poll_held, combined_with_number, rejected_ballots_for_poll, electors_for_poll)
+VALUES %s;
