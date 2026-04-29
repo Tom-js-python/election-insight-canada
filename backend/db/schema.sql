@@ -47,7 +47,6 @@ CREATE TABLE polling_divisions (
   combined_with_number TEXT,
   rejected_ballots_for_poll INT NOT NULL CHECK (rejected_ballots_for_poll >= 0),
   electors_for_poll INT NOT NULL CHECK (electors_for_poll >= 0),
-  CHECK (rejected_ballots_for_poll <= electors_for_poll),
   UNIQUE (election_id, district_number, division_number)
 );
 
