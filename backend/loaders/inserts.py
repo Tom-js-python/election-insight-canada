@@ -24,10 +24,14 @@ def insert_district(cur, district: dict) -> None:
 
     print(f"Inserted/found district: {district['district_number']}")
 
-def insert_political_parties(cur, political_parties: list) -> None:
+def insert_political_parties(cur, political_parties: list[tuple]) -> None:
     query = load_sql("insert_political_parties.sql")
     extras.execute_values(cur, query, political_parties)
 
-def insert_polling_divisions(cur, polling_divisions: list) -> None:
+def insert_polling_divisions(cur, polling_divisions: list[tuple]) -> None:
     query = load_sql("insert_polling_divisions.sql")
     extras.execute_values(cur, query, polling_divisions)
+
+def insert_candidates(cur, candidates: list[tuple]) -> None:
+    query = load_sql("insert_candidates.sql")
+    extras.execute_values(cur, query, candidates)

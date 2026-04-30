@@ -8,7 +8,9 @@ Script to create the Election Insight Canada database
 
 -- Drop tables in reverse order of creation
 DROP TABLE IF EXISTS candidate_vote_counts;
+DROP TABLE IF EXISTS vote_counts;
 DROP TABLE IF EXISTS candidate_elections;
+DROP TABLE IF EXISTS candidates;
 DROP TABLE IF EXISTS polling_divisions;
 DROP TABLE IF EXISTS political_parties;
 DROP TABLE IF EXISTS electoral_districts;
@@ -50,7 +52,7 @@ CREATE TABLE polling_divisions (
   UNIQUE (election_id, district_number, division_number)
 );
 
-CREATE TABLE candidate_elections (
+CREATE TABLE candidates (
   id INT primary key GENERATED ALWAYS AS IDENTITY,
   election_id INT NOT NULL REFERENCES elections(id),
   family_name TEXT NOT NULL,
@@ -63,11 +65,11 @@ CREATE TABLE candidate_elections (
   UNIQUE NULLS NOT DISTINCT (election_id, family_name, middle_name, first_name, district_number)
 );
 
-CREATE TABLE candidate_vote_counts (
+CREATE TABLE vote_counts (
   polling_division_id INT NOT NULL REFERENCES polling_divisions(id),
-  candidate_election_id INT NOT NULL REFERENCES candidate_elections(id),
+  candidate_id INT NOT NULL REFERENCES candidates(id),
   vote_count INT NOT NULL CHECK (vote_count >= 0),
-  PRIMARY KEY (polling_division_id, candidate_election_id)
+  PRIMARY KEY (polling_division_id, candidate_id)
 );
 
 
