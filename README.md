@@ -120,7 +120,7 @@ election-insight-canada/
 - [x] Download and analyze Elections Canada CSV data
 - [x] Design normalized PostgreSQL schema
 - [x] Build database and tables
-- [ ] Load 2025 general election data
+- [x] Load 2025 general election data
 
 ### 🔌 API
 

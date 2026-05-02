@@ -2,13 +2,13 @@ from loaders.paths import RAW_DATA_DIR
 import pandas as pd
 from loaders.cleaning import clean_data
 from loaders.extractors import extract_district_from_dataframe, extract_political_parties_from_dataframe, \
-    extract_polling_divisions_from_dataframe, extract_candidates_from_dataframe
+    extract_polling_divisions_from_dataframe, extract_candidates_from_dataframe, extract_vote_counts_from_dataframe
 from loaders.inserts import insert_district, insert_political_parties, insert_polling_divisions, \
-    insert_election, insert_candidates
-from loaders.lookups import get_party_lookup
+    insert_election, insert_candidates, insert_vote_counts
+from loaders.lookups import get_party_lookup, get_polling_division_lookup, get_candidate_lookup
 from app.db import get_connection
 
-LOAD_ONE_FILE_ONLY = True
+LOAD_ONE_FILE_ONLY = False
 
 def load_results_from_csv_files(cur, election_id) -> None:
     csv_files = sorted(RAW_DATA_DIR.glob("*.csv"))
@@ -31,11 +31,14 @@ def load_results_from_csv_files(cur, election_id) -> None:
 
         polling_divisions = extract_polling_divisions_from_dataframe(df)
         insert_polling_divisions(cur, polling_divisions)
+        polling_division_lookup = get_polling_division_lookup(cur)
 
         candidates = extract_candidates_from_dataframe(df, party_lookup)
         insert_candidates(cur, candidates)
+        candidate_lookup = get_candidate_lookup(cur)
 
-        
+        vote_counts = extract_vote_counts_from_dataframe(df, polling_division_lookup, candidate_lookup)
+        insert_vote_counts(cur, vote_counts)
 
         if LOAD_ONE_FILE_ONLY:
             break

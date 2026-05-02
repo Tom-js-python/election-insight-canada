@@ -5,7 +5,7 @@
 - [x] Design normalized PostgreSQL schema
 - [x] Create README, directory structure, and update old github repo
 - [x] Build database and tables
-- [ ] Write a Python script to load the raw CSV data into the normalized database for 2025 general election only
+- [x] Write a Python script to load the raw CSV data into the normalized database for 2025 general election only
 - [ ] Using TDD, create an API endpoint that provides a simple data set with one row per riding giving the number of votes for each political party
 - [ ] Using TDD, create an API endpoint that gives a list of swing ridings, given the name of a political party, whether the party narrowly won or lost the riding, or both, and the margin, number of votes for the win or loss
 - [ ] Scaffold the front-end with Vue and Tailwind 3 CSS and basic TDD

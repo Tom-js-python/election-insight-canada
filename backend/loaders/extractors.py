@@ -1,8 +1,11 @@
 import pandas as pd
 from loaders.constants import COL_DISTRICT_NUMBER, COL_DISTRICT_NAME_ENGLISH, COL_DISTRICT_NAME_FRENCH, \
     COL_PARTY_NAME_ENGLISH, COL_PARTY_ID, \
+    COL_FAMILY_NAME, COL_MIDDLE_NAME, COL_FIRST_NAME, \
+    COL_ELECTION_ID, COL_DIVISION_NUMBER, \
     POLITICAL_PARTY_COLUMNS, POLLING_DIVISION_COLUMNS, \
-    CANDIDATE_COLUMNS_FOR_EXTRACT, CANDIDATE_COLUMNS_FOR_INSERT, COL_FAMILY_NAME
+    CANDIDATE_COLUMNS_FOR_EXTRACT, CANDIDATE_COLUMNS_FOR_INSERT, \
+    VOTE_COUNT_COLUMNS_FOR_INSERT, VOTE_COUNT_COLUMNS_FOR_EXTRACT
 
 
 def get_single_unique_value(df: pd.DataFrame, column_name: str):
@@ -57,3 +60,39 @@ def extract_candidates_from_dataframe(df: pd.DataFrame, party_lookup: dict[str, 
     candidates_df = candidates_df[CANDIDATE_COLUMNS_FOR_INSERT]
 
     return list(candidates_df.itertuples(index=False, name=None))
+
+def extract_vote_counts_from_dataframe(
+        df: pd.DataFrame,
+        polling_division_lookup: dict,
+        candidate_lookup: dict
+)-> list[tuple]:
+
+    vote_counts_df = df[VOTE_COUNT_COLUMNS_FOR_EXTRACT]
+
+    vote_counts_df["polling_division_id"] = vote_counts_df.apply(
+        lambda row: polling_division_lookup[
+            (
+                row[COL_ELECTION_ID],
+                row[COL_DISTRICT_NUMBER],
+                row[COL_DIVISION_NUMBER],
+            )
+        ],
+        axis=1,
+    )
+
+    vote_counts_df["candidate_id"] = vote_counts_df.apply(
+        lambda row: candidate_lookup[
+            (
+                row[COL_ELECTION_ID],
+                row[COL_FAMILY_NAME],
+                row[COL_MIDDLE_NAME],
+                row[COL_FIRST_NAME],
+                row[COL_DISTRICT_NUMBER],
+            )
+        ],
+        axis=1,
+    )
+
+    vote_counts_df = vote_counts_df[VOTE_COUNT_COLUMNS_FOR_INSERT]
+
+    return list(vote_counts_df.itertuples(index=False, name=None))

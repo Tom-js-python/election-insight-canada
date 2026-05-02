@@ -35,3 +35,7 @@ def insert_polling_divisions(cur, polling_divisions: list[tuple]) -> None:
 def insert_candidates(cur, candidates: list[tuple]) -> None:
     query = load_sql("insert_candidates.sql")
     extras.execute_values(cur, query, candidates)
+
+def insert_vote_counts(cur, vote_counts: list[tuple]) -> None:
+    query = load_sql("insert_vote_counts.sql")
+    extras.execute_values(cur, query, vote_counts)
