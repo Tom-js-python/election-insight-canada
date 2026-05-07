@@ -169,6 +169,7 @@ Instructions for running the project locally will be added as development progre
 - Python 3
 - Node.js
 - Yarn
+- uv
 
 ### Build PostgreSQL initial database
 
