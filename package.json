@@ -7,7 +7,8 @@
     "db:create-tables": "cd backend && uv run -m scripts.create_tables",
     "db:load-2025-csv": "cd backend && uv run -m scripts.load_2025_csv",
     "backend:install": "cd backend && uv sync",
-    "frontend:install": "yarn --cwd frontend install"
+    "frontend:install": "yarn --cwd frontend install",
+    "backend:start": "cd backend && uv run uvicorn app.main:app --reload"
   },
   "repository": "https://github.com/Tom-js-python/election-insight-canada.git",
   "author": "Tom-js-python <tomrembrown@proton.me>",
