@@ -1,4 +1,4 @@
-from loaders.sql import load_sql
+from common.sql import load_sql
 from loaders.constants import ELECTION_DATE, ELECTION_TYPE, ELECTION_LABEL
 from psycopg2 import extras
 

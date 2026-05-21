@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.db import get_connection
-from loaders.sql import load_sql
+from common.sql import load_sql
+from psycopg2.extras import RealDictCursor
 
 router = APIRouter(prefix="/ridings", tags=["ridings"])
 
@@ -11,19 +12,31 @@ def get_riding_results_2025():
 
     conn = get_connection()
     try:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(query, {"election_label": "45th General Election"})
             rows = cur.fetchall()
 
-        return [
-            {
-                "district_number": row[0],
-                "district_name": row[1],
-                "candidate_name": row[2],
-                "party_name": row[3],
-                "vote_count": row[4],
-            }
-            for row in rows
-        ]
+        grouped_results = {}
+
+        for row in rows:
+            district_number = row["district_number"]
+
+            if district_number not in grouped_results:
+                grouped_results[district_number] = {
+                    "district_number": district_number,
+                    "district_name": row["district_name"],
+                    "results": [],
+                }
+
+            grouped_results[district_number]["results"].append(
+                {
+                    "candidate_name": row["candidate_name"],
+                    "party_name": row["party_name"],
+                    "vote_count": row["vote_count"],
+                }
+            )
+
+        return list(grouped_results.values())
+
     finally:
         conn.close()

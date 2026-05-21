@@ -1,4 +1,4 @@
-from loaders.paths import QUERY_DIR
+from common.paths import QUERY_DIR
 
 def load_sql(filename: str) -> str:
     sql_path = QUERY_DIR / filename

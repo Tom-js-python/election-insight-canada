@@ -1,4 +1,4 @@
-from loaders.paths import RAW_DATA_DIR
+from common.paths import RAW_DATA_DIR
 import pandas as pd
 from loaders.cleaning import clean_data
 from loaders.extractors import extract_district_from_dataframe, extract_political_parties_from_dataframe, \

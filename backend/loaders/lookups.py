@@ -1,4 +1,4 @@
-from loaders.sql import load_sql
+from common.sql import load_sql
 
 def get_party_lookup(cur) -> dict[str, int]:
     query = load_sql("get_political_parties.sql")
