@@ -44,6 +44,7 @@ Common challenges:
 - Data is split across many files
 - Significant redundancy within and across datasets
 - Hard to answer simple analytical questions (e.g., “Which ridings were decided by fewer than 300 votes?”)
+- When combined, the number of rows of data for just the 2025 election is 476,685, making it hard to analyze in Excel
 
 This project transforms raw election data into a structured, queryable format.
 
@@ -81,11 +82,14 @@ election-insight-canada/
 │
 ├── backend/
 │   ├── app/
+│   ├── common/
 │   ├── db/
+│   │   ├── queries/
 │   │   └── schema.sql
+│   ├── loaders/
 │   ├── scripts/
 │   ├── tests/
-│   └── requirements.txt
+│   └── pyproject.toml
 │
 ├── data/
 │   ├── raw/
@@ -124,7 +128,7 @@ election-insight-canada/
 
 ### 🔌 API
 
-- [ ] Endpoint: results by riding
+- [x] Endpoint: results by riding
 - [ ] Endpoint: swing ridings
 - [ ] Expand queries for deeper analysis
 
@@ -156,7 +160,9 @@ election-insight-canada/
 
 - Data ingestion groundwork complete
 - Database schema designed
-- Next step: load 2025 election data into PostgreSQL
+- Data loaded into PostgreSQL database
+- Built 2025 election data by riding API endpoint
+- Next Step: Create a swing riding API endpoint
 
 ---
 
@@ -198,6 +204,27 @@ Create the database tables
 
 ```text
 yarn db:create-tables
+```
+
+Download Elections Canada data for 2025 election to data/raw
+
+```text
+Go to elections.ca, English, Elections, Past Elections, General Elections, 45th General Election, Forty-Fifth General Election 2025: Official Voting Results,
+Download raw data (CSV format), Canada / Provinces / Territories, then click Download in the table for Canada / Poll-by-poll Results - Format 2,
+or go to https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e
+Save this to data/raw, and then unzip the files, putting them directly in data/raw and delete the original zip file
+```
+
+Insert data for 2025 election into PostgreSQL database
+
+```text
+yarn db:load-2025-csv
+```
+
+Start the backend FastAPI web server
+
+```text
+yarn backend:start
 ```
 
 ---

@@ -6,8 +6,11 @@
 - [x] Create README, directory structure, and update old github repo
 - [x] Build database and tables
 - [x] Write a Python script to load the raw CSV data into the normalized database for 2025 general election only
-- [ ] Using TDD, create an API endpoint that provides a simple data set with one row per riding giving the number of votes for each political party
-- [ ] Using TDD, create an API endpoint that gives a list of swing ridings, given the name of a political party, whether the party narrowly won or lost the riding, or both, and the margin, number of votes for the win or loss
+- [x] Create an API endpoint that provides a simple data set with one row per riding giving the number of votes for each political party
+- [ ] Create an API endpoint that gives a list of swing ridings, given the name of a political party, whether the party narrowly won or lost the riding, or both, and the margin, number of votes for the win or loss
+- [ ] Add Pydantic response models to backend
+- [ ] Add pytest endpoint tests to backend
+- [ ] Clean up of backend and API structure before proceeding to frontend
 - [ ] Scaffold the front-end with Vue and Tailwind 3 CSS and basic TDD
 - [ ] Show the data graphically in a table on the Vue, Tailwind CSS, front-end, for results from 2025 election
 - [ ] Upload project and data to linode server, and get it working on remote server
