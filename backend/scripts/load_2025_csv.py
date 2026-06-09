@@ -1,5 +1,6 @@
 from common.paths import RAW_DATA_DIR
 import pandas as pd
+from psycopg2.extensions import cursor
 from loaders.cleaning import clean_data
 from loaders.extractors import extract_district_from_dataframe, extract_political_parties_from_dataframe, \
     extract_polling_divisions_from_dataframe, extract_candidates_from_dataframe, extract_vote_counts_from_dataframe
@@ -10,7 +11,7 @@ from app.db import get_connection
 
 LOAD_ONE_FILE_ONLY = False
 
-def load_results_from_csv_files(cur, election_id) -> None:
+def load_results_from_csv_files(cur: cursor, election_id: int) -> None:
     csv_files = sorted(RAW_DATA_DIR.glob("*.csv"))
 
     if not csv_files:
