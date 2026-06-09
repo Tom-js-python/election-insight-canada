@@ -2,11 +2,12 @@ from fastapi import APIRouter
 from app.db import get_connection
 from common.sql import load_sql
 from psycopg2.extras import RealDictCursor
+from app.schemas.ridings import RidingResult
 
 router = APIRouter(prefix="/ridings", tags=["ridings"])
 
 
-@router.get("/results/2025")
+@router.get("/results/2025", response_model=list[RidingResult])
 def get_riding_results_2025():
     query = load_sql("get_all_riding_results_for_an_election.sql")
 
