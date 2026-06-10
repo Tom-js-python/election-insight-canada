@@ -1,3 +1,5 @@
+import sys
+
 from common.sql import load_sql
 from loaders.constants import ELECTION_DATE, ELECTION_TYPE, ELECTION_LABEL
 from psycopg2 import extras
@@ -15,7 +17,13 @@ def insert_election(cur: cursor) -> int:
         },
     )
 
-    election_id = cur.fetchone()[0]
+    row = cur.fetchone()
+
+    if row is None:
+        raise RuntimeError("failed to retrieve election ID after insert")
+
+    election_id = int(row[0])
+
     print(f"Inserted/found election, id: {election_id}")
     return election_id
 
