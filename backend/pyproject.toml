@@ -29,6 +29,8 @@ ignore_missing_imports = true
 
 [dependency-groups]
 dev = [
+    "coverage>=7.14.1",
     "mypy>=2.1.0",
+    "pytest>=9.0.3",
 ]
 

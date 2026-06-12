@@ -9,7 +9,8 @@
     "backend:install": "cd backend && uv sync",
     "frontend:install": "yarn --cwd frontend install",
     "backend:start": "cd backend && uv run uvicorn app.main:app --reload",
-    "backend:typecheck": "cd backend && uv run mypy app common loaders scripts"
+    "backend:typecheck": "cd backend && uv run mypy app common loaders scripts",
+    "backend:test": "cd backend && uv run coverage run -m pytest -v && uv run coverage report"
   },
   "repository": "https://github.com/Tom-js-python/election-insight-canada.git",
   "author": "Tom-js-python <tomrembrown@proton.me>",
