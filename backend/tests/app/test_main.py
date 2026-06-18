@@ -8,8 +8,7 @@ def test_health():
         Note that the health endpoint is in the main.py file """
 
     response = client.get("/health")
+    data = response.json()
 
     assert response.status_code == 200
-
-    data = response.json()
     assert data["status"] == "ok"
