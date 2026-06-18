@@ -7,7 +7,11 @@
     "db:create-tables": "cd backend && uv run -m scripts.create_tables",
     "db:load-2025-csv": "cd backend && uv run -m scripts.load_2025_csv",
     "backend:install": "cd backend && uv sync",
-    "frontend:install": "yarn --cwd frontend install",
+    "frontend:install": "yarn --cwd frontend",
+    "frontend:format": "cd frontend && yarn format",
+    "frontend:dev": "cd frontend && yarn dev",
+    "frontend:build": "cd frontend && yarn build",
+    "frontend:test": "cd frontend && yarn test:unit",
     "backend:start": "cd backend && uv run uvicorn app.main:app --reload",
     "backend:typecheck": "cd backend && uv run mypy app common loaders scripts",
     "backend:test": "cd backend && uv run coverage run -m pytest -v && uv run coverage report"
