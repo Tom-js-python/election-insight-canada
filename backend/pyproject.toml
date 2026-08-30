@@ -34,3 +34,11 @@ dev = [
     "pytest>=9.0.3",
 ]
 
+[tool.coverage.run]
+branch = true
+source = [ "app", "common" ]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+precision = 1

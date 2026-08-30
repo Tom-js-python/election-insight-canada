@@ -9,8 +9,8 @@
 - [x] Create an API endpoint that provides a simple data set with one row per riding giving the number of votes for each political party
 - [x] Add Pydantic response models to backend
 - [x] Add pytest endpoint tests to backend
-- [ ] Create an API endpoint that gives a list of swing ridings, given the name of a political party, whether the party narrowly won or lost the riding, or both, and the margin, number of votes for the win or loss
-- [ ] Clean up of backend and API structure before proceeding to frontend
+- [x] Create an API endpoint that gives a list of swing ridings, given the name of a political party, whether the party narrowly won or lost the riding, or both, and the margin, number of votes for the win or loss
+- [ ] Configure CORS for the back-end
 - [ ] Scaffold the front-end with Vue and Tailwind 3 CSS and basic TDD
 - [ ] Show the data graphically in a table on the Vue, Tailwind CSS, front-end, for results from 2025 election
 - [ ] Upload project and data to linode server, and get it working on remote server

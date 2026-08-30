@@ -7,8 +7,8 @@ from app.schemas.ridings import RidingResult
 router = APIRouter(prefix="/ridings", tags=["ridings"])
 
 
-@router.get("/results/2025", response_model=list[RidingResult])
-def get_riding_results_2025():
+@router.get("/all/2025", response_model=list[RidingResult])
+def get_all_ridings_2025():
     query = load_sql("get_all_riding_results_for_an_election.sql")
 
     conn = get_connection()

@@ -129,7 +129,7 @@ election-insight-canada/
 ### 🔌 API
 
 - [x] Endpoint: results by riding
-- [ ] Endpoint: swing ridings
+- [x] Endpoint: swing ridings
 - [ ] Expand queries for deeper analysis
 
 ### 🖥️ Frontend
@@ -162,7 +162,8 @@ election-insight-canada/
 - Database schema designed
 - Data loaded into PostgreSQL database
 - Built 2025 election data by riding API endpoint
-- Next Step: Create a swing riding API endpoint
+- Built 2025 swing riding API endpoint
+- Next step: Scaffold Vue frontend
 
 ---
 
