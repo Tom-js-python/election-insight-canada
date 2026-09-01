@@ -1,8 +1,10 @@
 # 🇨🇦 Election Insight Canada
 
-A data-driven web application for exploring Canadian federal election results and estimating seat outcomes from polling data.
+A full-stack data application for exploring Canadian federal election results, built with Python, FastAPI, PostgreSQL, Vue and TypeScript.
 
-This project aims to make Canadian election data more accessible, understandable, and interactive through a combination of data processing, APIs, and visualizations.
+The project's first phase transforms Elections Canada's poll-by-poll election data into a normalized relational database and exposes riding-level results through a REST API. Future phases will add interactive visualizations and polling-based seat projections.
+
+**Current focus:** Backend API complete for initial 2025 riding analysis; Vue/TypeScript frontend in development.
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 ![Frontend](https://img.shields.io/badge/frontend-Vue%203-green)
@@ -47,6 +49,19 @@ Common challenges:
 - When combined, the number of rows of data for just the 2025 election is 476,685, making it hard to analyze in Excel
 
 This project transforms raw election data into a structured, queryable format.
+
+---
+
+## ⚙️ Technical Highlights
+
+- Built a REST API with Python and FastAPI for querying Canadian federal election results
+- Designed a normalized PostgreSQL schema for Elections Canada election data
+- Built Python data-loading tools to transform and load 2025 poll-by-poll election results into PostgreSQL
+- Developed analytical SQL queries using joins, CTEs, aggregate functions, and window functions
+- Created API endpoints for riding-level election results and identifying close ("swing") ridings
+- Defined structured API response models using Pydantic
+- Built automated backend tests with pytest
+- Used environment-based configuration for database credentials and development settings
 
 ---
 
@@ -114,6 +129,7 @@ election-insight-canada/
 - **Data Source**: Elections Canada CSV datasets
 - **Frontend (planned)**: Vue 3
 - **Styling (planned)**: Tailwind CSS
+- **Testing:** pytest
 
 ---
 
@@ -126,7 +142,7 @@ election-insight-canada/
 - [x] Build database and tables
 - [x] Load 2025 general election data
 
-### 🔌 API
+### 🔌 FastAPI Endpoints
 
 - [x] Endpoint: results by riding
 - [x] Endpoint: swing ridings
@@ -156,29 +172,49 @@ election-insight-canada/
 
 ## 🚧 Current Status
 
-🛠️ Early development — actively building core data pipeline.
+The backend and 2025 election data pipeline are functional. Current development
+is focused on building the first Vue frontend for exploring the API data.
 
-- Data ingestion groundwork complete
-- Database schema designed
-- Data loaded into PostgreSQL database
-- Built 2025 election data by riding API endpoint
-- Built 2025 swing riding API endpoint
-- Next step: Scaffold Vue frontend
+### Completed
+
+- PostgreSQL database schema
+- 2025 Elections Canada data ingestion pipeline
+- Riding-level election results API
+- Swing-riding analysis API
+- Backend automated test suite
+
+### In Progress
+
+- Vue 3 / TypeScript frontend
+- Filterable riding-results tables
+
+### Planned
+
+- Interactive election map
+- Historical election data
+- Polling-based seat projection model
 
 ---
 
-## 🛠️ Local Setup (Coming Soon)
+## 🛠️ Local Setup
 
 Instructions for running the project locally will be added as development progresses.
 
 ### 📋 Prerequisites
 
-- Python 3
+- Python 3.x
+- PostgreSQL
 - Node.js
 - Yarn
 - uv
 
-### Build PostgreSQL initial database
+### 1. Clone the repository
+
+````text
+git clone https://github.com/Tom-js-python/election-insight-canada
+```
+
+### 2. Configure PostgreSQL
 
 Run 'psql postgres' at the terminal
 
@@ -187,45 +223,52 @@ In the psql terminal type:
 ```text
 SHOW PORT;
 CREATE DATABASE election_insight_canada;
-CREATE ROLE eic_computer_access WITH ENCRYPTED PASSWORD (enter password here in quotes);
+CREATE ROLE eic_computer_access
+    WITH LOGIN
+    ENCRYPTED PASSWORD 'your_password';
 GRANT ALL PRIVILEGES ON DATABASE election_insight_canada TO eic_computer_access;
 ALTER ROLE "eic_computer_access" WITH LOGIN;
 \connect election_insight_canada;
 GRANT ALL ON SCHEMA public TO eic_computer_access;
 exit
-```
+````
 
-Copy the .env.development file in the backend directory to .env and modify parameters as needed inserting the port PostgreSQL is running on, and your password
+### 3. Configure environment variables
+
+Copy the \_env_start file in the backend directory to .env and modify parameters as needed inserting the port PostgreSQL is running on, and your password
 
 ```text
-cp ./backend/.env.development ./backend/.env
+cp ./backend/_env_start ./backend/.env
 ```
 
-Create the database tables
+### 4. Create the database tables
 
 ```text
 yarn db:create-tables
 ```
 
-Download Elections Canada data for 2025 election to data/raw
+### 5. Download Elections Canada data
 
 ```text
-Go to elections.ca, English, Elections, Past Elections, General Elections, 45th General Election, Forty-Fifth General Election 2025: Official Voting Results,
-Download raw data (CSV format), Canada / Provinces / Territories, then click Download in the table for Canada / Poll-by-poll Results - Format 2,
-or go to https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e
-Save this to data/raw, and then unzip the files, putting them directly in data/raw and delete the original zip file
+Save and unzip the data at: https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e to the data/raw directory
 ```
 
-Insert data for 2025 election into PostgreSQL database
+### 6. Load the data
 
 ```text
 yarn db:load-2025-csv
 ```
 
-Start the backend FastAPI web server
+### 7. Start the API
 
 ```text
-yarn backend:start
+yarn run backend:start
+```
+
+### 8. Run the tests
+
+```text
+yarn run backend:test
 ```
 
 ---
@@ -241,6 +284,41 @@ This project sits at the intersection of:
 With a background in both programming and public administration, I’m interested in building tools that make complex real-world systems more understandable.
 
 Canadian elections are a great example: simple on the surface, but deeply complex in practice.
+
+---
+
+## 🔌 API
+
+The FastAPI backend currently provides endpoints for exploring the 2025
+Canadian federal election.
+
+### Riding Results
+
+GET /ridings/all/2025
+
+Returns election results for Canadian federal electoral districts, including
+candidate and party vote totals.
+
+### Swing Ridings
+
+GET /ridings/swing/2025
+
+Returns ridings ordered/filterable by victory margin, allowing close races
+to be identified for later swing analysis.
+
+Interactive API documentation is available through FastAPI's Swagger UI
+when the backend is running locally.
+
+---
+
+## 🧪 Testing
+
+The backend includes an automated pytest test suite covering API routes,
+database-related application logic, and response validation.
+
+Run the backend tests with:
+
+yarn run backend:test
 
 ---
 
