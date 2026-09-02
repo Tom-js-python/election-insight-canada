@@ -1,3 +1,3 @@
 <template>
-  <h1>Election Insight Canada</h1>
+  <h1 class="mt-8 text-center text-6xl">Election Insight Canada</h1>
 </template>
