@@ -3,6 +3,7 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts}'],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
