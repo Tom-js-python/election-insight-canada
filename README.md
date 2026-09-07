@@ -255,9 +255,7 @@ yarn db:create-tables
 
 ### 5. Download Elections Canada data
 
-```text
-Download and unzip the data from: https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e to the data/raw directory
-```
+Go to <https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e>. Download the data for Canada / poll-by-poll results, format 2, to the the data/raw directory. Unzip this file.
 
 ### 6. Load the data
 
