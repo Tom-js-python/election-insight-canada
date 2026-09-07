@@ -2,7 +2,7 @@
 
 A full-stack data application for exploring Canadian federal election results, built with Python, FastAPI, PostgreSQL, Vue and TypeScript.
 
-The project's first phase transforms Elections Canada's poll-by-poll election data into a normalized relational database and exposes riding-level results through a REST API. Future phases will add interactive visualizations and polling-based seat projections.
+The project's first phase, now complete, transforms Elections Canada's poll-by-poll election data into a normalized relational database and exposes riding-level results through a REST API. The current phase in progress is displaying this data in a tabular format on the front-end. Future phases will add interactive visualizations and polling-based seat projections.
 
 **Current focus:** Backend API complete for initial 2025 riding analysis; Vue/TypeScript frontend in development.
 
@@ -17,7 +17,7 @@ The project's first phase transforms Elections Canada's poll-by-poll election da
 
 ### 🗳️ 1. Estimating seat counts from polling data
 
-Canada uses a **first-past-the-post** electoral system with multiple parties and 338 individual ridings. Translating national polling percentages into seat counts is not straightforward.
+Canada uses a **first-past-the-post** electoral system with multiple parties and 343 individual ridings. Translating national polling percentages into seat counts is not straightforward.
 
 Key challenges include:
 
@@ -43,7 +43,7 @@ Elections Canada provides detailed CSV datasets, but they are difficult to work 
 
 Common challenges:
 
-- Data is split across many files
+- Data is split across many files (one file for each of the 343 ridings)
 - Significant redundancy within and across datasets
 - Hard to answer simple analytical questions (e.g., “Which ridings were decided by fewer than 300 votes?”)
 - When combined, the number of rows of data for just the 2025 election is 476,685, making it hard to analyze in Excel
@@ -75,7 +75,7 @@ This project transforms raw election data into a structured, queryable format.
 - Enables queries such as:
   - Results by riding
   - Candidate vote breakdowns
-  - Swing ridings (close races)
+  - Identifying swing ridings (close races)
 
 ---
 
@@ -112,6 +112,12 @@ election-insight-canada/
 │
 ├── frontend/
 │   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── router/
+│   │   ├── stores/
+│   │   ├── types/
+│   │   └── views/
 │   └── package.json
 │
 ├── docs/
@@ -127,9 +133,10 @@ election-insight-canada/
 - **Backend**: Python, FastAPI
 - **Database**: PostgreSQL
 - **Data Source**: Elections Canada CSV datasets
-- **Frontend (planned)**: Vue 3
-- **Styling (planned)**: Tailwind CSS
-- **Testing:** pytest
+- **Frontend (in progress)**: Vue 3
+- **Styling (in progress)**: Tailwind CSS
+- **Backend Testing**: pytest
+- **Frontend Testing (in progress)**: vitest and playwright
 
 ---
 
@@ -146,11 +153,10 @@ election-insight-canada/
 
 - [x] Endpoint: results by riding
 - [x] Endpoint: swing ridings
-- [ ] Expand queries for deeper analysis
 
 ### 🖥️ Frontend
 
-- [ ] Scaffold Vue frontend
+- [x] Scaffold Vue frontend
 - [ ] Display tabular election data
 - [ ] Build interactive map visualization
 - [ ] Add filters (party, province, riding)
@@ -210,7 +216,7 @@ Instructions for running the project locally will be added as development progre
 
 ### 1. Clone the repository
 
-````text
+```text
 git clone https://github.com/Tom-js-python/election-insight-canada
 ```
 
@@ -231,7 +237,7 @@ ALTER ROLE "eic_computer_access" WITH LOGIN;
 \connect election_insight_canada;
 GRANT ALL ON SCHEMA public TO eic_computer_access;
 exit
-````
+```
 
 ### 3. Configure environment variables
 
@@ -250,7 +256,7 @@ yarn db:create-tables
 ### 5. Download Elections Canada data
 
 ```text
-Save and unzip the data at: https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e to the data/raw directory
+Download and unzip the data from: https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e to the data/raw directory
 ```
 
 ### 6. Load the data
@@ -307,7 +313,7 @@ Returns ridings ordered/filterable by victory margin, allowing close races
 to be identified for later swing analysis.
 
 Interactive API documentation is available through FastAPI's Swagger UI
-when the backend is running locally.
+at <http://localhost:8000/docs> when the backend is running locally.
 
 ---
 
@@ -319,6 +325,8 @@ database-related application logic, and response validation.
 Run the backend tests with:
 
 yarn run backend:test
+
+The frontend tests are currently under development, using the TDD methodology.
 
 ---
 
