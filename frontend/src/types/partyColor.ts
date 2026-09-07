@@ -1,5 +1,5 @@
-export function partyColour(partyName: string): string {
-  const colours: Record<string, string> = {
+export function partyColor(partyName: string): string {
+  const colors: Record<string, string> = {
     Liberal: 'bg-red-600',
     Conservative: 'bg-blue-700',
     'Bloc Québécois': 'bg-sky-500',
@@ -7,5 +7,5 @@ export function partyColour(partyName: string): string {
     'Green Party': 'bg-green-600',
   }
 
-  return colours[partyName] ?? 'bg-slate-400'
+  return colors[partyName] ?? 'bg-slate-400'
 }
