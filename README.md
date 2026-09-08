@@ -88,6 +88,8 @@ This project transforms raw election data into a structured, queryable format.
 - Historical election comparisons
 - Filtering by party, province, and riding
 
+Development priorities and planned features are tracked in the [detailed roadmap](docs/roadmap.md).
+
 ---
 
 ## 🏗️ Project Structure
@@ -140,93 +142,68 @@ election-insight-canada/
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Development Roadmap
 
-### 📌 Data & Backend
+The 2025 election data pipeline and initial FastAPI backend are complete.
+Current development is focused on extending the riding-results API contract
+and building a responsive Vue interface.
 
-- [x] Download and analyze Elections Canada CSV data
-- [x] Design normalized PostgreSQL schema
-- [x] Build database and tables
-- [x] Load 2025 general election data
+### Current priorities
 
-### 🔌 FastAPI Endpoints
+- Add candidate vote shares, outcomes and victory margins to API responses
+- Share common SQL logic between riding-results endpoints
+- Build the first filterable and sortable Vue results table
+- Improve and automate local development setup
 
-- [x] Endpoint: results by riding
-- [x] Endpoint: swing ridings
+### Later phases
 
-### 🖥️ Frontend
+- Deploy the application to Linode
+- Add an interactive riding map
+- Support historical elections and by-elections
+- Develop and backtest polling-based seat-projection models
 
-- [x] Scaffold Vue frontend
-- [ ] Display tabular election data
-- [ ] Build interactive map visualization
-- [ ] Add filters (party, province, riding)
-
-### 📈 Forecasting
-
-- [ ] Design seat projection model
-- [ ] Implement backend projection logic
-- [ ] Add interactive polling sliders
-- [ ] Visualize projected seat distributions
-
-### 🕰️ Historical Data
-
-- [ ] Load past elections into database
-- [ ] Handle boundary and naming changes
-- [ ] Enable historical comparisons
-
----
-
-## 🚧 Current Status
-
-The backend and 2025 election data pipeline are functional. Current development
-is focused on building the first Vue frontend for exploring the API data.
-
-### Completed
-
-- PostgreSQL database schema
-- 2025 Elections Canada data ingestion pipeline
-- Riding-level election results API
-- Swing-riding analysis API
-- Backend automated test suite
-
-### In Progress
-
-- Vue 3 / TypeScript frontend
-- Filterable riding-results tables
-
-### Planned
-
-- Interactive election map
-- Historical election data
-- Polling-based seat projection model
+See the [detailed development roadmap](docs/roadmap.md) for planned work and
+current progress.
 
 ---
 
 ## 🛠️ Local Setup
 
-Instructions for running the project locally will be added as development progresses.
+The following instructions set up the current development version locally. The setup process is still being improved and has primarily been tested on macOS.
 
 ### 📋 Prerequisites
 
-- Python 3.x
+For the backend and data pipeline:
+
 - PostgreSQL
+- Python 3.13 or higher
+- uv
+
+For the Vue frontend:
+
 - Node.js
 - Yarn
-- uv
 
 ### 1. Clone the repository
 
-```text
+```bash
 git clone https://github.com/Tom-js-python/election-insight-canada
+cd election-insight-canada
 ```
 
-### 2. Configure PostgreSQL
+### 2. Install the depdencies
+
+```bash
+yarn run install
+```
+
+### 3. Configure PostgreSQL
 
 Run 'psql postgres' at the terminal
 
 In the psql terminal type:
 
-```text
+```sql
 SHOW PORT;
 CREATE DATABASE election_insight_canada;
 CREATE ROLE eic_computer_access
@@ -236,42 +213,42 @@ GRANT ALL PRIVILEGES ON DATABASE election_insight_canada TO eic_computer_access;
 ALTER ROLE "eic_computer_access" WITH LOGIN;
 \connect election_insight_canada;
 GRANT ALL ON SCHEMA public TO eic_computer_access;
-exit
+\q
 ```
 
-### 3. Configure environment variables
+### 4. Configure environment variables
 
 Copy the \_env_start file in the backend directory to .env and modify parameters as needed inserting the port PostgreSQL is running on, and your password
 
-```text
+```bash
 cp ./backend/_env_start ./backend/.env
 ```
 
-### 4. Create the database tables
+### 5. Create the database tables
 
-```text
+```bash
 yarn db:create-tables
 ```
 
-### 5. Download Elections Canada data
+### 6. Download Elections Canada data
 
 Go to <https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e>. Download the data for Canada / poll-by-poll results, format 2, to the the data/raw directory. Unzip this file.
 
-### 6. Load the data
+### 7. Load the data
 
-```text
+```bash
 yarn db:load-2025-csv
 ```
 
-### 7. Start the API
+### 8. Start the API
 
-```text
+```bash
 yarn run backend:start
 ```
 
-### 8. Run the tests
+### 9. Run the tests
 
-```text
+```bash
 yarn run backend:test
 ```
 
@@ -288,6 +265,15 @@ This project sits at the intersection of:
 With a background in both programming and public administration, I’m interested in building tools that make complex real-world systems more understandable.
 
 Canadian elections are a great example: simple on the surface, but deeply complex in practice.
+
+---
+
+## 📚 Documentation
+
+- [Development roadmap](docs/roadmap.md)
+- [Elections Canada data dictionary](docs/elections-canada-data-dictionary.md)
+- [API documentation](http://localhost:8000/docs) — available while the backend is running
+- [Contributing guide](CONTRIBUTING.md)
 
 ---
 
@@ -331,6 +317,16 @@ The frontend tests are currently under development, using the TDD methodology.
 ## 👋 Creator
 
 Built and maintained by **Tom Brown**
+
+---
+
+## 🤝 Contributing
+
+Contributions, bug reports and implementation suggestions are welcome.
+
+Before beginning a substantial change, please open an issue so the proposed approach can be discussed. Development conventions, testing commands and the pull-request process are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Issues suitable for new contributors are labelled `good first issue`.
 
 ---
 
