@@ -30,11 +30,20 @@ are introduced.
 
 ## Current Phase
 
+### Add political party mappings and new API endpoint
+
+- [ ] Add failing tests for the new API endpoint
+- [ ] In database creation script rename current political_party table to political_party_source_name
+- [ ] Create a new table political_party with columns for party_key, display_name_english,
+      display_name_french, short_name_english, short_name_french along with the data input
+      from the script, not from the Elections Canada data
+- [ ] Build and test the API endpoint
+
 ### Extend the riding-results contract
 
 - [ ] Add failing tests for candidate vote shares, outcomes and margins
 - [ ] Use Elections Canada's elected-candidate indicator to identify winners
-- [ ] Add `vote_share`, `outcome`, `margin_votes`, and
+- [ ] Add `vote_share`, `outcome`, `margin_votes`, `party_key` and
       `margin_percentage_points` to candidate results
 - [ ] Rename the nested `results` field to `candidate_results`
 - [ ] Allow swing ridings to be filtered by either vote margin or
