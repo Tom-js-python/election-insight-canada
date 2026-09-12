@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS vote_counts;
 DROP TABLE IF EXISTS candidate_elections;
 DROP TABLE IF EXISTS candidates;
 DROP TABLE IF EXISTS polling_divisions;
+DROP TABLE IF EXISTS political_party_source_names;
 DROP TABLE IF EXISTS political_parties;
 DROP TABLE IF EXISTS electoral_districts;
 DROP TABLE IF EXISTS elections;
@@ -33,9 +34,19 @@ CREATE TABLE electoral_districts (
 );
 
 CREATE TABLE political_parties (
+  party_key TEXT PRIMARY KEY,
+  source_name_english TEXT NOT NULL UNIQUE,
+  source_name_french TEXT NOT NULL UNIQUE,
+  long_display_name_english TEXT NOT NULL UNIQUE,
+  long_display_name_french TEXT NOT NULL UNIQUE,
+  short_display_name_english TEXT NOT NULL UNIQUE,
+  short_display_name_french TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE political_party_source_names (
   id INT primary key GENERATED ALWAYS AS IDENTITY,
-  name_english TEXT NOT NULL UNIQUE,
-  name_french TEXT NOT NULL UNIQUE
+  source_name_english TEXT NOT NULL UNIQUE,
+  source_name_french TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE polling_divisions (
@@ -58,7 +69,7 @@ CREATE TABLE candidates (
   family_name TEXT NOT NULL,
   middle_name TEXT,
   first_name TEXT NOT NULL,
-  political_party_id INT NOT NULL REFERENCES political_parties(id),
+  political_party_key TEXT NOT NULL REFERENCES political_parties(party_key),
   district_number INT NOT NULL REFERENCES electoral_districts(district_number),
   incumbent_indicator BOOLEAN NOT NULL DEFAULT FALSE,
   elected_candidate BOOLEAN NOT NULL DEFAULT FALSE,

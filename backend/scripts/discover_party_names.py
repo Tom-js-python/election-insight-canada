@@ -2,7 +2,7 @@ from common.paths import RAW_DATA_DIR
 import pandas as pd
 from psycopg2.extensions import cursor
 from loaders.extractors import extract_political_parties_from_dataframe
-from loaders.inserts import insert_political_parties
+from loaders.inserts import insert_discovered_political_parties
 from app.db import get_connection
 
 
@@ -19,7 +19,7 @@ def find_party_names_in_csv_files(cur: cursor) -> None:
         df = pd.read_csv(csv_file)
 
         political_parties = extract_political_parties_from_dataframe(df)
-        insert_political_parties(cur, political_parties)
+        insert_discovered_political_parties(cur, political_parties)
 
 def main():
     conn = get_connection()

@@ -29,6 +29,7 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
-# All data
+# The elections Canada data - large files downloaded from Internet
+# Note the data/reference/ directory is not included here - since those should be stored on github
 data/processed/
 data/raw/

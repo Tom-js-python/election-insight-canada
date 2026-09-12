@@ -1,5 +1,3 @@
-import sys
-
 from common.sql import load_sql
 from loaders.constants import ELECTION_DATE, ELECTION_TYPE, ELECTION_LABEL
 from psycopg2 import extras
@@ -33,10 +31,14 @@ def insert_district(cur: cursor, district: dict) -> None:
 
     print(f"Inserted/found district: {district['district_number']}")
 
-def insert_political_parties(cur: cursor, political_parties: list[tuple]) -> None:
-    query = load_sql("insert_political_parties.sql")
+def insert_discovered_political_parties(cur: cursor, political_parties: list[tuple]) -> None:
+    query = load_sql("insert_discovered_political_parties.sql")
     extras.execute_values(cur, query, political_parties)
 
+def insert_static_political_parties(cur: cursor, political_parties: list[tuple]) -> None:
+    query = load_sql("insert_static_political_parties.sql")
+    extras.execute_values(cur, query, political_parties)
+    
 def insert_polling_divisions(cur: cursor, polling_divisions: list[tuple]) -> None:
     query = load_sql("insert_polling_divisions.sql")
     extras.execute_values(cur, query, polling_divisions)
