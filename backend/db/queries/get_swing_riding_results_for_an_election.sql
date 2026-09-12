@@ -3,7 +3,7 @@ WITH vote_counts AS
 		ed.district_number,
 		ed.name_english AS district_name,
 		CONCAT_WS(' ', c.first_name, c.middle_name, c.family_name) AS candidate_name,
-		pp.name_english AS party_name,
+		pp.long_display_name_english AS party_name,
 		SUM(vc.vote_count) AS vote_count
 	FROM vote_counts AS vc
 	LEFT JOIN candidates AS c
@@ -11,7 +11,7 @@ WITH vote_counts AS
 	LEFT JOIN polling_divisions AS pd
 		ON vc.polling_division_id = pd.id
 	LEFT JOIN political_parties AS pp
-		ON c.political_party_id = pp.id
+		ON c.political_party_key = pp.party_key
 	LEFT JOIN electoral_districts AS ed
 		ON pd.district_number = ed.district_number
 	LEFT JOIN elections AS el
@@ -21,7 +21,7 @@ WITH vote_counts AS
 		ed.district_number,
 		ed.name_english,
 		c.id,
-		pp.name_english),
+		pp.long_display_name_english),
 rank AS
 	(SELECT 	district_number, district_name, candidate_name, party_name, vote_count,
 				DENSE_RANK() OVER(PARTITION BY district_number ORDER BY vote_count DESC) AS candidate_rank
