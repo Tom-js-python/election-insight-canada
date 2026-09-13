@@ -1,17 +1,18 @@
-from common.paths import RAW_DATA_DIR
+from common.paths import RAW_DATA_DIR, POLITICAL_PARTIES_DATA_FILE
 import pandas as pd
 from psycopg2.extensions import cursor
 from loaders.cleaning import clean_data
-from loaders.extractors import extract_district_from_dataframe, extract_political_parties_from_dataframe, \
-    extract_polling_divisions_from_dataframe, extract_candidates_from_dataframe, extract_vote_counts_from_dataframe
-from loaders.inserts import insert_district, insert_political_parties, insert_polling_divisions, \
+from loaders.extractors import extract_district_from_dataframe, extract_polling_divisions_from_dataframe, \
+    extract_candidates_from_dataframe, extract_vote_counts_from_dataframe
+from loaders.inserts import insert_district,  insert_polling_divisions, \
     insert_election, insert_candidates, insert_vote_counts
-from loaders.lookups import get_party_lookup, get_polling_division_lookup, get_candidate_lookup
+from loaders.lookups import get_polling_division_lookup, get_candidate_lookup
+from loaders.load_static_political_parties import load_static_political_parties
 from app.db import get_connection
 
 LOAD_ONE_FILE_ONLY = False
 
-def load_results_from_csv_files(cur: cursor, election_id: int) -> None:
+def load_results_from_csv_files(cur: cursor, election_id: int, party_lookup: dict[str, str]) -> None:
     csv_files = sorted(RAW_DATA_DIR.glob("*.csv"))
 
     if not csv_files:
@@ -25,10 +26,6 @@ def load_results_from_csv_files(cur: cursor, election_id: int) -> None:
 
         district = extract_district_from_dataframe(df)
         insert_district(cur, district)
-
-        political_parties = extract_political_parties_from_dataframe(df)
-        insert_political_parties(cur, political_parties)
-        party_lookup = get_party_lookup(cur)
 
         polling_divisions = extract_polling_divisions_from_dataframe(df)
         insert_polling_divisions(cur, polling_divisions)
@@ -52,7 +49,8 @@ def main():
         with conn:
             with conn.cursor() as cur:
                 election_id = insert_election(cur)
-                load_results_from_csv_files(cur, election_id)
+                party_lookup = load_static_political_parties(cur, POLITICAL_PARTIES_DATA_FILE)
+                load_results_from_csv_files(cur, election_id, party_lookup)
 
     finally:
         conn.close()

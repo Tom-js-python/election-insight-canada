@@ -1,6 +1,7 @@
 import pandas as pd
-from loaders.constants import COL_DISTRICT_NUMBER, COL_DISTRICT_NAME_ENGLISH, COL_DISTRICT_NAME_FRENCH, \
-    COL_PARTY_NAME_ENGLISH, COL_PARTY_ID, \
+from loaders.constants import \
+    COL_DISTRICT_NUMBER, COL_DISTRICT_NAME_ENGLISH, COL_DISTRICT_NAME_FRENCH, \
+    COL_PARTY_SOURCE_NAME_ENGLISH, COL_PARTY_KEY, \
     COL_FAMILY_NAME, COL_MIDDLE_NAME, COL_FIRST_NAME, \
     COL_ELECTION_ID, COL_DIVISION_NUMBER, \
     POLITICAL_PARTY_COLUMNS, POLLING_DIVISION_COLUMNS, \
@@ -42,7 +43,7 @@ def extract_political_parties_from_dataframe(df: pd.DataFrame) -> list[tuple]:
 def extract_polling_divisions_from_dataframe(df: pd.DataFrame) -> list[tuple]:
     return get_multiple_unique_values(df, POLLING_DIVISION_COLUMNS)
 
-def extract_candidates_from_dataframe(df: pd.DataFrame, party_lookup: dict[str, int]) -> list[tuple]:
+def extract_candidates_from_dataframe(df: pd.DataFrame, party_lookup: dict[str, str]) -> list[tuple]:
     candidates_df = df[CANDIDATE_COLUMNS_FOR_EXTRACT].drop_duplicates()
 
     if len(candidates_df) == 0:
@@ -51,10 +52,10 @@ def extract_candidates_from_dataframe(df: pd.DataFrame, party_lookup: dict[str, 
             f"but found {len(candidates_df)}: {candidates_df}"
         )
 
-    candidates_df[COL_PARTY_ID] = candidates_df[COL_PARTY_NAME_ENGLISH].map(party_lookup)
+    candidates_df[COL_PARTY_KEY] = candidates_df[COL_PARTY_SOURCE_NAME_ENGLISH].map(party_lookup)
 
-    if candidates_df["political_party_id"].isna().any():
-        missing = candidates_df[candidates_df["political_party_id"].isna()][COL_PARTY_NAME_ENGLISH].unique()
+    if candidates_df[COL_PARTY_KEY].isna().any():
+        missing = candidates_df[candidates_df[COL_PARTY_KEY].isna()][COL_PARTY_SOURCE_NAME_ENGLISH].unique()
         raise ValueError(f"Missing political party IDs for: {missing}")
 
     candidates_df = candidates_df[CANDIDATE_COLUMNS_FOR_INSERT]

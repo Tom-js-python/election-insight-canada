@@ -5,14 +5,15 @@ ELECTION_LABEL = "45th General Election"
 
 # CSV column names
 COL_ELECTION_ID = "election_id"
-COL_PARTY_ID = "political_party_id"
+COL_PARTY_KEY = "party_key"
 COL_POLLING_DIVISION_ID = "polling_division_id"
 COL_CANDIDATE_ID = "candidate_id"
 COL_DISTRICT_NUMBER = "Electoral District Number/Numéro de circonscription"
 COL_DISTRICT_NAME_ENGLISH = "Electoral District Name_English/Nom de circonscription_Anglais"
 COL_DISTRICT_NAME_FRENCH = "Electoral District Name_French/Nom de circonscription_Français"
-COL_PARTY_NAME_ENGLISH = "Political Affiliation Name_English/Appartenance politique_Anglais"
-COL_PARTY_NAME_FRENCH = "Political Affiliation Name_French/Appartenance politique_Français"
+COL_PARTY_SOURCE_NAME_ENGLISH = "Political Affiliation Name_English/Appartenance politique_Anglais"
+COL_PARTY_SOURCE_NAME_FRENCH = "Political Affiliation Name_French/Appartenance politique_Français"
+COL_PARTY_SOURCE_NAME_ENGLISH_FROM_CSV = "source_name_english"
 COL_DIVISION_NUMBER = "Polling Division Number/Numéro de section de vote"
 COL_DIVISION_NAME = "Polling Division Name/Nom de section de vote"
 COL_VOID_POLL_INDICATOR = "Void Poll Indicator/Indicateur de bureau supprimé"
@@ -30,16 +31,26 @@ COL_VOTE_COUNT = "Candidate Vote Count/Votes du candidat"
 # Column collections
 BOOLEAN_COLUMNS = [COL_VOID_POLL_INDICATOR, COL_NO_POLL_HELD, COL_INCUMBENT_INDICATOR, COL_ELECTED_CANDIDATE]
 INTEGER_COLUMNS = [COL_DISTRICT_NUMBER, COL_REJECTED_BALLOTS_FOR_POLL, COL_ELECTORS_FOR_POLL, COL_VOTE_COUNT]
-POLITICAL_PARTY_COLUMNS = [COL_PARTY_NAME_ENGLISH, COL_PARTY_NAME_FRENCH]
+POLITICAL_PARTY_COLUMNS = [COL_PARTY_SOURCE_NAME_ENGLISH, COL_PARTY_SOURCE_NAME_FRENCH]
 POLLING_DIVISION_COLUMNS = [COL_DISTRICT_NUMBER, COL_ELECTION_ID, COL_DIVISION_NUMBER, COL_DIVISION_NAME,
                             COL_VOID_POLL_INDICATOR, COL_NO_POLL_HELD, COL_COMBINED_WITH_NUMBER,
                             COL_REJECTED_BALLOTS_FOR_POLL, COL_ELECTORS_FOR_POLL]
 CANDIDATE_COLUMNS_FOR_EXTRACT = [COL_ELECTION_ID, COL_FAMILY_NAME, COL_MIDDLE_NAME, COL_FIRST_NAME,
-                      COL_PARTY_NAME_ENGLISH, COL_DISTRICT_NUMBER, COL_INCUMBENT_INDICATOR,
+                      COL_PARTY_SOURCE_NAME_ENGLISH, COL_DISTRICT_NUMBER, COL_INCUMBENT_INDICATOR,
                       COL_ELECTED_CANDIDATE]
 CANDIDATE_COLUMNS_FOR_INSERT = [COL_ELECTION_ID, COL_FAMILY_NAME, COL_MIDDLE_NAME, COL_FIRST_NAME,
-                      COL_PARTY_ID, COL_DISTRICT_NUMBER, COL_INCUMBENT_INDICATOR,
+                      COL_PARTY_KEY, COL_DISTRICT_NUMBER, COL_INCUMBENT_INDICATOR,
                       COL_ELECTED_CANDIDATE]
 VOTE_COUNT_COLUMNS_FOR_EXTRACT = [COL_ELECTION_ID, COL_DISTRICT_NUMBER, COL_DIVISION_NUMBER,
                       COL_FAMILY_NAME, COL_MIDDLE_NAME, COL_FIRST_NAME, COL_VOTE_COUNT]
 VOTE_COUNT_COLUMNS_FOR_INSERT = [COL_POLLING_DIVISION_ID, COL_CANDIDATE_ID, COL_VOTE_COUNT]
+
+PARTIES_STATIC_REQUIRED_COLUMNS = [
+  ("party_key", "party keys"),
+  ("source_name_english", "English source names"),
+  ("source_name_french", "French source names"),
+  ("long_display_name_english", "English long display names"),
+  ("long_display_name_french", "French long display names"),
+  ("short_display_name_english", "English short display names"),
+  ("short_display_name_french", "French short display names")
+]

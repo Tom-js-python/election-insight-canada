@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from app.api import ridings
 from app.api import swing_ridings
+from app.api import parties
 
 app = FastAPI()
 
 app.include_router(ridings.router)
 app.include_router(swing_ridings.router)
+app.include_router(parties.router)
 
 
 @app.get("/health")
