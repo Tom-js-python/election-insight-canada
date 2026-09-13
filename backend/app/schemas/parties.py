@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class PoliticalPartyResult(BaseModel):
+class PoliticalParty(BaseModel):
     party_key: str
     source_name_english: str
     source_name_french: str
