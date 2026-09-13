@@ -4,7 +4,8 @@ WITH vote_counts AS
 		ed.name_english AS district_name,
 		CONCAT_WS(' ', c.first_name, c.middle_name, c.family_name) AS candidate_name,
 		pp.long_display_name_english AS party_name,
-		SUM(vc.vote_count) AS vote_count
+		SUM(vc.vote_count) AS vote_count,
+		c.elected_candidate
 	FROM vote_counts AS vc
 	LEFT JOIN candidates AS c
 		ON vc.candidate_id = c.id
@@ -22,14 +23,10 @@ WITH vote_counts AS
 		ed.name_english,
 		c.id,
 		pp.long_display_name_english),
-rank AS
-	(SELECT 	district_number, district_name, candidate_name, party_name, vote_count,
-				DENSE_RANK() OVER(PARTITION BY district_number ORDER BY vote_count DESC) AS candidate_rank
-	 FROM vote_counts),
 margin AS 
-	(SELECT 	district_number, district_name, candidate_name, party_name, vote_count, candidate_rank,
+	(SELECT 	district_number, district_name, candidate_name, party_name, vote_count, elected_candidate,
 		CASE
-		    WHEN candidate_rank = 1 THEN
+		    WHEN elected_candidate THEN
 		        vote_count - 
 		        NTH_VALUE(vote_count, 2) OVER (
 		            PARTITION BY district_number
@@ -43,10 +40,10 @@ margin AS
 		        ) - vote_count
 		END AS margin,
 		CASE
-			WHEN candidate_rank = 1 THEN 'win'
+			WHEN elected_candidate THEN 'win'
 			ELSE 'loss'
 		END AS outcome
-	FROM rank)
+	FROM vote_counts)
 SELECT district_number, district_name, candidate_name, party_name, vote_count
 FROM vote_counts
 WHERE district_number IN (
