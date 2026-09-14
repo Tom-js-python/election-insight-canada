@@ -76,8 +76,13 @@ def test_swing_ridings_response_shape():
 
     assert set(first_result) == {
         "candidate_name",
+        "party_key",
         "party_name",
         "vote_count",
+        "vote_share",
+        "outcome",
+        "margin_votes",
+        "margin_percentage_points"
     }
 
 def test_conservative_losses_within_1000_returns_expected_ridings():
@@ -152,33 +157,55 @@ def test_bq_all_within_2000_returns_expected_ridings():
         24018, 24042, 24051, 24071, 24073
     }
 
-    def test_larger_margin_includes_all_results_from_smaller_margin():
-        """ Test that a larger margin contains all or more of smaller margin """
+def test_larger_margin_includes_all_results_from_smaller_margin():
+    """ Test that a larger margin contains all or more of smaller margin """
 
-        common_params = {
-            "party_name": "Conservative",
+    common_params = {
+        "party_name": "Conservative",
+        "outcome": "both",
+    }
+
+    small_response = client.get(
+        "/ridings/swing/2025",
+        params={**common_params, "margin": 500},
+    )
+    large_response = client.get(
+        "/ridings/swing/2025",
+        params={**common_params, "margin": 1000},
+    )
+
+    assert small_response.status_code == 200
+    assert large_response.status_code == 200
+
+    small_districts = {
+        riding["district_number"]
+        for riding in small_response.json()
+    }
+    large_districts = {
+        riding["district_number"]
+        for riding in large_response.json()
+    }
+
+    assert small_districts <= large_districts
+
+def riding_returned_by_swing_ridings_same_as_all_ridings():
+    """ Test that a riding returned by both endpoints has identical result data """
+
+    response = client.get(
+        "/ridings/swing/2025",
+        params={
+            "party_name": "Bloc Québécois",
             "outcome": "both",
-        }
+            "margin": 2000,
+        },
+    )
+    data = response.json()
 
-        small_response = client.get(
-            "/ridings/swing/2025",
-            params={**common_params, "margin": 500},
-        )
-        large_response = client.get(
-            "/ridings/swing/2025",
-            params={**common_params, "margin": 1000},
-        )
+    swing_riding = next((r for r in data if r.get("district_number") == 24018), None)
 
-        assert small_response.status_code == 200
-        assert large_response.status_code == 200
+    response = client.get("/ridings/all/2025")
+    data = response.json()
 
-        small_districts = {
-            riding["district_number"]
-            for riding in small_response.json()
-        }
-        large_districts = {
-            riding["district_number"]
-            for riding in large_response.json()
-        }
+    all_riding = next((r for r in data if r.get("district_number") == 24018), None)
 
-        assert small_districts <= large_districts
+    assert swing_riding["results"] == all_riding["results"]

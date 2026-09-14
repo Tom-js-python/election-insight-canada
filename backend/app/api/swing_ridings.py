@@ -37,8 +37,13 @@ def get_swing_ridings_2025(filters: Annotated[SwingRidingFilters, Query()]):
             grouped_results[district_number]["results"].append(
                 {
                     "candidate_name": row["candidate_name"],
+                    "party_key": row["party_key"],
                     "party_name": row["party_name"],
                     "vote_count": row["vote_count"],
+                    "vote_share": row["vote_share"],
+                    "outcome": row["outcome"],
+                    "margin_votes": row["margin_votes"],
+                    "margin_percentage_points": row["margin_percentage_points"],
                 }
             )
 

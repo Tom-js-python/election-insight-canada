@@ -3,8 +3,13 @@ from pydantic import BaseModel, Field, StringConstraints
 
 class CandidateResult(BaseModel):
     candidate_name: str
+    party_key: str
     party_name: str
     vote_count: int
+    vote_share: float
+    outcome: Literal["win", "loss"]
+    margin_votes: int
+    margin_percentage_points: float
 
 class RidingResult(BaseModel):
     district_number: int
