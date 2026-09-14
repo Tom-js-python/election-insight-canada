@@ -5,15 +5,31 @@ from app.main import app
 client = TestClient(app)
 
 @pytest.mark.parametrize("outcome", ["win", "loss", "both"])
-def test_swing_ridings_accepts_valid_outcomes(outcome):
-    """ Test that all three valid outcomes are accepted """
+def test_swing_ridings_accepts_valid_outcomes_absolute(outcome):
+    """ Test that all three valid outcomes are accepted for absolute margin """
 
     response = client.get(
         "/ridings/swing/2025",
         params={
-            "party_name": "Conservative",
+            "party_key": "conservative",
             "outcome": outcome,
-            "margin": 1000,
+            "max_margin_votes": 1000,
+        },
+    )
+
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+
+@pytest.mark.parametrize("outcome", ["win", "loss", "both"])
+def test_swing_ridings_accepts_valid_outcomes_relative(outcome):
+    """ Test that all three valid outcomes are accepted for relative margin """
+
+    response = client.get(
+        "/ridings/swing/2025",
+        params={
+            "party_key": "conservative",
+            "outcome": outcome,
+            "max_margin_percentage_points": 5,
         },
     )
 
@@ -23,14 +39,21 @@ def test_swing_ridings_accepts_valid_outcomes(outcome):
 @pytest.mark.parametrize(
     "query",
     [
-        "party_name=Conservative&outcome=neither&margin=1000",
-        "party_name=Conservative&outcome=lost&margin=1000",
-        "party_name=Conservative&outcome=win&margin=0",
-        "party_name=Conservative&outcome=win&margin=-500",
-        "party_name=Conservative&outcome=win&margin=abc",
-        "outcome=win&margin=1000",
-        "party_name=Conservative&margin=1000",
-        "party_name=Conservative&outcome=win",
+        "party_key=conservative&outcome=neither&max_margin_votes=1000",
+        "party_key=conservative&outcome=lost&max_margin_votes=1000",
+        "party_key=conservative&outcome=win&max_margin_votes=0",
+        "party_key=conservative&outcome=win&max_margin_votes=-500",
+        "party_key=conservative&outcome=win&max_margin_votes=abc",
+        "outcome=win&max_margin_votes=1000",
+        "party_key=conservative&max_margin_votes=1000",
+        "party_key=conservative&outcome=win",
+        "party_key=conservative&outcome=win&max_margin_votes=1000&max_margin_percentage_points=5",
+        "party_key=conservative&outcome=win&max_margin_percentage_points=0",
+        "party_key=conservative&outcome=win&max_margin_percentage_points=-5",
+        "party_key=conservative&outcome=win&max_margin_percentage_points=five",
+        "party_key=conservative&outcome=win&max_margin_percentage_points=five",
+        "party_key=conservative&outcome=win&margin=500",
+        "party_name=Conservative&outcome=win&max_margin_percentage_points=5",
     ],
 )
 def test_swing_ridings_invalid_query_returns_422(query):
@@ -39,13 +62,13 @@ def test_swing_ridings_invalid_query_returns_422(query):
     response = client.get(f"/ridings/swing/2025?{query}")
     assert response.status_code == 422
 
-def test_swing_ridings_blank_party_name_returns_422():
+def test_swing_ridings_blank_party_key_returns_422():
     response = client.get(
         "/ridings/swing/2025",
         params={
-            "party_name": "   ",
+            "party_key": "   ",
             "outcome": "win",
-            "margin": 1000,
+            "max_margin_votes": 1000,
         },
     )
     assert response.status_code == 422
@@ -53,7 +76,7 @@ def test_swing_ridings_blank_party_name_returns_422():
 def test_swing_ridings_response_shape():
     """ Test that the swing ridings endpoint has the correct shape """
 
-    response = client.get("/ridings/swing/2025?party_name=Conservative&outcome=loss&margin=1000")
+    response = client.get("/ridings/swing/2025?party_key=conservative&outcome=loss&max_margin_votes=1000")
 
     assert response.status_code == 200
 
@@ -91,9 +114,9 @@ def test_conservative_losses_within_1000_returns_expected_ridings():
     response = client.get(
         "/ridings/swing/2025",
         params={
-            "party_name": "Conservative",
+            "party_key": "conservative",
             "outcome": "loss",
-            "margin": 1000,
+            "max_margin_votes": 1000,
         },
     )
 
@@ -115,9 +138,9 @@ def test_liberal_wins_within_700_returns_expected_ridings():
     response = client.get(
         "/ridings/swing/2025",
         params={
-            "party_name": "Liberal",
+            "party_key": "liberal",
             "outcome": "win",
-            "margin": 700,
+            "max_margin_votes": 700,
         },
     )
 
@@ -139,9 +162,9 @@ def test_bq_all_within_2000_returns_expected_ridings():
     response = client.get(
         "/ridings/swing/2025",
         params={
-            "party_name": "Bloc Québécois",
+            "party_key": "bloc",
             "outcome": "both",
-            "margin": 2000,
+            "max_margin_votes": 2000,
         },
     )
 
@@ -157,21 +180,45 @@ def test_bq_all_within_2000_returns_expected_ridings():
         24018, 24042, 24051, 24071, 24073
     }
 
+def test_within_two_percentage_points_returns_expected_ridings():
+    """ Test the correct ridings are returned for percentage points """
+
+    response = client.get(
+        "/ridings/swing/2025",
+        params={
+            "party_key": "conservative",
+            "outcome": "loss",
+            "max_margin_percentage_points": 2,
+        },
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+    district_numbers = {
+        riding["district_number"]
+        for riding in data
+    }
+
+    assert district_numbers == {
+        35009, 35012, 35013, 35026, 35049, 35060, 48005, 59016
+    }
+
 def test_larger_margin_includes_all_results_from_smaller_margin():
     """ Test that a larger margin contains all or more of smaller margin """
 
     common_params = {
-        "party_name": "Conservative",
+        "party_key": "conservative",
         "outcome": "both",
     }
 
     small_response = client.get(
         "/ridings/swing/2025",
-        params={**common_params, "margin": 500},
+        params={**common_params, "max_margin_votes": 500},
     )
     large_response = client.get(
         "/ridings/swing/2025",
-        params={**common_params, "margin": 1000},
+        params={**common_params, "max_margin_votes": 1000},
     )
 
     assert small_response.status_code == 200
@@ -194,9 +241,9 @@ def riding_returned_by_swing_ridings_same_as_all_ridings():
     response = client.get(
         "/ridings/swing/2025",
         params={
-            "party_name": "Bloc Québécois",
+            "party_key": "bloc",
             "outcome": "both",
-            "margin": 2000,
+            "max_margin_votes": 2000,
         },
     )
     data = response.json()

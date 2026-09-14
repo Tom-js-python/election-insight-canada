@@ -17,10 +17,13 @@ def get_swing_ridings_2025(filters: Annotated[SwingRidingFilters, Query()]):
     conn = get_connection()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(query, {   "election_label": "45th General Election",
-                                        "party_name": filters.party_name,
-                                        "outcome": filters.outcome,
-                                        "margin": filters.margin})
+            cur.execute(query, {
+                "election_label": "45th General Election",
+                "party_key": filters.party_key,
+                "outcome": filters.outcome,
+                "max_margin_votes": filters.max_margin_votes,
+                "max_margin_percentage_points": filters.max_margin_percentage_points
+            })
             rows = cur.fetchall()
 
         grouped_results = {}
