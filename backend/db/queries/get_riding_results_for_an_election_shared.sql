@@ -48,17 +48,3 @@ calculated_results AS
 			vote_count::numeric / NULLIF(total_votes,0) AS vote_share, outcome, margin_votes,
 			margin_votes::numeric * 100 / NULLIF(total_votes, 0) AS margin_percentage_points
 	FROM candidate_metrics)
-SELECT 	district_number, district_name, candidate_name, party_key, party_name, vote_count,
-				vote_share, outcome, margin_votes, margin_percentage_points
-FROM calculated_results
-WHERE district_number IN (
-	SELECT district_number
-	FROM calculated_results
-	WHERE party_name = %(party_name)s AND margin_votes <= %(margin)s
-	AND (
-	    %(outcome)s = 'both'
-	    OR (%(outcome)s = 'win' AND outcome='win')
-	    OR (%(outcome)s = 'loss' AND outcome='loss')
-	    )
-	)
-ORDER BY district_number, vote_count DESC, party_name;

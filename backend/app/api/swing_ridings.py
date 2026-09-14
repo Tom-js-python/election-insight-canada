@@ -11,7 +11,8 @@ router = APIRouter(prefix="/ridings", tags=["ridings"])
 @router.get("/swing/2025", response_model=list[RidingResult])
 def get_swing_ridings_2025(filters: Annotated[SwingRidingFilters, Query()]):
 
-    query = load_sql("get_swing_riding_results_for_an_election.sql")
+    query = load_sql("get_riding_results_for_an_election_shared.sql",
+                    "get_swing_riding_results_for_an_election_end.sql")
 
     conn = get_connection()
     try:
