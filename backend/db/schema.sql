@@ -28,9 +28,11 @@ CREATE TABLE elections (
 );
 
 CREATE TABLE electoral_districts (
-  district_number INT PRIMARY KEY,
+  district_number INT,
+  election_id INT NOT NULL REFERENCES elections(id),
   name_english TEXT NOT NULL,
-  name_french TEXT NOT NULL
+  name_french TEXT NOT NULL,
+  PRIMARY KEY (election_id, district_number)
 );
 
 CREATE TABLE political_parties (
