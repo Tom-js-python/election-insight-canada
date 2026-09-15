@@ -11,15 +11,19 @@ router = APIRouter(prefix="/ridings", tags=["ridings"])
 @router.get("/swing/2025", response_model=list[RidingResult])
 def get_swing_ridings_2025(filters: Annotated[SwingRidingFilters, Query()]):
 
-    query = load_sql("get_swing_riding_results_for_an_election.sql")
+    query = load_sql("get_riding_results_for_an_election_shared.sql",
+                    "get_swing_riding_results_for_an_election_end.sql")
 
     conn = get_connection()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(query, {   "election_label": "45th General Election",
-                                        "party_name": filters.party_name,
-                                        "outcome": filters.outcome,
-                                        "margin": filters.margin})
+            cur.execute(query, {
+                "election_label": "45th General Election",
+                "party_key": filters.party_key,
+                "outcome": filters.outcome,
+                "max_margin_votes": filters.max_margin_votes,
+                "max_margin_percentage_points": filters.max_margin_percentage_points
+            })
             rows = cur.fetchall()
 
         grouped_results = {}
@@ -37,8 +41,13 @@ def get_swing_ridings_2025(filters: Annotated[SwingRidingFilters, Query()]):
             grouped_results[district_number]["results"].append(
                 {
                     "candidate_name": row["candidate_name"],
+                    "party_key": row["party_key"],
                     "party_name": row["party_name"],
                     "vote_count": row["vote_count"],
+                    "vote_share": row["vote_share"],
+                    "outcome": row["outcome"],
+                    "margin_votes": row["margin_votes"],
+                    "margin_percentage_points": row["margin_percentage_points"],
                 }
             )
 

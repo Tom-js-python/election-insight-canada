@@ -33,6 +33,7 @@ def get_multiple_unique_values(df: pd.DataFrame, column_list: list[str]) -> list
 def extract_district_from_dataframe(df: pd.DataFrame) -> dict:
     return {
         "district_number": int(get_single_unique_value(df, COL_DISTRICT_NUMBER)),
+        "election_id": int(get_single_unique_value(df, COL_ELECTION_ID)),
         "name_english": get_single_unique_value(df, COL_DISTRICT_NAME_ENGLISH),
         "name_french": get_single_unique_value(df, COL_DISTRICT_NAME_FRENCH),
     }

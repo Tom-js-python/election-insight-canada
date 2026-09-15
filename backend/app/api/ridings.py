@@ -9,7 +9,9 @@ router = APIRouter(prefix="/ridings", tags=["ridings"])
 
 @router.get("/all/2025", response_model=list[RidingResult])
 def get_all_ridings_2025():
-    query = load_sql("get_all_riding_results_for_an_election.sql")
+
+    query = load_sql("get_riding_results_for_an_election_shared.sql",
+                     "get_all_riding_results_for_an_election_end.sql")
 
     conn = get_connection()
     try:
@@ -32,8 +34,13 @@ def get_all_ridings_2025():
             grouped_results[district_number]["results"].append(
                 {
                     "candidate_name": row["candidate_name"],
+                    "party_key": row["party_key"],
                     "party_name": row["party_name"],
                     "vote_count": row["vote_count"],
+                    "vote_share": row["vote_share"],
+                    "outcome": row["outcome"],
+                    "margin_votes": row["margin_votes"],
+                    "margin_percentage_points": row["margin_percentage_points"],
                 }
             )
 
