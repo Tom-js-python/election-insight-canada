@@ -53,6 +53,7 @@ interface RidingTableRow {
 }
 
 export default {
+  name: 'PageFooter',
   data() {
     return {
       firstVisibleResult: 1,

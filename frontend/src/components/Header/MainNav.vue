@@ -23,3 +23,9 @@
     </RouterLink>
   </nav>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'MainNav',
+}
+</script>

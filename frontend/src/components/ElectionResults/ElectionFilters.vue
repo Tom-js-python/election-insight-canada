@@ -83,6 +83,7 @@
 
 <script lang="ts">
 export default {
+  name: 'ElectionFilters',
   data() {
     return {
       filters: {

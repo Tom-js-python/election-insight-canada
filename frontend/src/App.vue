@@ -5,6 +5,13 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import AppHeader from '@/components/Header/AppHeader.vue'
+
+export default {
+  name: 'App',
+  components: {
+    AppHeader,
+  },
+}
 </script>

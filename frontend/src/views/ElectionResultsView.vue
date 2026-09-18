@@ -20,6 +20,7 @@ import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.
 import PageFooter from '@/components/ElectionResults/PageFooter.vue'
 
 export default {
+  name: 'ElectionResultsView',
   components: {
     PageHeading,
     ElectionFilters,

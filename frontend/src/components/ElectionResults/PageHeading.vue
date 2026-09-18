@@ -23,6 +23,7 @@
 
 <script lang="ts">
 export default {
+  name: 'PageHeading',
   data() {
     return {
       selectedElection: 2025,

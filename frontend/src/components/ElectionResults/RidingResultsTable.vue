@@ -136,6 +136,7 @@ interface RidingTableRow {
 }
 
 export default {
+  name: 'RidingResultsTable',
   components: {
     SortableHeading,
   },

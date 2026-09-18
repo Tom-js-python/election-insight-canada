@@ -37,6 +37,7 @@ interface RidingTableRow {
 }
 
 export default {
+  name: 'ResultsHeading',
   data() {
     return {
       filteredRidings: [
