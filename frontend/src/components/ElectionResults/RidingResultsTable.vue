@@ -65,9 +65,8 @@
                 class="h-2.5 w-2.5 rounded-full"
                 :class="partyColor(riding.winner.partyKey)"
                 aria-hidden="true"
-              >
-                {{ riding.winner.partyName }}</span
-              >
+              ></span>
+              {{ riding.winner.partyName }}
             </span>
           </td>
 
