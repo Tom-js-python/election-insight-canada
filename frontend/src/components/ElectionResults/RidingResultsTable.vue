@@ -104,35 +104,8 @@
 <script lang="ts">
 import SortableHeading from './SortableHeading.vue'
 
-interface SortState {
-  key: string
-  direction: 'ascending' | 'descending'
-}
-
-interface RidingTableRow {
-  districtNumber: number
-  districtName: string
-
-  winner: {
-    candidateName: string
-    partyKey: string
-    partyName: string
-    voteShare: number
-  }
-
-  selectedParty: {
-    candidateName: string
-    partyKey: string
-    partyName: string
-    voteShare: number
-    outcome: 'win' | 'loss'
-    marginVotes: number
-    marginPercentagePoints: number
-  } | null
-
-  winningMarginVotes: number
-  winningMarginPercentagePoints: number
-}
+import type { SortState, RidingTableRow } from '@/types/election.ts'
+import { paginatedRidings } from '@/mocks/electionResults.ts'
 
 export default {
   name: 'RidingResultsTable',
@@ -152,29 +125,7 @@ export default {
         search: '',
         maximumMargin: 100,
       },
-      paginatedRidings: [
-        {
-          districtNumber: 35001,
-          districtName: 'Ajax',
-          winner: {
-            candidateName: 'Example Candidate',
-            partyKey: 'liberal',
-            partyName: 'Liberal Party of Canada',
-            voteShare: 0.437,
-          },
-          selectedParty: {
-            candidateName: 'Example Conservative',
-            partyKey: 'conservative',
-            partyName: 'Conservative Party of Canada',
-            voteShare: 0.401,
-            outcome: 'loss',
-            marginVotes: 2_146,
-            marginPercentagePoints: 3.6,
-          },
-          winningMarginVotes: 2_146,
-          winningMarginPercentagePoints: 3.6,
-        },
-      ] as RidingTableRow[],
+      paginatedRidings,
     }
   },
   methods: {
