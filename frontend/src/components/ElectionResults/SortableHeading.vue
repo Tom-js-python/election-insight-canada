@@ -1,10 +1,7 @@
 <!-- SortableHeading.vue -->
 
 <script setup lang="ts">
-interface SortState {
-  key: string
-  direction: 'ascending' | 'descending'
-}
+import type { SortState } from '@/types/election'
 
 const props = withDefaults(
   defineProps<{

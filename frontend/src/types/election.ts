@@ -1,13 +1,24 @@
+interface SortState {
+  key: string
+  direction: 'ascending' | 'descending'
+}
+
 interface CandidateResult {
-  candidate_name: string
-  party_name: string
-  vote_count: number
+  candidateName: string
+  partyKey: string
+  partyName: string
+  voteShare: number
 }
 
 interface RidingResult {
-  district_number: number
-  district_name: string
-  results: CandidateResult[]
+  districtNumber: number
+  districtName: string
+}
+
+interface selectedPartyResult extends CandidateResult {
+  outcome: 'win' | 'loss'
+  marginVotes: number
+  marginPercentagePoints: number
 }
 
 interface RidingSummary extends RidingResult {
@@ -20,4 +31,11 @@ interface RidingSummary extends RidingResult {
   marginPercentagePoints?: number
 }
 
-export type { CandidateResult, RidingResult, RidingSummary }
+interface RidingTableRow extends RidingResult {
+  winner: CandidateResult
+  selectedParty: selectedPartyResult | null
+  winningMarginVotes: number
+  winningMarginPercentagePoints: number
+}
+
+export type { SortState, CandidateResult, RidingResult, RidingSummary, RidingTableRow }

@@ -9,3 +9,9 @@
     <span>Election Insight Canada</span>
   </RouterLink>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'TheBrand',
+}
+</script>

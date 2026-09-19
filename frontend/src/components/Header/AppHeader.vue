@@ -9,7 +9,15 @@
   </header>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import TheBrand from '@/components/Header/TheBrand.vue'
 import MainNav from '@/components/Header/MainNav.vue'
+
+export default {
+  name: 'AppHeader',
+  components: {
+    TheBrand,
+    MainNav,
+  },
+}
 </script>
