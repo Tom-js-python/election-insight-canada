@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-x-auto">
-    <table class="min-w-[900px] w-full border-collapse text-sm">
+    <table class="w-full min-w-[900px] border-collapse text-sm">
       <thead class="bg-slate-100/80 dark:bg-slate-800/70">
         <tr class="border-b border-slate-200 dark:border-slate-700">
           <SortableHeading label="Riding" sort-key="districtName" :sort="sort" @sort="changeSort" />

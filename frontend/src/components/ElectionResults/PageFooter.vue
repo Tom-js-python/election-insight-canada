@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800"
+    class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between"
   >
     <p class="text-xs text-slate-500">
       Showing {{ firstVisibleResult }}–{{ lastVisibleResult }} of {{ filteredRidings.length }}
