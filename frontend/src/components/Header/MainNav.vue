@@ -12,7 +12,7 @@
     </span>
 
     <span class="whitespace-nowrap px-3 py-2 text-sm text-slate-400 dark:text-slate-600">
-      Projection lab · later
+      Projection Lab · later
     </span>
 
     <RouterLink
