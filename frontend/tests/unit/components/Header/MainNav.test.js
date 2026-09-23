@@ -11,8 +11,8 @@ const AboutView = {
   template: '<div>About view</div>',
 }
 
-function createTestRouter() {
-  return createRouter({
+const createTestRouter = () =>
+  createRouter({
     history: createMemoryHistory(),
     routes: [
       {
@@ -27,7 +27,6 @@ function createTestRouter() {
       },
     ],
   })
-}
 
 describe('MainNav', () => {
   it('displays links to Results and About', async () => {
@@ -41,8 +40,9 @@ describe('MainNav', () => {
 
     await router.isReady()
 
-    expect(screen.getByRole('link', { name: 'Results' })).toBeTruthy()
+    const navigationMenuItems = screen.getAllByRole('link')
+    const navigationMenuTexts = navigationMenuItems.map((item) => item.textContent?.trim())
 
-    expect(screen.getByRole('link', { name: 'About' })).toBeTruthy()
+    expect(navigationMenuTexts).toEqual(['Results', 'About'])
   })
 })
