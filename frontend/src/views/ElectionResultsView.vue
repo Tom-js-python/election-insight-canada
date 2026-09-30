@@ -6,7 +6,7 @@
     <div
       class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
-      <riding-results-table />
+      <riding-results-table :ridings="paginatedRidings" />
       <page-footer />
     </div>
   </main>
@@ -18,6 +18,7 @@ import ElectionFilters from '@/components/ElectionResults/ElectionFilters.vue'
 import ResultsHeading from '@/components/ElectionResults/ResultsHeading.vue'
 import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
 import PageFooter from '@/components/ElectionResults/PageFooter.vue'
+import { paginatedRidings } from '@/mocks/electionResults'
 
 export default {
   name: 'ElectionResultsView',
@@ -27,6 +28,11 @@ export default {
     ResultsHeading,
     RidingResultsTable,
     PageFooter,
+  },
+  data() {
+    return {
+      paginatedRidings,
+    }
   },
 }
 </script>

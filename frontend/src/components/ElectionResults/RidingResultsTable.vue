@@ -47,7 +47,7 @@
 
       <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
         <tr
-          v-for="riding in paginatedRidings"
+          v-for="riding in ridings"
           :key="riding.districtNumber"
           class="transition-colors hover:bg-red-50 dark:hover:bg-red-950/20"
         >
@@ -102,15 +102,22 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from 'vue'
+
 import SortableHeading from './SortableHeading.vue'
 
 import type { SortState, RidingTableRow } from '@/types/election.ts'
-import { paginatedRidings } from '@/mocks/electionResults.ts'
 
 export default {
   name: 'RidingResultsTable',
   components: {
     SortableHeading,
+  },
+  props: {
+    ridings: {
+      type: Array as PropType<RidingTableRow[]>,
+      required: true,
+    },
   },
   data() {
     return {
@@ -125,7 +132,6 @@ export default {
         search: '',
         maximumMargin: 100,
       },
-      paginatedRidings,
     }
   },
   methods: {
