@@ -12,6 +12,7 @@
     "frontend:format": "cd frontend && yarn format",
     "frontend:dev": "cd frontend && yarn dev",
     "frontend:build": "cd frontend && yarn build",
+    "frontend:typecheck": "cd frontend && yarn type-check",
     "frontend:test": "cd frontend && yarn test:unit",
     "frontend:test:e2e": "cd frontend && yarn test:e2e",
     "backend:start": "cd backend && uv run uvicorn app.main:app --reload",

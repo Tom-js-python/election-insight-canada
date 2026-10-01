@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-x-auto">
-    <table class="min-w-[900px] w-full border-collapse text-sm">
+    <table class="w-full min-w-[900px] border-collapse text-sm">
       <thead class="bg-slate-100/80 dark:bg-slate-800/70">
         <tr class="border-b border-slate-200 dark:border-slate-700">
           <SortableHeading label="Riding" sort-key="districtName" :sort="sort" @sort="changeSort" />
@@ -39,7 +39,7 @@
             @sort="changeSort"
           />
 
-          <th class="w-20 px-4 py-3">
+          <th scope="col" class="w-20 px-4 py-3">
             <span class="sr-only">Riding details</span>
           </th>
         </tr>
@@ -47,11 +47,11 @@
 
       <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
         <tr
-          v-for="riding in paginatedRidings"
+          v-for="riding in ridings"
           :key="riding.districtNumber"
           class="transition-colors hover:bg-red-50 dark:hover:bg-red-950/20"
         >
-          <td class="px-4 py-3">
+          <td scope="row" class="px-4 py-3">
             <p class="font-medium text-slate-900 dark:text-slate-100">
               {{ riding.districtName }}
             </p>
@@ -64,6 +64,7 @@
               <span
                 class="h-2.5 w-2.5 rounded-full"
                 :class="partyColor(riding.winner.partyKey)"
+                :data-party-key="riding.winner.partyKey"
                 aria-hidden="true"
               ></span>
               {{ riding.winner.partyName }}
@@ -102,15 +103,22 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from 'vue'
+
 import SortableHeading from './SortableHeading.vue'
 
 import type { SortState, RidingTableRow } from '@/types/election.ts'
-import { paginatedRidings } from '@/mocks/electionResults.ts'
 
 export default {
   name: 'RidingResultsTable',
   components: {
     SortableHeading,
+  },
+  props: {
+    ridings: {
+      type: Array as PropType<RidingTableRow[]>,
+      required: true,
+    },
   },
   data() {
     return {
@@ -125,7 +133,6 @@ export default {
         search: '',
         maximumMargin: 100,
       },
-      paginatedRidings,
     }
   },
   methods: {
