@@ -2,7 +2,7 @@
   <main class="mx-auto max-w-screen-2xl px-4 py-6 sm:px-6 lg:px-8">
     <page-heading />
     <election-filters />
-    <results-heading />
+    <results-heading :total-results="paginatedRidings.length" />
     <div
       class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >

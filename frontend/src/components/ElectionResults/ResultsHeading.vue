@@ -1,7 +1,7 @@
 <template>
   <div class="mb-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-    <p aria-live="polite" class="text-sm font-medium text-slate-900 dark:text-slate-100">
-      {{ filteredRidings.length }} ridings
+    <p role="status" class="text-sm font-medium text-slate-900 dark:text-slate-100">
+      {{ totalResults }} ridings
     </p>
 
     <p class="text-xs text-slate-500 dark:text-slate-400">
@@ -11,14 +11,13 @@
 </template>
 
 <script lang="ts">
-import { filteredRidings } from '@/mocks/electionResults'
-
 export default {
   name: 'ResultsHeading',
-  data() {
-    return {
-      filteredRidings,
-    }
+  props: {
+    totalResults: {
+      type: Number,
+      required: true,
+    },
   },
 }
 </script>

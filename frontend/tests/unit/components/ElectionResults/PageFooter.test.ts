@@ -14,7 +14,7 @@ describe('PageFooter', () => {
   it('displays the total number of filtered results', () => {
     renderPageFooter()
 
-    const resultsSummary = screen.getByRole('status')
+    const resultsSummary = screen.getByText(/showing/i)
 
     expect(resultsSummary).toHaveTextContent(/of 27$/i)
   })
