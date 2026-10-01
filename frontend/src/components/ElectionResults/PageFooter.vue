@@ -3,7 +3,7 @@
     class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between"
   >
     <p class="text-xs text-slate-500">
-      Showing {{ firstVisibleResult }}–{{ lastVisibleResult }} of {{ filteredRidings.length }}
+      Showing {{ firstVisibleResult }}–{{ lastVisibleResult }} of {{ totalResults }}
     </p>
 
     <nav class="flex items-center gap-1" aria-label="Table pages">
@@ -17,6 +17,7 @@
             ? 'border-red-700 bg-red-700 text-white'
             : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800'
         "
+        :aria-label="`Go to page ${pageNumber}`"
         :aria-current="pageNumber === currentPage ? 'page' : undefined"
         @click="currentPage = pageNumber"
       >
@@ -27,17 +28,20 @@
 </template>
 
 <script lang="ts">
-import { filteredRidings } from '@/mocks/electionResults'
-
 export default {
   name: 'PageFooter',
+  props: {
+    totalResults: {
+      type: Number,
+      required: true,
+    },
+  },
   data() {
     return {
       firstVisibleResult: 1,
       lastVisibleResult: 1,
       pageNumbers: 3,
       currentPage: 1,
-      filteredRidings,
     }
   },
 }

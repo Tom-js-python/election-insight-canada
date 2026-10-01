@@ -7,7 +7,7 @@
       class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
       <riding-results-table :ridings="paginatedRidings" />
-      <page-footer />
+      <page-footer :total-results="paginatedRidings.length" />
     </div>
   </main>
 </template>
