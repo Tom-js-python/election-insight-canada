@@ -39,7 +39,7 @@
             @sort="changeSort"
           />
 
-          <th class="w-20 px-4 py-3">
+          <th scope="col" class="w-20 px-4 py-3">
             <span class="sr-only">Riding details</span>
           </th>
         </tr>
@@ -51,7 +51,7 @@
           :key="riding.districtNumber"
           class="transition-colors hover:bg-red-50 dark:hover:bg-red-950/20"
         >
-          <td class="px-4 py-3">
+          <td scope="row" class="px-4 py-3">
             <p class="font-medium text-slate-900 dark:text-slate-100">
               {{ riding.districtName }}
             </p>
