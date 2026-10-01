@@ -28,6 +28,7 @@ WITH candidate_vote_counts AS
 		pp.long_display_name_english),
 riding_metrics AS 
 	(SELECT *,
+	-- Sum the candidate-level totals to get total votes cast in each riding.
 	SUM(vote_count) OVER (partition by district_number) AS total_votes,
 	MAX(vote_count) FILTER (WHERE elected_candidate) OVER (PARTITION BY district_number) AS winner_vote_count,
 	MAX(vote_count) FILTER (WHERE NOT elected_candidate) OVER (PARTITION BY district_number) AS runner_up_vote_count
