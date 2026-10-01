@@ -4,6 +4,14 @@ import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.
 
 import type { RidingTableRow } from '@/types/election.ts'
 
+const getCellByColumn = (row: HTMLElement, columnName: string | RegExp): HTMLTableCellElement => {
+  const columnHeader = screen.getByRole('columnheader', {
+    name: columnName,
+  }) as HTMLTableCellElement
+
+  return (row as HTMLTableRowElement).cells[columnHeader.cellIndex]
+}
+
 const ridings: RidingTableRow[] = [
   {
     districtNumber: 35001,
@@ -62,11 +70,18 @@ describe('RidingResultsTable', () => {
     expect(within(ridingRow).getByText('Ajax')).toBeInTheDocument()
     expect(within(ridingRow).getByText(/district 35001/i)).toBeInTheDocument()
     expect(within(ridingRow).getByText('Liberal')).toBeInTheDocument()
-    expect(within(ridingRow).getByText('56.3%')).toBeInTheDocument()
-    expect(within(ridingRow).getByText('39.1%')).toBeInTheDocument()
-    expect(within(ridingRow).getByText('11,317')).toBeInTheDocument()
-    expect(within(ridingRow).getByText('17.2%')).toBeInTheDocument()
+    expect(getCellByColumn(ridingRow, /winner share/i)).toHaveTextContent('56.3%')
+    expect(getCellByColumn(ridingRow, /conservative/i)).toHaveTextContent('39.1%')
+    expect(getCellByColumn(ridingRow, /vote margin/i)).toHaveTextContent('11,317')
+    expect(getCellByColumn(ridingRow, /margin %/i)).toHaveTextContent('17.2%')
     expect(within(ridingRow).getByRole('button', { name: /view/i })).toBeInTheDocument()
+
+    // Test that the correct party-color class is applied
+    const winnerCell = getCellByColumn(ridingRow, 'Winner')
+    const partyColorMarker = winnerCell.querySelector('[data-party-key="liberal"]')
+
+    expect(partyColorMarker).toBeInTheDocument()
+    expect(partyColorMarker).toHaveClass('bg-party-liberal')
 
     // Test the fallbacks in the format functions
     ridingRow = screen.getByRole('row', {

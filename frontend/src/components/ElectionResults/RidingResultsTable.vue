@@ -64,6 +64,7 @@
               <span
                 class="h-2.5 w-2.5 rounded-full"
                 :class="partyColor(riding.winner.partyKey)"
+                :data-party-key="riding.winner.partyKey"
                 aria-hidden="true"
               ></span>
               {{ riding.winner.partyName }}
