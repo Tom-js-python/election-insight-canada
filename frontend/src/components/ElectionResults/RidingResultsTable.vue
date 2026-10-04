@@ -107,7 +107,8 @@ import type { PropType } from 'vue'
 
 import SortableHeading from './SortableHeading.vue'
 
-import type { SortState, RidingTableRow } from '@/types/election.ts'
+import type { SortState } from '@/types/sorting.ts'
+import type { RidingTableRow } from '@/types/ridings.ts'
 
 export default {
   name: 'RidingResultsTable',
