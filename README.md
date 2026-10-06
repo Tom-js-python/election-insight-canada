@@ -65,6 +65,12 @@ This project transforms raw election data into a structured, queryable format.
 
 ---
 
+## Screenshot
+
+![Frontend Screenshot](docs/frontend-screenshot.png)
+
+_Figure 1. Screenshot of current Vue table using mock data._
+
 ## 🚀 What This Project Does
 
 ### 🧠 Core Capabilities (Current / Phase 1)
@@ -150,10 +156,11 @@ and building a responsive Vue interface.
 
 ### Current priorities
 
-- Add candidate vote shares, outcomes and victory margins to API responses
-- Share common SQL logic between riding-results endpoints
-- Build the first filterable and sortable Vue results table
-- Improve and automate local development setup
+- Add and test the political-parties API endpoint
+- Connect the Vue frontend to the riding-results and political-parties endpoints
+- Replace mock data with API responses
+- Complete filtering and sorting for the riding-results table
+- Improve and automate local setup
 
 ### Later phases
 
@@ -191,7 +198,7 @@ git clone https://github.com/Tom-js-python/election-insight-canada
 cd election-insight-canada
 ```
 
-### 2. Install the depdencies
+### 2. Install the dependencies
 
 ```bash
 yarn run install
@@ -232,7 +239,7 @@ yarn db:create-tables
 
 ### 6. Download Elections Canada data
 
-Go to <https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e>. Download the data for Canada / poll-by-poll results, format 2, to the the data/raw directory. Unzip this file.
+Go to <https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e>. Download the data for Canada / poll-by-poll results, format 2, to the data/raw directory. Unzip this file.
 
 ### 7. Load the data
 
