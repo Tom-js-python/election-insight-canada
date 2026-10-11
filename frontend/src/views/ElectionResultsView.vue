@@ -18,7 +18,14 @@ import ElectionFilters from '@/components/ElectionResults/ElectionFilters.vue'
 import ResultsHeading from '@/components/ElectionResults/ResultsHeading.vue'
 import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
 import PageFooter from '@/components/ElectionResults/PageFooter.vue'
-import { paginatedRidings } from '@/mocks/electionResults'
+
+import { getAllRidings } from '@/api/ridings'
+import { createRidingTableRow, mapRidingResult } from '@/mappers/ridings'
+import type { RidingTableRow } from '@/types/ridings'
+
+interface MyComponentData {
+  paginatedRidings: RidingTableRow[]
+}
 
 export default {
   name: 'ElectionResultsView',
@@ -29,9 +36,20 @@ export default {
     RidingResultsTable,
     PageFooter,
   },
-  data() {
+  data(): MyComponentData {
     return {
-      paginatedRidings,
+      paginatedRidings: [],
+    }
+  },
+  async mounted() {
+    try {
+      const apiRidingResults = await getAllRidings(2025)
+      const ridingResults = apiRidingResults.map(mapRidingResult)
+      this.paginatedRidings = ridingResults.map((riding) =>
+        createRidingTableRow(riding, 'conservative'),
+      )
+    } catch (error) {
+      console.error('Unable to load riding results', error)
     }
   },
 }
