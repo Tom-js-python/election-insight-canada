@@ -25,6 +25,7 @@ import type { RidingTableRow } from '@/types/ridings'
 
 interface MyComponentData {
   paginatedRidings: RidingTableRow[]
+  controller: AbortController
 }
 
 export default {
@@ -39,11 +40,12 @@ export default {
   data(): MyComponentData {
     return {
       paginatedRidings: [],
+      controller: new AbortController(),
     }
   },
   async mounted() {
     try {
-      const apiRidingResults = await getAllRidings(2025)
+      const apiRidingResults = await getAllRidings(2025, this.controller.signal)
       const ridingResults = apiRidingResults.map(mapRidingResult)
       this.paginatedRidings = ridingResults.map((riding) =>
         createRidingTableRow(riding, 'conservative'),
@@ -51,6 +53,9 @@ export default {
     } catch (error) {
       console.error('Unable to load riding results', error)
     }
+  },
+  unmounted() {
+    this.controller.abort()
   },
 }
 </script>

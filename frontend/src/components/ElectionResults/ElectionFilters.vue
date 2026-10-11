@@ -95,6 +95,7 @@ interface MyComponentData {
     maximumMargin: number
   }
   politicalParties: PoliticalParty[]
+  controller: AbortController
 }
 
 export default {
@@ -109,15 +110,19 @@ export default {
         maximumMargin: 100,
       },
       politicalParties: [],
+      controller: new AbortController(),
     }
   },
   async mounted() {
     try {
-      const apiPoliticalParties = await getPoliticalParties()
+      const apiPoliticalParties = await getPoliticalParties(this.controller.signal)
       this.politicalParties = apiPoliticalParties.map(mapPoliticalParty)
     } catch (error) {
       console.error('Unable to load political parties', error)
     }
+  },
+  unmounted() {
+    this.controller.abort()
   },
   methods: {
     resetFilters() {
