@@ -23,8 +23,8 @@
       >
         <option value="">All parties</option>
 
-        <option v-for="party in partyNames" :key="party" :value="party">
-          {{ party }}
+        <option v-for="party in politicalParties" :key="party.partyKey" :value="party.partyKey">
+          {{ party.longDisplayNameEnglish }}
         </option>
       </select>
     </label>
@@ -82,44 +82,47 @@
 </template>
 
 <script lang="ts">
+import { getPoliticalParties } from '@/api/parties'
+import { mapPoliticalParty } from '@/mappers/parties'
+import type { PoliticalParty } from '@/types/parties'
+
+interface MyComponentData {
+  filters: {
+    outcome: string
+    party: string
+    marginType: string
+    search: string
+    maximumMargin: number
+  }
+  politicalParties: PoliticalParty[]
+}
+
 export default {
   name: 'ElectionFilters',
-  data() {
+  data(): MyComponentData {
     return {
       filters: {
         outcome: 'win',
-        party: 'Conservative',
+        party: 'conservative',
         marginType: 'votes',
         search: '',
         maximumMargin: 100,
       },
-      partyNames: [
-        'Animal Protection Party',
-        'Bloc Québécois',
-        'Canadian Future Party',
-        'Centrist',
-        'Christian Heritage Party',
-        'Communist',
-        'Conservative',
-        'Green Party of Canada',
-        'Independent',
-        'Liberal',
-        'Libertarian',
-        'Marijuana Party',
-        'Marxist-Leninist',
-        'New Democratic Party',
-        'No Affiliation',
-        "People's Party of Canada",
-        'Rhinoceros Party',
-        'United Party of Canada',
-      ],
+      politicalParties: [],
+    }
+  },
+  async mounted() {
+    try {
+      const apiPoliticalParties = await getPoliticalParties()
+      this.politicalParties = apiPoliticalParties.map(mapPoliticalParty)
+    } catch (error) {
+      console.error('Unable to load political parties', error)
     }
   },
   methods: {
     resetFilters() {
       this.filters.outcome = 'win'
-
-      this.filters.party = 'Conservative'
+      this.filters.party = 'conservative'
       this.filters.marginType = 'votes'
       this.filters.search = ''
       this.filters.maximumMargin = 100
