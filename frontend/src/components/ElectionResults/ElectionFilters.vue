@@ -82,9 +82,8 @@
 </template>
 
 <script lang="ts">
-import { getPoliticalParties } from '@/api/parties'
-import { mapPoliticalParty } from '@/mappers/parties'
 import type { PoliticalParty } from '@/types/parties'
+import type { PropType } from 'vue'
 
 interface MyComponentData {
   filters: {
@@ -94,12 +93,16 @@ interface MyComponentData {
     search: string
     maximumMargin: number
   }
-  politicalParties: PoliticalParty[]
-  controller: AbortController
 }
 
 export default {
   name: 'ElectionFilters',
+  props: {
+    politicalParties: {
+      type: Array as PropType<PoliticalParty[]>,
+      required: true,
+    },
+  },
   data(): MyComponentData {
     return {
       filters: {
@@ -109,21 +112,9 @@ export default {
         search: '',
         maximumMargin: 100,
       },
-      politicalParties: [],
-      controller: new AbortController(),
     }
   },
-  async mounted() {
-    try {
-      const apiPoliticalParties = await getPoliticalParties(this.controller.signal)
-      this.politicalParties = apiPoliticalParties.map(mapPoliticalParty)
-    } catch (error) {
-      console.error('Unable to load political parties', error)
-    }
-  },
-  unmounted() {
-    this.controller.abort()
-  },
+
   methods: {
     resetFilters() {
       this.filters.outcome = 'win'

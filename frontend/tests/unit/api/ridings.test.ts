@@ -1,4 +1,4 @@
-import { filteredRidings } from '@/mocks/electionResults'
+import { apiRidingResults } from '@/mocks/electionResults'
 import { getAllRidings } from '@/api/ridings'
 
 afterEach(() => {
@@ -8,7 +8,7 @@ afterEach(() => {
 describe('getAllRidings', () => {
   it('fetches and returns parsed ridings electon result JSON', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(JSON.stringify(filteredRidings), {
+      new Response(JSON.stringify(apiRidingResults), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -21,6 +21,6 @@ describe('getAllRidings', () => {
     expect(fetchMock).toHaveBeenCalledExactlyOnceWith('http://localhost:8000/ridings/all/2025', {
       signal: undefined,
     })
-    expect(result).toEqual(filteredRidings)
+    expect(result).toEqual(apiRidingResults)
   })
 })

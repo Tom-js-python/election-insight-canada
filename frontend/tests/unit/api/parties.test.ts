@@ -1,4 +1,4 @@
-import { politicalParties } from '@/mocks/politicalParties'
+import { apiPoliticalParties } from '@/mocks/politicalParties'
 import { getPoliticalParties } from '@/api/parties'
 
 afterEach(() => {
@@ -8,7 +8,7 @@ afterEach(() => {
 describe('getPoliticalParties', () => {
   it('fetches and returns parsed political party JSON', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response(JSON.stringify(politicalParties), {
+      new Response(JSON.stringify(apiPoliticalParties), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
@@ -21,6 +21,6 @@ describe('getPoliticalParties', () => {
     expect(fetchMock).toHaveBeenCalledExactlyOnceWith('http://localhost:8000/political-parties', {
       signal: undefined,
     })
-    expect(result).toEqual(politicalParties)
+    expect(result).toEqual(apiPoliticalParties)
   })
 })
