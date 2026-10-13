@@ -1,7 +1,7 @@
 import { mapRidingResult, createRidingTableRow } from '@/mappers/ridings'
 import {
   apiRidingResults,
-  filteredRidings,
+  expectedConservativeTableRows,
   noGreenApiRidingResults,
   noGreenFilteredRidings,
   noWinnerApiRidingResults,
@@ -12,7 +12,7 @@ describe('mapRidingResult and createTableRow', () => {
   it('converts API data into data appropriate for a riding table row', () => {
     const ridingResults = apiRidingResults.map(mapRidingResult)
     const result = ridingResults.map((riding) => createRidingTableRow(riding, 'conservative'))
-    expect(result).toEqual(filteredRidings)
+    expect(result).toEqual(expectedConservativeTableRows)
   })
 
   it('throws an error when the riding has no winner', () => {

@@ -7,6 +7,7 @@ import { apiRidingResults } from '@/mocks/electionResults'
 import { mapPoliticalParty } from '@/mappers/parties'
 import { mapRidingResult } from '@/mappers/ridings'
 import { useElectionResultsStore } from '@/stores/electionResults'
+import { expectedConservativeTableRows } from '@/mocks/electionResults'
 
 import type { ApiPoliticalParty } from '@/types/api/parties.ts'
 import type { ApiRidingResult } from '@/types/api/ridings'
@@ -22,7 +23,7 @@ vi.mock('@/api/ridings', () => ({
 describe('Election results store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
-    vi.clearAllMocks()
+    vi.resetAllMocks()
   })
 
   describe('state', () => {
@@ -48,6 +49,11 @@ describe('Election results store', () => {
   })
 
   describe('loadElectionData', () => {
+    beforeEach(() => {
+      setActivePinia(createPinia())
+      vi.resetAllMocks()
+    })
+
     it('successfully populates parties and ridings', async () => {
       vi.mocked(getPoliticalParties).mockResolvedValue(apiPoliticalParties)
 
@@ -67,5 +73,94 @@ describe('Election results store', () => {
       expect(store.isLoading).toBe(false)
       expect(store.error).toBeNull()
     })
+  })
+
+  it('stores the error and stops loading when a request fails', async () => {
+    vi.mocked(getAllRidings).mockRejectedValue(new Error('Unable to load ridings'))
+
+    vi.mocked(getPoliticalParties).mockResolvedValue(apiPoliticalParties)
+
+    const store = useElectionResultsStore()
+
+    await store.loadElectionData()
+
+    expect(store.error).toBe('Unable to load ridings')
+    expect(store.isLoading).toBe(false)
+    expect(store.allRidingResults).toEqual([])
+    expect(store.politicalParties).toEqual([])
+  })
+
+  it('clears a previous error when retrying successfully', async () => {
+    vi.mocked(getAllRidings)
+      .mockRejectedValueOnce(new Error('Unable to load ridings'))
+      .mockResolvedValueOnce(apiRidingResults)
+
+    vi.mocked(getPoliticalParties).mockResolvedValue(apiPoliticalParties)
+
+    const store = useElectionResultsStore()
+
+    await store.loadElectionData()
+
+    expect(store.error).toBe('Unable to load ridings')
+
+    await store.loadElectionData()
+
+    expect(store.error).toBeNull()
+    expect(store.isLoading).toBe(false)
+
+    expect(store.allRidingResults).toEqual(apiRidingResults.map(mapRidingResult))
+
+    expect(store.politicalParties).toEqual(apiPoliticalParties.map(mapPoliticalParty))
+  })
+
+  it('does not store an error when loading is cancelled', async () => {
+    const abortError = new DOMException('The operation was aborted', 'AbortError')
+
+    vi.mocked(getAllRidings).mockRejectedValue(abortError)
+
+    vi.mocked(getPoliticalParties).mockResolvedValue(apiPoliticalParties)
+
+    const store = useElectionResultsStore()
+    const controller = new AbortController()
+
+    await store.loadElectionData(controller.signal)
+
+    expect(store.error).toBeNull()
+    expect(store.isLoading).toBe(false)
+  })
+
+  it('uses a fallback message for a non-Error rejection', async () => {
+    vi.mocked(getAllRidings).mockRejectedValue('Non-Error rejection')
+
+    vi.mocked(getPoliticalParties).mockResolvedValue(apiPoliticalParties)
+
+    const store = useElectionResultsStore()
+
+    await store.loadElectionData()
+
+    expect(getAllRidings).toHaveBeenCalledOnce()
+    expect(getPoliticalParties).toHaveBeenCalledOnce()
+
+    expect(store.error).toBe('Unable to load election data')
+
+    expect(store.isLoading).toBe(false)
+  })
+})
+
+describe('ridingTableRows getter', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    vi.resetAllMocks()
+  })
+
+  it('creates table rows using the selected party', () => {
+    const store = useElectionResultsStore()
+
+    store.$patch({
+      allRidingResults: apiRidingResults.map(mapRidingResult),
+      selectedPartyKey: 'conservative',
+    })
+
+    expect(store.ridingTableRows).toEqual(expectedConservativeTableRows)
   })
 })

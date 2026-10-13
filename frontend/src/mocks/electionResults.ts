@@ -372,7 +372,7 @@ export const apiRidingResults: ApiRidingResult[] = [
   },
 ]
 
-export const filteredRidings: RidingTableRow[] = [
+export const expectedConservativeTableRows: RidingTableRow[] = [
   {
     districtNumber: 35001,
     districtName: 'Ajax',
@@ -523,4 +523,4 @@ export const noGreenFilteredRidings: RidingTableRow[] = [
   },
 ]
 
-export const paginatedRidings: RidingTableRow[] = filteredRidings.slice(0, 10)
+export const paginatedRidings: RidingTableRow[] = expectedConservativeTableRows.slice(0, 10)
