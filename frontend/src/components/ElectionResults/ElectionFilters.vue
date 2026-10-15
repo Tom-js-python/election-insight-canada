@@ -23,8 +23,8 @@
       >
         <option value="">All parties</option>
 
-        <option v-for="party in partyNames" :key="party" :value="party">
-          {{ party }}
+        <option v-for="party in politicalParties" :key="party.partyKey" :value="party.partyKey">
+          {{ party.longDisplayNameEnglish }}
         </option>
       </select>
     </label>
@@ -82,44 +82,43 @@
 </template>
 
 <script lang="ts">
+import type { PoliticalParty } from '@/types/parties'
+import type { PropType } from 'vue'
+
+interface MyComponentData {
+  filters: {
+    outcome: string
+    party: string
+    marginType: string
+    search: string
+    maximumMargin: number
+  }
+}
+
 export default {
   name: 'ElectionFilters',
-  data() {
+  props: {
+    politicalParties: {
+      type: Array as PropType<PoliticalParty[]>,
+      required: true,
+    },
+  },
+  data(): MyComponentData {
     return {
       filters: {
         outcome: 'win',
-        party: 'Conservative',
+        party: 'conservative',
         marginType: 'votes',
         search: '',
         maximumMargin: 100,
       },
-      partyNames: [
-        'Animal Protection Party',
-        'Bloc Québécois',
-        'Canadian Future Party',
-        'Centrist',
-        'Christian Heritage Party',
-        'Communist',
-        'Conservative',
-        'Green Party of Canada',
-        'Independent',
-        'Liberal',
-        'Libertarian',
-        'Marijuana Party',
-        'Marxist-Leninist',
-        'New Democratic Party',
-        'No Affiliation',
-        "People's Party of Canada",
-        'Rhinoceros Party',
-        'United Party of Canada',
-      ],
     }
   },
+
   methods: {
     resetFilters() {
       this.filters.outcome = 'win'
-
-      this.filters.party = 'Conservative'
+      this.filters.party = 'conservative'
       this.filters.marginType = 'votes'
       this.filters.search = ''
       this.filters.maximumMargin = 100

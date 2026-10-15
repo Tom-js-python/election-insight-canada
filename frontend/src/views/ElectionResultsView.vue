@@ -1,27 +1,49 @@
 <template>
   <main class="mx-auto max-w-screen-2xl px-4 py-6 sm:px-6 lg:px-8">
     <page-heading />
-    <election-filters />
-    <results-heading :total-results="paginatedRidings.length" />
-    <div
-      class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
-    >
-      <riding-results-table :ridings="paginatedRidings" />
-      <page-footer :total-results="paginatedRidings.length" />
-    </div>
+
+    <p v-if="isLoading" role="status">Loading election results…</p>
+
+    <p v-else-if="error" role="alert">
+      {{ error }}
+    </p>
+
+    <template v-else>
+      <election-filters :political-parties="politicalParties" />
+
+      <results-heading :total-results="ridingTableRows.length" />
+
+      <div
+        class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+      >
+        <riding-results-table :ridings="ridingTableRows" />
+
+        <page-footer :total-results="ridingTableRows.length" />
+      </div>
+    </template>
   </main>
 </template>
 
 <script lang="ts">
-import PageHeading from '@/components/ElectionResults/PageHeading.vue'
 import ElectionFilters from '@/components/ElectionResults/ElectionFilters.vue'
+import PageFooter from '@/components/ElectionResults/PageFooter.vue'
+import PageHeading from '@/components/ElectionResults/PageHeading.vue'
 import ResultsHeading from '@/components/ElectionResults/ResultsHeading.vue'
 import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
-import PageFooter from '@/components/ElectionResults/PageFooter.vue'
-import { paginatedRidings } from '@/mocks/electionResults'
+
+import { useElectionResultsStore } from '@/stores/electionResults'
+
+import type { PoliticalParty } from '@/types/parties'
+import type { RidingTableRow } from '@/types/ridings'
+
+interface ElectionResultsViewData {
+  electionResultsStore: ReturnType<typeof useElectionResultsStore>
+  controller: AbortController
+}
 
 export default {
   name: 'ElectionResultsView',
+
   components: {
     PageHeading,
     ElectionFilters,
@@ -29,10 +51,38 @@ export default {
     RidingResultsTable,
     PageFooter,
   },
-  data() {
+
+  data(): ElectionResultsViewData {
     return {
-      paginatedRidings,
+      electionResultsStore: useElectionResultsStore(),
+      controller: new AbortController(),
     }
+  },
+
+  computed: {
+    politicalParties(): PoliticalParty[] {
+      return this.electionResultsStore.politicalParties
+    },
+
+    ridingTableRows(): RidingTableRow[] {
+      return this.electionResultsStore.ridingTableRows
+    },
+
+    isLoading(): boolean {
+      return this.electionResultsStore.isLoading
+    },
+
+    error(): string | null {
+      return this.electionResultsStore.error
+    },
+  },
+
+  async mounted() {
+    await this.electionResultsStore.loadElectionData(this.controller.signal)
+  },
+
+  beforeUnmount() {
+    this.controller.abort()
   },
 }
 </script>

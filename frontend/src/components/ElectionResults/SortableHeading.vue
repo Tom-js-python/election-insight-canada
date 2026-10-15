@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import type { SortState } from '@/types/election'
+import type { SortState } from '@/types/sorting'
 
 const props = withDefaults(
   defineProps<{

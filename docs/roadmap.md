@@ -2,7 +2,7 @@
 
 This roadmap describes the planned development of Election Insight Canada.
 Priorities may change as the application is tested and new election datasets
-are introduced.
+are introduced. **Last updated: October 2026**
 
 ## Completed
 
@@ -28,66 +28,112 @@ are introduced.
 - [x] Document the project purpose, architecture and current capabilities
 - [x] Document the initial local-development setup
 
-## Current Phase
+### Canonical political-party data
 
-### Add political party mappings and new API endpoint
-
-- [ ] Add failing tests for the new API endpoint
-- [ ] In database creation script rename current political_party table to political_party_source_name
-- [ ] Create a new table political_party with columns for party_key, display_name_english,
-      display_name_french, short_name_english, short_name_french along with the data input
-      from the script, not from the Elections Canada data
-- [ ] Build and test the API endpoint
+- [x] Add curated political-party reference data
+- [x] Use a stable `party_key` as the primary key
+- [x] Store English and French source, long-display and short-display names
+- [x] Update candidate records to reference `party_key`
+- [x] Load the static party data during ETL
+- [x] Raise an error when Elections Canada data contains an unmapped party
+- [x] Add a utility for discovering party names in new election datasets
+- [x] Build and test the political-parties endpoint
 
 ### Extend the riding-results contract
 
-- [ ] Add failing tests for candidate vote shares, outcomes and margins
-- [ ] Use Elections Canada's elected-candidate indicator to identify winners
-- [ ] Add `vote_share`, `outcome`, `margin_votes`, `party_key` and
+- [x] Add failing tests for candidate vote shares, outcomes and margins
+- [x] Use Elections Canada's elected-candidate indicator to identify winners
+- [x] Add `vote_share`, `outcome`, `margin_votes`, `party_key` and
       `margin_percentage_points` to candidate results
-- [ ] Rename the nested `results` field to `candidate_results`
-- [ ] Allow swing ridings to be filtered by either vote margin or
+- [x] Allow swing ridings to be filtered by either vote margin or
       percentage-point margin
-- [ ] Validate that exactly one margin filter is supplied
-- [ ] Extract the SQL shared by the all-ridings and swing-ridings queries
-- [ ] Update API documentation and existing tests
+- [x] Validate that exactly one margin filter is supplied
+- [x] Extract the SQL shared by the all-ridings and swing-ridings queries
+- [x] Update API documentation and existing tests
+
+### Frontend integration
+
+- [x] Scaffold the Vue 3 and TypeScript frontend
+- [x] Create the application header and primary navigation
+- [x] Complete the Vitest configuration
+- [x] Define TypeScript interfaces matching the API response
+- [x] Add representative mock election data
+- [x] Build the responsive riding-results table
+- [x] Add a visible loading state
+- [x] Connect the frontend to `/ridings/all/2025`
+- [x] Configure CORS for local frontend development
+- [x] Build a typed API client with structured error handling
+- [x] Add API-to-application data mappers
+- [x] Add political-party and riding-result API services
+- [x] Add a Pinia store for election data
+- [x] Add request cancellation with `AbortController`
+- [x] Add store state for loading and errors
+- [x] Add Vitest coverage for components, API services, mappers and store behaviour
+- [x] Load political parties and results for all 343 ridings through Pinia
+
+### Improve development workflow
+
+- [x] Add dependency-installation commands to the setup documentation
+- [x] Add a root command for installing project dependencies
+- [x] Add a root command for running the frontend and backend together
+- [x] Add a root pre-commit command for formatting, linting, type checking and tests
+- [x] Document the development commands
+
+## Current Phase
+
+### Complete the interactive riding-results table
+
+- [ ] Refine the results-page layout and user experience
+- [ ] Connect filter controls to Pinia state
+- [ ] Filter by riding name, political party and outcome
+- [ ] Filter by maximum vote margin or percentage-point margin
+- [ ] Add client-side sorting
+- [ ] Add table pagination
+- [ ] Add empty-results and error displays
+- [ ] Add tests for filtering, sorting and pagination
+- [ ] Refine responsive and accessible table behaviour
+
+### Prepare for initial deployment
+
+- [ ] Replace the About-page stub with a project overview and public profile links
+- [ ] Create a project logo and favicon
+- [ ] Verify production environment-variable handling
+- [ ] Restrict production CORS origins
+- [ ] Verify that all pre-commit checks pass for the initial release
+- [ ] Perform a production build and local smoke test
+
+### Initial deployment
+
+- [ ] Deploy the frontend, backend and 2025 data to the existing Linode server
+- [ ] Configure the FastAPI application as a managed service
+- [ ] Configure Nginx as a reverse proxy and static-file server
+- [ ] Configure HTTPS
+- [ ] Configure production database access and backups
+- [ ] Verify the deployed health, API and frontend routes
+- [ ] Document deployment and operational procedures
+
+## Later Phases
+
+### Improve application layout
+
+- [ ] Add a spam-protected contact form to the About page
+- [ ] Add basic SEO
+- [ ] Build page to view riding details
+
+### Improve testing
+
+- [ ] Add comprehensive unit and integration tests for the backend ETL process
+- [ ] Add Playwright end-to-end tests
 
 ### Improve local setup
 
 - [ ] Add a PostgreSQL setup file
 - [ ] Automate downloading and extracting the Elections Canada dataset
-- [ ] Add dependency-installation commands to the setup documentation
 - [ ] Test the documented process from a fresh clone
 - [ ] Evaluate a repeatable local setup script
-
-## Next Phase
-
-### Initial Vue results interface
-
-- [x] Scaffold the Vue 3 and TypeScript frontend
-- [x] Create the application header and primary navigation
-- [ ] Complete the Vitest configuration
-- [ ] Define TypeScript interfaces matching the API response
-- [ ] Add representative mock election data
-- [ ] Build the responsive riding-results table
-- [ ] Add loading, empty and error states
-- [ ] Connect the frontend to `/ridings/all/2025`
-- [ ] Configure CORS for local frontend development
-- [ ] Add client-side filtering by riding, party, outcome and margin
-- [ ] Add sortable vote-count, vote-share and margin columns
-- [ ] Add table pagination
-- [ ] Add focused Vitest and Playwright coverage
-
-### Initial deployment
-
 - [ ] Containerize the application with Docker
 - [ ] Define a reproducible local environment with Docker Compose
-- [ ] Deploy the application and 2025 data to the existing Linode server
-- [ ] Configure Nginx and HTTPS
 - [ ] Add a basic CI pipeline for tests and production builds
-- [ ] Document deployment and operational procedures
-
-## Later Phases
 
 ### Interactive election map
 
@@ -121,7 +167,7 @@ are introduced.
 These will be prioritized using profiling, testing and observed application
 requirements.
 
-- [ ] Migrate from psycopg2 to psycopg 3
+- [ ] Evaluate migration from psycopg2 to psycopg3
 - [ ] Profile SQL queries and add appropriate indexes
 - [ ] Evaluate caching for repeated analytical queries
 - [ ] Add server-side pagination for polling-division data

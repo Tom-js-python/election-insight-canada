@@ -19,9 +19,11 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Env
+# Env - but keep the .env.example
 .env
 .env.*
+!.env.example
+!.env.test
 
 # Editor directories and files
 .vscode/

@@ -2,37 +2,48 @@ import { render, screen, within } from '@testing-library/vue'
 
 import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
 
-import type { RidingTableRow } from '@/types/election.ts'
+import type { RidingTableRow } from '@/types/ridings'
 
 const getCellByColumn = (row: HTMLElement, columnName: string | RegExp): HTMLTableCellElement => {
   const columnHeader = screen.getByRole('columnheader', {
     name: columnName,
   }) as HTMLTableCellElement
 
-  return (row as HTMLTableRowElement).cells[columnHeader.cellIndex]
+  const cell = (row as HTMLTableRowElement).cells[columnHeader.cellIndex]
+
+  if (typeof cell === 'undefined') {
+    throw new Error(`Could not find ${columnName} in row`)
+  }
+
+  return cell
 }
 
 const ridings: RidingTableRow[] = [
   {
     districtNumber: 35001,
     districtName: 'Ajax',
+
     winner: {
       candidateName: 'Jennifer McKelvie',
       partyKey: 'liberal',
       partyName: 'Liberal',
+      voteCount: 36975,
       voteShare: 0.563214,
+      outcome: 'win',
+      marginVotes: 11_317,
+      marginPercentagePoints: 17.2384,
     },
+
     selectedParty: {
       candidateName: 'Greg Brady',
       partyKey: 'conservative',
       partyName: 'Conservative',
+      voteCount: 25658,
       voteShare: 0.3908302,
       outcome: 'loss',
       marginVotes: 11_317,
       marginPercentagePoints: 17.2384,
     },
-    winningMarginVotes: 11_317,
-    winningMarginPercentagePoints: 17.2384,
   },
   {
     districtNumber: 24020,
@@ -42,11 +53,14 @@ const ridings: RidingTableRow[] = [
       candidateName: 'Bernard Généreux',
       partyKey: 'conservative',
       partyName: 'Conservative',
+      voteCount: 28_873,
       voteShare: 0.4583598,
+      outcome: 'win',
+      marginVotes: 9_776,
+      marginPercentagePoints: 15.519431,
     },
 
-    winningMarginVotes: 9_776,
-    winningMarginPercentagePoints: 15.519431,
+    selectedParty: null,
   },
 ]
 

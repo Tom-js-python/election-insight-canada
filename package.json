@@ -2,26 +2,36 @@
   "name": "election-insight-canada",
   "version": "0.1.0",
   "description": "A data-driven web application for exploring Canadian federal election results and estimating seat outcomes from polling data.",
-  "main": "~\\frontend\\public\\index.html",
+  "private": true,
   "scripts": {
     "db:create-tables": "cd backend && uv run -m scripts.create_tables",
     "db:load-2025-csv": "cd backend && uv run -m scripts.load_2025_csv",
     "db:discover-party-names": "cd backend && uv run -m scripts.discover_party_names",
+    "frontend:install": "yarn --cwd frontend install",
+    "frontend:format": "yarn --cwd frontend format",
+    "frontend:lint": "yarn --cwd frontend lint",
+    "frontend:type-check": "yarn --cwd frontend type-check",
+    "frontend:test": "yarn --cwd frontend test:unit",
+    "frontend:test:e2e": "yarn --cwd frontend test:e2e",
+    "frontend:dev": "yarn --cwd frontend dev",
+    "frontend:build": "yarn --cwd frontend build",
+    "frontend:precommit": "yarn frontend:lint && yarn frontend:format && yarn frontend:type-check && yarn frontend:test",
     "backend:install": "cd backend && uv sync",
-    "frontend:install": "yarn --cwd frontend",
-    "frontend:format": "cd frontend && yarn format",
-    "frontend:dev": "cd frontend && yarn dev",
-    "frontend:build": "cd frontend && yarn build",
-    "frontend:typecheck": "cd frontend && yarn type-check",
-    "frontend:test": "cd frontend && yarn test:unit",
-    "frontend:test:e2e": "cd frontend && yarn test:e2e",
     "backend:start": "cd backend && uv run uvicorn app.main:app --reload",
-    "backend:typecheck": "cd backend && uv run mypy app common loaders scripts",
+    "backend:type-check": "cd backend && uv run mypy app common loaders scripts",
     "backend:test": "cd backend && uv run coverage run -m pytest -v && uv run coverage report",
-    "install": "yarn run frontend:install && yarn run backend:install"
+    "dev": "concurrently --kill-others --names backend,frontend --prefix-colors blue,magenta \"yarn backend:start\" \"yarn frontend:dev\"",
+    "setup": "yarn install && yarn frontend:install && yarn backend:install",
+    "precommit": "yarn frontend:precommit && yarn backend:type-check && yarn backend:test"
   },
   "repository": "https://github.com/Tom-js-python/election-insight-canada.git",
-  "author": "Tom-js-python <tomrembrown@proton.me>",
+  "author": "Tom-js-python",
   "license": "Apache-2.0",
-  "private": true
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  },
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
+  }
 }

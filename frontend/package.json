@@ -7,14 +7,14 @@
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
-    "test:unit": "vitest --environment jsdom --coverage",
+    "test:unit": "vitest run --environment jsdom --coverage",
     "test:e2e": "playwright test",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli ."
   },
   "dependencies": {
     "pinia": "^4.0.2",
@@ -50,7 +50,7 @@
     "prettier": "3.9.5",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "3",
-    "typescript": "~6.0.0",
+    "typescript": "6.0.3",
     "vite": "^8.1.5",
     "vite-plugin-vue-devtools": "^8.1.5",
     "vitest": "5.0.1",

@@ -1,0 +1,25 @@
+# Playwright Test Artifacts
+test-results/
+playwright-report/
+summary.json
+
+# Code Coverage
+coverage/
+.nyc_output/
+
+# Build Outputs and Dist
+dist/
+build/
+.next/
+
+# Generated and Lock Files
+*.generated.*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# IDE and System Files
+.vscode/
+.idea/
+*.wasm
+.env*
