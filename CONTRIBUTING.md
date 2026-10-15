@@ -13,16 +13,24 @@ Review the [development roadmap](docs/roadmap.md) for current priorities.
 
 ## Development Setup
 
-Follow the [local setup instructions](README.md#️-local-setup).
+Follow the Local Setup section in the [project README](README.md).
 
 ## Development Workflow
 
 1. Fork and clone the repository.
-2. Create a branch from `main`.
-3. Make a focused change.
-4. Add or update relevant tests.
-5. Run the backend and frontend test suites.
-6. Submit a pull request describing the change and how it was tested.
+2. Update `main` and create a focused branch.
+
+```bash
+git switch main
+git pull --ff-only
+git switch -c feature/descriptive-branch-name
+```
+
+1. Make the change in small, understandable commits.
+2. Add or update relevant tests and documentation.
+3. Run `yarn precommit`.
+4. Review any formatting or linting changes made by that command.
+5. Push the branch and submit a pull request describing the change and how it was tested.
 
 Example branch names:
 
@@ -30,41 +38,38 @@ Example branch names:
 - `fix/swing-margin-filter`
 - `docs/improve-local-setup`
 
-## Testing
+## Testing and Quality Checks
 
-Run backend tests:
+Run the complete pre-commit checks. The linting and formatting commands may modify files. Review those changes before committing.
 
 ```bash
-yarn backend:test
+yarn precommit
 ```
 
-Run frontend unit tests:
+Individual suites can also be run separately:
 
 ```bash
 yarn frontend:test
-```
-
-Run end-to-end tests:
-
-```bash
-yarn frontend:test:e2e
+yarn backend:test
+yarn frontend:type-check
+yarn backend:type-check
 ```
 
 ## Code Conventions
 
-- Use snake case for PostgreSQL columns, Python names and API DTO properties.
-- Use camel case for ordinary TypeScript variables and functions.
-- Keep API DTO property names aligned with the API response.
-- Use color rather than colour in source-code identifiers.
-- Parameterize SQL values rather than interpolating user input.
-- Add tests for new calculations, validation rules and user-facing behaviour.
-- Keep pull requests focused on one feature or concern.
+- Use `snake_case` for PostgreSQL columns, Python names and API DTO properties.
+- Use `camelCase` for frontend application-model properties, variables and functions.
+- Keep TypeScript API DTOs in `snake_case` so they match the backend response exactly.
+- Convert API DTOs into frontend application models through explicit mapper functions.
+- Preserve the established Pydantic response contracts unless an API change is intentional.
+- Include accessible names, semantic HTML and keyboard behaviour in frontend changes.
+- Avoid unrelated formatting or refactoring in a focused pull request.
 
 ## Data
 
 Raw Elections Canada files are not committed to the repository.
 
-Use the documented download command to obtain the required dataset locally. Do not commit generated data, database credentials, .env files or coverage output.
+Follow the download instructions in the project README to obtain the required dataset locally. Do not commit generated data, database credentials, .env files or coverage output. Do not commit local environment files or secrets. Only sanitized example or test environment files explicitly permitted by `.gitignore` should be tracked.
 
 ## Pull Requests
 
@@ -74,6 +79,8 @@ A pull request should explain:
 - why the change is needed;
 - how it was tested;
 - whether it changes the API or database schema;
-- screenshots for visible frontend changes.
+- screenshots for visible frontend changes;
+- documentation updates when setup, commands or behaviour change;
+- migration or database-recreation instructions for schema changes.
 
-All existing tests should pass before review.
+All applicable checks should pass before the pull request is submitted. If a check is intentionally deferred or cannot be run, explain why in the pull-request description.

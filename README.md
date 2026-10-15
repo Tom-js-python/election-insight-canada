@@ -2,9 +2,9 @@
 
 A full-stack data application for exploring Canadian federal election results, built with Python, FastAPI, PostgreSQL, Vue and TypeScript.
 
-The project's first phase, now complete, transforms Elections Canada's poll-by-poll election data into a normalized relational database and exposes riding-level results through a REST API. The current phase in progress is displaying this data in a tabular format on the front-end. Future phases will add interactive visualizations and polling-based seat projections.
+The initial PostgreSQL ETL pipeline and FastAPI backend are complete. The Vue frontend now loads 2025 riding results and political-party data through a tested API client and Pinia store. Current development is focused on client-side filtering, sorting and pagination.
 
-**Current focus:** Backend API complete for initial 2025 riding analysis; Vue/TypeScript frontend in development.
+**Current focus:** Building the interactive 2025 riding-results table using Vue, TypeScript, Pinia and Tailwind CSS.
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 ![Frontend](https://img.shields.io/badge/frontend-Vue%203-green)
@@ -17,7 +17,7 @@ The project's first phase, now complete, transforms Elections Canada's poll-by-p
 
 ### 🗳️ 1. Estimating seat counts from polling data
 
-Canada uses a **first-past-the-post** electoral system with multiple parties and 343 individual ridings. Translating national polling percentages into seat counts is not straightforward.
+Canada uses a **first-past-the-post** electoral system with multiple parties. The 2025 federal election was contested across 343 individual ridings, and translating national polling percentages into seat counts is not straightforward.
 
 Key challenges include:
 
@@ -62,6 +62,12 @@ This project transforms raw election data into a structured, queryable format.
 - Defined structured API response models using Pydantic
 - Built automated backend tests with pytest
 - Used environment-based configuration for database credentials and development settings
+- Built a typed frontend API client with structured error handling and request cancellation
+- Added explicit API-to-application mappers and TypeScript data models
+- Integrated FastAPI data with a Pinia store and Vue components
+- Added loading, error, retry and request-cancellation state
+- Configured CORS for local frontend development
+- Added frontend component, API-client, mapper and store tests with Vitest and Vue Testing Library
 
 ---
 
@@ -69,7 +75,7 @@ This project transforms raw election data into a structured, queryable format.
 
 ![Frontend Screenshot](docs/frontend-screenshot.png)
 
-_Figure 1. Screenshot of current Vue table using mock data._
+_Figure 1. The Vue results table displaying 2025 federal election data loaded from the FastAPI backend._
 
 ## 🚀 What This Project Does
 
@@ -89,7 +95,7 @@ _Figure 1. Screenshot of current Vue table using mock data._
 
 - Seat projections based on national polling data
 - Interactive vote share sliders
-- Real-time seat projection updates
+- Instant seat-projection updates as vote assumptions change
 - Interactive map visualization
 - Historical election comparisons
 - Filtering by party, province, and riding
@@ -116,51 +122,60 @@ election-insight-canada/
 │
 ├── data/
 │   ├── raw/
+│   ├── reference/
 │   └── processed/
 │
 ├── frontend/
 │   ├── src/
+│   │   ├── api/
 │   │   ├── assets/
 │   │   ├── components/
+│   │   ├── mappers/
+│   │   ├── mocks/
 │   │   ├── router/
 │   │   ├── stores/
 │   │   ├── types/
-│   │   └── views/
+│   │   ├── views/
+│   │   ├── App.vue
+│   │   └── main.ts
 │   └── package.json
 │
 ├── docs/
 │   ├── elections-canada-data-dictionary.md
-│   └── todo.md
+│   └── roadmap.md
 │
 ├── README.md
+├── LICENSE
+├── CONTRIBUTING.md
+├── package.json
+├── yarn.lock
 └── .gitignore
 ```
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Python, FastAPI
-- **Database**: PostgreSQL
-- **Data Source**: Elections Canada CSV datasets
-- **Frontend (in progress)**: Vue 3
-- **Styling (in progress)**: Tailwind CSS
-- **Backend Testing**: pytest
-- **Frontend Testing (in progress)**: vitest and playwright
+- **Frontend:** Vue 3, TypeScript, Pinia and Vue Router
+- **Styling:** Tailwind CSS 3
+- **Backend:** Python and FastAPI
+- **Database:** PostgreSQL
+- **Backend testing:** pytest and Coverage.py
+- **Frontend testing:** Vitest, Vue Testing Library and jsdom
+- **End-to-end testing:** Playwright (configured; tests pending)
+- **Package and environment tools:** Yarn and uv
 
 ---
 
 ## 🗺️ Development Roadmap
 
 The 2025 election data pipeline and initial FastAPI backend are complete.
-Current development is focused on extending the riding-results API contract
-and building a responsive Vue interface.
+Current development is focused on adding functional filtering, sorting and pagination to the Vue riding-results table.
 
 ### Current priorities
 
-- Add and test the political-parties API endpoint
-- Connect the Vue frontend to the riding-results and political-parties endpoints
-- Replace mock data with API responses
-- Complete filtering and sorting for the riding-results table
-- Improve and automate local setup
+- Implement client-side filtering and sorting
+- Add pagination to the riding-results table
+- Connect the existing controls to Pinia state
+- Add tests for the interactive table behaviour
 
 ### Later phases
 
@@ -169,8 +184,7 @@ and building a responsive Vue interface.
 - Support historical elections and by-elections
 - Develop and backtest polling-based seat-projection models
 
-See the [detailed development roadmap](docs/roadmap.md) for planned work and
-current progress.
+See the [detailed development roadmap](docs/roadmap.md) for planned work and current progress.
 
 ---
 
@@ -201,34 +215,45 @@ cd election-insight-canada
 ### 2. Install the dependencies
 
 ```bash
-yarn run install
+yarn setup
 ```
 
 ### 3. Configure PostgreSQL
 
-Run 'psql postgres' at the terminal
+Connect to PostgreSQL using an administrative role. Depending on your installation, this may be:
+
+```bash
+psql -U postgres -d postgres
+```
 
 In the psql terminal type:
 
 ```sql
 SHOW PORT;
 CREATE DATABASE election_insight_canada;
-CREATE ROLE eic_computer_access
-    WITH LOGIN
-    ENCRYPTED PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE election_insight_canada TO eic_computer_access;
-ALTER ROLE "eic_computer_access" WITH LOGIN;
-\connect election_insight_canada;
+CREATE ROLE eic_computer_access WITH LOGIN;
+\password eic_computer_access
+
+\connect election_insight_canada
 GRANT ALL ON SCHEMA public TO eic_computer_access;
 \q
 ```
 
 ### 4. Configure environment variables
 
-Copy the \_env_start file in the backend directory to .env and modify parameters as needed inserting the port PostgreSQL is running on, and your password
+Copy the example environment files and update the values for your local environment.
 
 ```bash
-cp ./backend/_env_start ./backend/.env
+cp ./backend/.env.example ./backend/.env
+cp ./frontend/.env.example ./frontend/.env.development
+```
+
+Configure the backend database connection values in `backend/.env`.
+
+Configure the frontend API location in `frontend/.env.development`:
+
+```env
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
 ### 5. Create the database tables
@@ -247,16 +272,22 @@ Go to <https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&docume
 yarn db:load-2025-csv
 ```
 
-### 8. Start the API
+### 8. Run the development server
 
 ```bash
-yarn run backend:start
+yarn dev
 ```
 
-### 9. Run the tests
+Once both development servers are running, the application is available at:
+
+- Vue frontend: <http://localhost:5173>
+- FastAPI documentation: <http://localhost:8000/docs>
+- Health endpoint: <http://localhost:8000/health>
+
+### 9. Run the tests, type checks, linting and formatting before committing
 
 ```bash
-yarn run backend:test
+yarn precommit
 ```
 
 ---
@@ -286,44 +317,72 @@ Canadian elections are a great example: simple on the surface, but deeply comple
 
 ## 🔌 API
 
-The FastAPI backend currently provides endpoints for exploring the 2025
-Canadian federal election.
+The FastAPI backend currently provides endpoints for exploring the 2025 Canadian federal election.
 
 ### Riding Results
 
-GET /ridings/all/2025
+`GET /ridings/all/2025`
 
-Returns election results for Canadian federal electoral districts, including
-candidate and party vote totals.
+Returns election results for Canadian federal electoral districts, including candidate and party vote totals.
+
+### Political Parties
+
+`GET /political-parties`
+
+Returns canonical political-party data, including stable keys and English and French source, long-display and short-display names.
 
 ### Swing Ridings
 
-GET /ridings/swing/2025
+`GET /ridings/swing/2025`
 
-Returns ridings ordered/filterable by victory margin, allowing close races
-to be identified for later swing analysis.
+Returns close races for a selected political party.
 
-Interactive API documentation is available through FastAPI's Swagger UI
-at <http://localhost:8000/docs> when the backend is running locally.
+Required query parameters:
+
+- `party_key`: the stable key identifying the political party;
+- `outcome`: one of `win`, `loss` or `both`;
+- exactly one of:
+  - `max_margin_votes`;
+  - `max_margin_percentage_points`.
+
+Example:
+
+```http
+GET /ridings/swing/2025?party_key=conservative&outcome=win&max_margin_votes=1000`
+```
+
+Interactive API documentation is available through FastAPI's Swagger UI at <http://localhost:8000/docs> when the backend is running locally.
 
 ---
 
 ## 🧪 Testing
 
-The backend includes an automated pytest test suite covering API routes,
-database-related application logic, and response validation.
+The backend includes an automated pytest suite covering API routes, request validation, response structure and shared application logic. More comprehensive ETL integration testing is planned.
 
 Run the backend tests with:
 
-yarn run backend:test
+```bash
+yarn backend:test
+```
 
-The frontend tests are currently under development, using the TDD methodology.
+The frontend includes an automated Vitest unit test suite.
+
+Run the frontend tests with:
+
+```bash
+yarn frontend:test
+```
+
+End-to-end testing with Playwright is configured, but the tests have not yet been implemented.
 
 ---
 
 ## 👋 Creator
 
 Built and maintained by **Tom Brown**
+
+- [GitHub](https://github.com/Tom-js-python)
+- [LinkedIn](https://www.linkedin.com/in/thomas-brown-823364326/)
 
 ---
 
