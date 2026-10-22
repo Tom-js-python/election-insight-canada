@@ -28,21 +28,38 @@ const createTestRouter = () =>
     ],
   })
 
+const renderMainNav = async () => {
+  const router = createTestRouter()
+
+  render(MainNav, {
+    global: {
+      plugins: [router],
+    },
+  })
+
+  await router.isReady()
+}
+
 describe('MainNav', () => {
   it('displays links to Results and About', async () => {
-    const router = createTestRouter()
-
-    render(MainNav, {
-      global: {
-        plugins: [router],
-      },
-    })
-
-    await router.isReady()
+    await renderMainNav()
 
     const navigationMenuItems = screen.getAllByRole('link')
     const navigationMenuTexts = navigationMenuItems.map((item) => item.textContent?.trim())
 
     expect(navigationMenuTexts).toEqual(['Results', 'About'])
+  })
+
+  it('displays disabled items for planned sections', async () => {
+    await renderMainNav()
+
+    const summaryItem = screen.getByText(/^summary · later$/i)
+    const mapItem = screen.getByText(/^map · later$/i)
+    const projectionLabItem = screen.getByText(/^projection lab · later$/i)
+
+    for (const item of [summaryItem, mapItem, projectionLabItem]) {
+      expect(item).toHaveAttribute('aria-disabled', 'true')
+      expect(item).not.toHaveAttribute('href')
+    }
   })
 })
