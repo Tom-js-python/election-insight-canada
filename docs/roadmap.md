@@ -83,15 +83,22 @@ are introduced. **Last updated: October 2026**
 
 ### Complete the interactive riding-results table
 
-- [ ] Refine the results-page layout and user experience
-- [ ] Connect filter controls to Pinia state
-- [ ] Filter by riding name, political party and outcome
-- [ ] Filter by maximum vote margin or percentage-point margin
-- [ ] Add client-side sorting
-- [ ] Add table pagination
-- [ ] Add empty-results and error displays
-- [ ] Add tests for filtering, sorting and pagination
-- [ ] Refine responsive and accessible table behaviour
+- [x] Write the detailed requirements document to refine the results-page layout and user experience
+- [ ] Add abbreviation_english and abbreviation_french to backend political party table
+- [ ] Add inactive Summary to navigation bar
+- [ ] Add filter, sort, and pagination types and defaults to Pinia
+- [ ] Connect filter controls to Pinia state without filtering yet
+- [ ] Remove 'View' column for now - comment out code
+- [ ] Modify Riding header to be Riding Name, and add District Number header
+- [ ] Implement the all-parties and selected-party table layouts
+- [ ] Implement riding search
+- [ ] Add the results-mode toggle and the border and title around swing-riding controls
+- [ ] Implement swing-riding filtering
+- [ ] Implement sorting
+- [ ] Implement pagination (right now five per page - not final)
+- [ ] Add empty-results displays
+- [ ] Add error displays
+- [ ] Complete interaction and accessibility tests
 
 ### Prepare for initial deployment
 
@@ -119,6 +126,8 @@ are introduced. **Last updated: October 2026**
 - [ ] Add a spam-protected contact form to the About page
 - [ ] Add basic SEO
 - [ ] Build page to view riding details
+- [ ] Add the Election Summary Requirements page
+- [ ] Add the View riding column back and implement the page
 
 ### Improve testing
 
