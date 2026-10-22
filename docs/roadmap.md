@@ -84,7 +84,7 @@ are introduced. **Last updated: October 2026**
 ### Complete the interactive riding-results table
 
 - [x] Write the detailed requirements document to refine the results-page layout and user experience
-- [ ] Add abbreviation_english and abbreviation_french to backend political party table
+- [x] Add abbreviation_english and abbreviation_french to backend political party table
 - [ ] Add inactive Summary to navigation bar
 - [ ] Add filter, sort, and pagination types and defaults to Pinia
 - [ ] Connect filter controls to Pinia state without filtering yet

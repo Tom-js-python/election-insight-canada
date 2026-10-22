@@ -8,3 +8,5 @@ class PoliticalParty(BaseModel):
     long_display_name_french: str
     short_display_name_english: str
     short_display_name_french: str
+    abbreviation_english: str
+    abbreviation_french: str
