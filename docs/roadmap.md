@@ -85,7 +85,7 @@ are introduced. **Last updated: October 2026**
 
 - [x] Write the detailed requirements document to refine the results-page layout and user experience
 - [x] Add abbreviation_english and abbreviation_french to backend political party table
-- [ ] Add inactive Summary to navigation bar
+- [x] Add inactive Summary to navigation bar
 - [ ] Add filter, sort, and pagination types and defaults to Pinia
 - [ ] Connect filter controls to Pinia state without filtering yet
 - [ ] Remove 'View' column for now - comment out code

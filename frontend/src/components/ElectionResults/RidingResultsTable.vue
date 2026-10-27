@@ -9,7 +9,7 @@
 
           <SortableHeading
             label="Winner share"
-            sort-key="winnerShare"
+            sort-key="winnerVoteShare"
             alignment="right"
             :sort="sort"
             @sort="changeSort"
@@ -17,7 +17,7 @@
 
           <SortableHeading
             :label="filters.party || 'Selected party'"
-            sort-key="selectedPartyShare"
+            sort-key="selectedPartyVoteShare"
             alignment="right"
             :sort="sort"
             @sort="changeSort"
@@ -25,7 +25,7 @@
 
           <SortableHeading
             label="Vote margin"
-            sort-key="marginVotes"
+            sort-key="selectedPartyMarginVotes"
             alignment="right"
             :sort="sort"
             @sort="changeSort"
@@ -33,7 +33,7 @@
 
           <SortableHeading
             label="Margin %"
-            sort-key="marginPercentagePoints"
+            sort-key="selectedPartyMarginPercentagePoints"
             alignment="right"
             :sort="sort"
             @sort="changeSort"
@@ -104,6 +104,7 @@
 
 <script lang="ts">
 import type { PropType } from 'vue'
+import type { RidingSortKey } from '@/types/sorting.ts'
 
 import SortableHeading from './SortableHeading.vue'
 
@@ -124,7 +125,7 @@ export default {
   data() {
     return {
       sort: {
-        key: 'party',
+        key: 'districtNumber',
         direction: 'ascending',
       } as SortState,
       filters: {
@@ -137,7 +138,7 @@ export default {
     }
   },
   methods: {
-    changeSort(inKey: string) {
+    changeSort(inKey: RidingSortKey) {
       this.sort = {
         key: inKey,
         direction: 'ascending',

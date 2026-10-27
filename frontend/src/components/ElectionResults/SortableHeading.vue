@@ -20,12 +20,12 @@
 </template>
 
 <script setup lang="ts">
-import type { SortState } from '@/types/sorting'
+import type { SortState, RidingSortKey } from '@/types/sorting'
 
 const props = withDefaults(
   defineProps<{
     label: string
-    sortKey: string
+    sortKey: RidingSortKey
     sort: SortState
     alignment?: 'left' | 'right'
   }>(),
@@ -35,7 +35,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  sort: [key: string]
+  sort: [key: RidingSortKey]
 }>()
 
 const isActive = () => props.sort.key === props.sortKey

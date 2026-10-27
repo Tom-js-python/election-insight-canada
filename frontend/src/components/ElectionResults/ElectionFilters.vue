@@ -49,7 +49,7 @@
       </span>
 
       <select
-        v-model="filters.marginType"
+        v-model="filters.marginMeasure"
         class="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20 dark:border-slate-700 dark:bg-slate-950"
       >
         <option value="votes">Votes</option>
@@ -64,7 +64,7 @@
         v-model.number="filters.maximumMargin"
         type="number"
         min="0"
-        :step="filters.marginType === 'votes' ? 1 : 0.1"
+        :step="filters.marginMeasure === 'votes' ? 1 : 0.1"
         class="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm tabular-nums focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20 dark:border-slate-700 dark:bg-slate-950"
       />
     </label>
@@ -84,13 +84,14 @@
 <script lang="ts">
 import type { PoliticalParty } from '@/types/parties'
 import type { PropType } from 'vue'
+import type { Outcome, MarginMeasure } from '@/types/filters'
 
 interface MyComponentData {
   filters: {
-    outcome: string
+    outcome: Outcome
     party: string
-    marginType: string
-    search: string
+    marginMeasure: MarginMeasure
+    search: string | null
     maximumMargin: number
   }
 }
@@ -108,8 +109,8 @@ export default {
       filters: {
         outcome: 'win',
         party: 'conservative',
-        marginType: 'votes',
-        search: '',
+        marginMeasure: 'votes',
+        search: null,
         maximumMargin: 100,
       },
     }
@@ -119,8 +120,8 @@ export default {
     resetFilters() {
       this.filters.outcome = 'win'
       this.filters.party = 'conservative'
-      this.filters.marginType = 'votes'
-      this.filters.search = ''
+      this.filters.marginMeasure = 'votes'
+      this.filters.search = null
       this.filters.maximumMargin = 100
     },
   },
