@@ -5,22 +5,54 @@ import { getPoliticalParties } from '@/api/parties'
 import { createRidingTableRow, mapRidingResult } from '@/mappers/ridings'
 import { mapPoliticalParty } from '@/mappers/parties'
 
+import type { ElectionFilters } from '@/types/filters'
+import type { PaginationState } from '@/types/pagination'
+import type { SortState } from '@/types/sorting'
 import type { PoliticalParty } from '@/types/parties'
 import type { RidingResult, RidingTableRow } from '@/types/ridings'
+
+const createDefaultFilters = (): ElectionFilters => ({
+  selectedPartyKey: null,
+  resultsMode: 'all',
+  outcome: 'both',
+  marginMeasure: 'percentagePoints',
+  maximumMarginVotes: 1_000,
+  maximumMarginPercentagePoints: 10,
+  ridingSearch: '',
+})
+
+const createDefaultSort = (): SortState => ({
+  key: 'districtNumber',
+  direction: 'ascending',
+})
+
+const createDefaultPagination = (): PaginationState => ({
+  currentPage: 1,
+  rowsPerPage: 5,
+})
 
 interface ElectionResultsState {
   allRidingResults: RidingResult[]
   politicalParties: PoliticalParty[]
-  selectedPartyKey: string
+  filters: ElectionFilters
+  sort: SortState
+  pagination: PaginationState
   isLoading: boolean
   error: string | null
 }
 
 export const useElectionResultsStore = defineStore('electionResults', {
   state: (): ElectionResultsState => ({
+    // API data
     allRidingResults: [],
     politicalParties: [],
-    selectedPartyKey: 'conservative',
+
+    // Interaction state
+    filters: createDefaultFilters(),
+    sort: createDefaultSort(),
+    pagination: createDefaultPagination(),
+
+    // Request state
     isLoading: false,
     error: null,
   }),
@@ -52,7 +84,7 @@ export const useElectionResultsStore = defineStore('electionResults', {
   getters: {
     ridingTableRows(state): RidingTableRow[] {
       return state.allRidingResults.map((riding) =>
-        createRidingTableRow(riding, state.selectedPartyKey),
+        createRidingTableRow(riding, state.filters.selectedPartyKey),
       )
     },
   },

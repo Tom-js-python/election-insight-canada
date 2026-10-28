@@ -86,13 +86,13 @@ are introduced. **Last updated: October 2026**
 - [x] Write the detailed requirements document to refine the results-page layout and user experience
 - [x] Add abbreviation_english and abbreviation_french to backend political party table
 - [x] Add inactive Summary to navigation bar
-- [ ] Add filter, sort, and pagination types and defaults to Pinia
+- [x] Add filter, sort, and pagination types and defaults to Pinia
+- [ ] Adjust filters text - add the results-mode toggle and the border and title around swing-riding controls
 - [ ] Connect filter controls to Pinia state without filtering yet
 - [ ] Remove 'View' column for now - comment out code
 - [ ] Modify Riding header to be Riding Name, and add District Number header
 - [ ] Implement the all-parties and selected-party table layouts
 - [ ] Implement riding search
-- [ ] Add the results-mode toggle and the border and title around swing-riding controls
 - [ ] Implement swing-riding filtering
 - [ ] Implement sorting
 - [ ] Implement pagination (right now five per page - not final)

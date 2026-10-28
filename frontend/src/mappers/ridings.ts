@@ -21,7 +21,7 @@ export const mapRidingResult = (riding: ApiRidingResult): RidingResult => ({
 
 export const createRidingTableRow = (
   riding: RidingResult,
-  selectedPartyKey: string,
+  selectedPartyKey: string | null,
 ): RidingTableRow => {
   const winner = riding.results.find((candidate) => candidate.outcome === 'win')
 

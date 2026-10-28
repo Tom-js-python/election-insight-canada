@@ -34,10 +34,36 @@ describe('Election results store', () => {
       expect(store.politicalParties).toEqual([])
     })
 
-    it('initializes with the Conservative Party selected', () => {
+    it('initializes with correct filter defaults', () => {
       const store = useElectionResultsStore()
 
-      expect(store.selectedPartyKey).toBe('conservative')
+      expect(store.filters).toEqual({
+        selectedPartyKey: null,
+        resultsMode: 'all',
+        outcome: 'both',
+        marginMeasure: 'percentagePoints',
+        maximumMarginVotes: 1_000,
+        maximumMarginPercentagePoints: 10,
+        ridingSearch: '',
+      })
+    })
+
+    it('initializes with correct sort state defaults', () => {
+      const store = useElectionResultsStore()
+
+      expect(store.sort).toEqual({
+        key: 'districtNumber',
+        direction: 'ascending',
+      })
+    })
+
+    it('initializes with correct pagination defaults', () => {
+      const store = useElectionResultsStore()
+
+      expect(store.pagination).toEqual({
+        currentPage: 1,
+        rowsPerPage: 5,
+      })
     })
 
     it('is initially neither loading nor in error', () => {
@@ -158,7 +184,9 @@ describe('ridingTableRows getter', () => {
 
     store.$patch({
       allRidingResults: apiRidingResults.map(mapRidingResult),
-      selectedPartyKey: 'conservative',
+      filters: {
+        selectedPartyKey: 'conservative',
+      },
     })
 
     expect(store.ridingTableRows).toEqual(expectedConservativeTableRows)
