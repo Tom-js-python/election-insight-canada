@@ -31,13 +31,11 @@ import PageHeading from '@/components/ElectionResults/PageHeading.vue'
 import ResultsHeading from '@/components/ElectionResults/ResultsHeading.vue'
 import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
 
+import { mapActions, mapState } from 'pinia'
+
 import { useElectionResultsStore } from '@/stores/electionResults'
 
-import type { PoliticalParty } from '@/types/parties'
-import type { RidingTableRow } from '@/types/ridings'
-
 interface ElectionResultsViewData {
-  electionResultsStore: ReturnType<typeof useElectionResultsStore>
   controller: AbortController
 }
 
@@ -54,35 +52,29 @@ export default {
 
   data(): ElectionResultsViewData {
     return {
-      electionResultsStore: useElectionResultsStore(),
       controller: new AbortController(),
     }
   },
 
   computed: {
-    politicalParties(): PoliticalParty[] {
-      return this.electionResultsStore.politicalParties
-    },
-
-    ridingTableRows(): RidingTableRow[] {
-      return this.electionResultsStore.ridingTableRows
-    },
-
-    isLoading(): boolean {
-      return this.electionResultsStore.isLoading
-    },
-
-    error(): string | null {
-      return this.electionResultsStore.error
-    },
+    ...mapState(useElectionResultsStore, [
+      'politicalParties',
+      'ridingTableRows',
+      'isLoading',
+      'error',
+    ]),
   },
 
   async mounted() {
-    await this.electionResultsStore.loadElectionData(this.controller.signal)
+    await this.loadElectionData(this.controller.signal)
   },
 
   beforeUnmount() {
     this.controller.abort()
+  },
+
+  methods: {
+    ...mapActions(useElectionResultsStore, ['loadElectionData']),
   },
 }
 </script>
