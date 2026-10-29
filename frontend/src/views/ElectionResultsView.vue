@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import ElectionFilters from '@/components/ElectionResults/ElectionFilters.vue'
+import ElectionFilters from '@/components/ElectionResults/ElectionFilters/ElectionFilters.vue'
 import PageFooter from '@/components/ElectionResults/PageFooter.vue'
 import PageHeading from '@/components/ElectionResults/PageHeading.vue'
 import ResultsHeading from '@/components/ElectionResults/ResultsHeading.vue'
