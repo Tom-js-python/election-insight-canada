@@ -87,8 +87,9 @@ are introduced. **Last updated: October 2026**
 - [x] Add abbreviation_english and abbreviation_french to backend political party table
 - [x] Add inactive Summary to navigation bar
 - [x] Add filter, sort, and pagination types and defaults to Pinia
-- [ ] Adjust filters text - add the results-mode toggle and the border and title around swing-riding controls
+- [x] Adjust filters text - add the results-mode toggle and the border and title around swing-riding controls
 - [ ] Connect filter controls to Pinia state without filtering yet
+- [ ] Ensure election selection is unavailable and there is helper text saying 'Additional elections will be added later'
 - [ ] Remove 'View' column for now - comment out code
 - [ ] Modify Riding header to be Riding Name, and add District Number header
 - [ ] Implement the all-parties and selected-party table layouts

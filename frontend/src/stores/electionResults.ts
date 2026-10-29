@@ -5,7 +5,7 @@ import { getPoliticalParties } from '@/api/parties'
 import { createRidingTableRow, mapRidingResult } from '@/mappers/ridings'
 import { mapPoliticalParty } from '@/mappers/parties'
 
-import type { ElectionFilters } from '@/types/filters'
+import type { ElectionFilters, ResultsMode, Outcome, MarginMeasure } from '@/types/filters'
 import type { PaginationState } from '@/types/pagination'
 import type { SortState } from '@/types/sorting'
 import type { PoliticalParty } from '@/types/parties'
@@ -79,6 +79,51 @@ export const useElectionResultsStore = defineStore('electionResults', {
       } finally {
         this.isLoading = false
       }
+    },
+
+    setSelectedPartyKey(partyKey: string | null) {
+      this.filters.selectedPartyKey = partyKey
+      this.pagination.currentPage = 1
+
+      if (partyKey === null) {
+        this.filters.resultsMode = 'all'
+      }
+    },
+
+    setResultsMode(resultsMode: ResultsMode) {
+      this.filters.resultsMode = resultsMode
+      this.pagination.currentPage = 1
+    },
+
+    setOutcome(outcome: Outcome) {
+      this.filters.outcome = outcome
+      this.pagination.currentPage = 1
+    },
+
+    setMarginMeasure(marginMeasure: MarginMeasure) {
+      this.filters.marginMeasure = marginMeasure
+      this.pagination.currentPage = 1
+    },
+
+    setMaximumMarginVotes(value: number) {
+      this.filters.maximumMarginVotes = value
+      this.pagination.currentPage = 1
+    },
+
+    setMaximumMarginPercentagePoints(value: number) {
+      this.filters.maximumMarginPercentagePoints = value
+      this.pagination.currentPage = 1
+    },
+
+    setRidingSearch(ridingSearch: string) {
+      this.filters.ridingSearch = ridingSearch
+      this.pagination.currentPage = 1
+    },
+
+    reset() {
+      this.filters = createDefaultFilters()
+      this.sort = createDefaultSort()
+      this.pagination = createDefaultPagination()
     },
   },
   getters: {

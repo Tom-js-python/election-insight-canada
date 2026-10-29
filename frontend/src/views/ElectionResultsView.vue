@@ -9,7 +9,7 @@
     </p>
 
     <template v-else>
-      <election-filters :political-parties="politicalParties" />
+      <election-filters />
 
       <results-heading :total-results="ridingTableRows.length" />
 
