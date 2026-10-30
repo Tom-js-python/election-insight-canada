@@ -8,26 +8,28 @@
       </p>
     </div>
 
-    <label class="flex w-full flex-col gap-1.5 md:w-52">
-      <span class="text-xs font-medium text-slate-600 dark:text-slate-400"> Election </span>
+    <div class="flex w-full flex-col gap-2 md:w-auto md:flex-row md:items-end md:gap-4">
+      <p id="election-help" class="text-xs text-slate-500 dark:text-slate-500 md:pb-2.5">
+        Additional elections will be added later.
+      </p>
 
-      <select
-        v-model="selectedElection"
-        class="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-900 shadow-sm focus:border-red-600 focus:outline-none focus:ring-2 focus:ring-red-600/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-      >
-        <option value="2025">2025 general election</option>
-      </select>
-    </label>
+      <label class="flex w-full flex-col gap-1.5 md:w-52">
+        <span class="text-xs font-medium text-slate-500 dark:text-slate-500"> Election </span>
+
+        <select
+          disabled
+          aria-describedby="election-help"
+          class="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-900 shadow-sm disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-500 disabled:opacity-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:disabled:border-slate-800 dark:disabled:bg-slate-900 dark:disabled:text-slate-600"
+        >
+          <option value="2025">2025 general election</option>
+        </select>
+      </label>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 export default {
   name: 'PageHeading',
-  data() {
-    return {
-      selectedElection: 2025,
-    }
-  },
 }
 </script>

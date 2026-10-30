@@ -89,7 +89,7 @@ are introduced. **Last updated: October 2026**
 - [x] Add filter, sort, and pagination types and defaults to Pinia
 - [x] Adjust filters text - add the results-mode toggle and the border and title around swing-riding controls
 - [x] Connect filter controls to Pinia state without filtering yet
-- [ ] Ensure election selection is unavailable and there is helper text saying 'Additional elections will be added later'
+- [x] Ensure election selection is unavailable and there is helper text saying 'Additional elections will be added later'
 - [ ] Remove 'View' column for now - comment out code
 - [ ] Modify Riding header to be Riding Name, and add District Number header
 - [ ] Implement the all-parties and selected-party table layouts
