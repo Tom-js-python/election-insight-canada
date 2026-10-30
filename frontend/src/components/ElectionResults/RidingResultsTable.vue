@@ -3,7 +3,19 @@
     <table class="w-full min-w-[900px] border-collapse text-sm">
       <thead class="bg-slate-100/80 dark:bg-slate-800/70">
         <tr class="border-b border-slate-200 dark:border-slate-700">
-          <SortableHeading label="Riding" sort-key="districtName" :sort="sort" @sort="changeSort" />
+          <SortableHeading
+            label="Riding Name"
+            sort-key="districtName"
+            :sort="sort"
+            @sort="changeSort"
+          />
+
+          <SortableHeading
+            label="District Number"
+            sort-key="districtNumber"
+            :sort="sort"
+            @sort="changeSort"
+          />
 
           <SortableHeading label="Winner" sort-key="winnerParty" :sort="sort" @sort="changeSort" />
 
@@ -47,12 +59,15 @@
           :key="riding.districtNumber"
           class="transition-colors hover:bg-red-50 dark:hover:bg-red-950/20"
         >
-          <td scope="row" class="px-4 py-3">
-            <p class="font-medium text-slate-900 dark:text-slate-100">
-              {{ riding.districtName }}
-            </p>
+          <th
+            scope="row"
+            class="px-4 py-3 text-left font-medium text-slate-900 dark:text-slate-100"
+          >
+            {{ riding.districtName }}
+          </th>
 
-            <p class="mt-0.5 text-xs text-slate-500">District {{ riding.districtNumber }}</p>
+          <td class="whitespace-nowrap px-4 py-3 text-left text-xs tabular-nums text-slate-500">
+            {{ riding.districtNumber }}
           </td>
 
           <td class="whitespace-nowrap px-4 py-3">
@@ -67,19 +82,19 @@
             </span>
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-right tabular-nums">
+          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
             {{ formatPercent(riding.winner.voteShare) }}
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-right tabular-nums">
+          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
             {{ formatPercent(riding.selectedParty?.voteShare) }}
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-right tabular-nums">
+          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
             {{ formatNumber(riding.selectedParty?.marginVotes) }}
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-right tabular-nums">
+          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
             {{ formatPercentagePoints(riding.selectedParty?.marginPercentagePoints) }}
           </td>
         </tr>

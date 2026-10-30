@@ -65,6 +65,34 @@ const ridings: RidingTableRow[] = [
 ]
 
 describe('RidingResultsTable', () => {
+  it('has the correct column headers', () => {
+    render(RidingResultsTable, {
+      props: {
+        ridings,
+      },
+    })
+
+    const expectedHeaders = [
+      /^riding name$/i,
+      /^district number$/i,
+      /^winner$/i,
+      /^winner share$/i,
+      /^conservative$/i,
+      /^vote margin$/i,
+      /^margin %$/i,
+    ]
+
+    expect(screen.getAllByRole('columnheader')).toHaveLength(expectedHeaders.length)
+
+    for (const headerName of expectedHeaders) {
+      expect(
+        screen.getByRole('columnheader', {
+          name: headerName,
+        }),
+      ).toBeInTheDocument()
+    }
+  })
+
   it('renders a supplied riding', () => {
     render(RidingResultsTable, {
       props: {
@@ -78,11 +106,11 @@ describe('RidingResultsTable', () => {
     expect(rows).toHaveLength(3)
 
     let ridingRow = screen.getByRole('row', {
-      name: /ajax district 35001/i,
+      name: /ajax/i,
     })
 
     expect(within(ridingRow).getByText('Ajax')).toBeInTheDocument()
-    expect(within(ridingRow).getByText(/district 35001/i)).toBeInTheDocument()
+    expect(within(ridingRow).getByText(/35001/i)).toBeInTheDocument()
     expect(within(ridingRow).getByText('Liberal')).toBeInTheDocument()
     expect(getCellByColumn(ridingRow, /winner share/i)).toHaveTextContent('56.3%')
     expect(getCellByColumn(ridingRow, /conservative/i)).toHaveTextContent('39.1%')
@@ -98,7 +126,7 @@ describe('RidingResultsTable', () => {
 
     // Test the fallbacks in the format functions
     ridingRow = screen.getByRole('row', {
-      name: /Côte-du-Sud-Rivière-du-Loup-Kataskomiq-Témiscouata District 24020/i,
+      name: /Côte-du-Sud-Rivière-du-Loup-Kataskomiq-Témiscouata/i,
     })
 
     expect(within(ridingRow).getAllByText('NA')).toHaveLength(3)
