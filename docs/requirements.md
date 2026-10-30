@@ -105,33 +105,195 @@ highest vote share or largest margin.
 
 ### 7.1. Application Header and Navigation Requirements
 
-- **FR-NAV-001:** The application shall provide navigation links to the Results
-  and About pages.
-- **FR-NAV-002:** There are currently disabled links to the Map, Projection Lab, and Summary.
-- **FR-NAV-003:** Selecting Results shall display the Election Results view.
-- **FR-NAV-004:** Selecting About shall display the About view.
-- **FR-NAV-005:** The page loaded when the application starts is the Election Results view.
+#### FR-NAV-001 - Active navigation links
+
+The application shall provide navigation links to the Results and About pages.
+
+**Status:** Verified - automated and manual
+
+**Implementation:**
+
+- [`frontend/src/components/Header/MainNav.vue`](../frontend/src/components/Header/MainNav.vue)
+- [`frontend/src/router/index.ts`](../frontend/src/router/index.ts)
+
+**Verification:**
+
+- Test file: [`frontend/tests/unit/components/Header/MainNav.test.ts`](../frontend/tests/unit/components/Header/MainNav.test.ts)
+  - Suite: `MainNav`
+  - Test: `[FR-NAV-001] displays links to Results and About`
+- Manual verification: Link functionality was chedked in the browser.
+
+#### FR-NAV-002 - Disabled navigation links
+
+There are currently disabled links to the Map, Projection Lab, and Summary.
+
+**Status:** Verified - automated and manual
+
+**Implementation:**
+
+- [`frontend/src/components/Header/MainNav.vue`](../frontend/src/components/Header/MainNav.vue)
+
+**Verification:**
+
+- Test file: [`frontend/tests/unit/components/Header/MainNav.test.ts`](../frontend/tests/unit/components/Header/MainNav.test.ts)
+  - Suite: `MainNav`
+  - Test: `[FR-NAV-002] displays links to Results and About`
+- Manual verification: Link presence and lack of functionality was verified in the browser.
+
+#### FR-NAV-003 - Selecting Results shall display the Election Results view
+
+**Status:** Verified - manual
+
+**Implementation:**
+
+- [`frontend/src/components/Header/MainNav.vue`](../frontend/src/components/Header/MainNav.vue)
+- [`frontend/src/router/index.ts`](../frontend/src/router/index.ts)
+
+**Verification:**
+
+- Manual verificaton: Clicking link displays correct view was verified in the browser.
+
+#### FR-NAV-004 - Selecting About shall display the About view
+
+**Status:** Verified - manual
+
+**Implementation:**
+
+- [`frontend/src/components/Header/MainNav.vue`](../frontend/src/components/Header/MainNav.vue)
+- [`frontend/src/router/index.ts`](../frontend/src/router/index.ts)
+
+**Verification:**
+
+- Manual verificaton: Clicking link displays correct view was verified in the browser.
+
+#### FR-NAV-005 - The page loaded when the application starts is the Election Results view
+
+**Status:** Verified - manual
+
+**Implementation:**
+
+- [`frontend/src/components/Header/MainNav.vue`](../frontend/src/components/Header/MainNav.vue)
+- [`frontend/src/router/index.ts`](../frontend/src/router/index.ts)
+
+**Verification:**
+
+- Manual verificaton: Clicking link displays correct view was verified in the browser.
 
 ### 7.2. Election Results Page Header Requirements
 
-- **FR-RES-001:** The interface shall display the 2025 General Election.
-- **FR-RES-002:** Election selection shall remain unavailable while only one election is supported.
-- **FR-RES-003:** Helper text saying "Additional elections will be added later." will be displayed.
+#### FR-RES-001 - The interface shall display the 2025 General Election
+
+**Status:** Verified - manual
+
+**Implementation:**
+
+- [`frontend/src/components/ElectionResults/PageHeading.vue`](../frontend/src/components/ElectionResults/PageHeading.vue)
+
+**Verification:**
+
+- Manual verification: The 2025 General Election is displayed in drop-down menu and in data
+
+#### FR-RES-002 - Election selection shall remain disabled while only one election is supported
+
+**Status:** Not implemented
+
+**Implementation:** None
+
+**Verification:** None
+
+#### FR-RES-003 - Helper text saying "Additional elections will be added later." will be displayed
+
+**Status:** Not implemented
+
+**Implementation:** None
+
+**Verification:** None
 
 ### 7.3. Filtering and Search Requirements
 
-- **FR-FLT-001:** Filter changes shall update the displayed results immediately
-  without requiring an Apply button, unless an invalid value is entered.
-- **FR-FLT-002:** Changing any active filter shall return pagination to page 1.
-- **FR-FLT-003:** The displayed result count shall update whenever filtering
-  changes the result set.
-- **FR-FLT-004:** Changing any filter retains dependent values.
-- **FR-FLT-005:** The sort selections will remain when the filters are changed, if, that is, the sorted
-  fields remain available.
-- **FR-FLT-006:** If changing the filters removes the sorted fields, then the sort shall
-  revert to the default sort.
-- **FR-FLT-007:** Both the filter from the text search and the filter from the swing ridings are
-  applied.
+#### General Behaviour
+
+##### FR-FLT-001 - Filter change updates
+
+Filter changes shall update the displayed results immediately without requiring an Apply button, unless an invalid value is entered.
+
+**Status:** Not implemented
+
+**Implementation:** None
+
+**Verification:** None
+
+##### FR-FLT-002 - Changing any active filter shall return pagination to page 1
+
+**Status:** Not implemented
+
+**Implementation:** None
+
+**Verification:** None
+
+##### FR-FLT-003 - The displayed results count update
+
+The displayed result count shall update whenever filtering changes the result set.
+
+**Status:** Not implemented
+
+**Implementation:** None
+
+**Verification:** None
+
+##### FR-FLT-004 - Changing any filter retains dependent values
+
+**Status:** Verified - manual
+
+**Implementation:**
+
+- [`frontend/src/components/ElectionResults/SwingRidingControls.vue`](../frontend/src/components/ElectionResults/SwingRidingControls.vue)
+- [`frontend/src/stores/electionResults.ts`](../frontend/src/stores/electionResults.ts)
+
+**Verification:**
+
+- Manual verification: Entering data into the swing filter settings, and then disabling or hiding them, and later re-enabling them or showing them, retains the data.
+
+Note to self: I am not sure what this requirement means - how it is different from FR-FLT-005
+
+##### FR-FLT-005 - Sort selection will remain
+
+The sort selections will remain when the filters are changed, if, that is, the sorted fields remain available.
+
+**Status:** Verified - manual
+
+**Implementation:**
+
+- [`frontend/src/components/ElectionResults/SwingRidingControls.vue`](../frontend/src/components/ElectionResults/SwingRidingControls.vue)
+- [`frontend/src/stores/electionResults.ts`](../frontend/src/stores/electionResults.ts)
+
+**Verification:**
+
+- Manual verification: Entering data into the swing filter settings, and then disabling or hiding them, and later re-enabling them or showing them, retains the data.
+
+##### FR-FLT-006 - Default used if sorted fields removed
+
+If changing the filters removes the sorted fields, then the sort shall revert to the default sort.
+
+**Status:** Not implemented
+
+**Implementation:** None
+
+**Verification:** None
+
+##### FR-FLT-007 - Filters applied
+
+Both the filter from the text search and the filter from the swing ridings are applied.
+
+**Status:** Not implemented
+
+**Implementation:** None
+
+**Verification:** None
+
+##### FR-FLT-008 - Disabled control status
+
+The table below determines when the results-mode and swing controls are disabled, and the effective mode of the results table showing the ridings. This requirement refers to the disabled or enabled state of the results-mode and swing controls, as shown in the table below.
 
 | Party selection | Results-mode control             | Effective mode                    | Swing controls |
 | --------------- | -------------------------------- | --------------------------------- | -------------- |
@@ -139,14 +301,35 @@ highest vote share or largest margin.
 | Selected party  | Enabled and set to All ridings   | All ridings with party comparison | Disabled       |
 | Selected party  | Enabled and set to Swing ridings | Matching swing ridings            | Enabled        |
 
+**Status:** Verified - manual
+
+**Implementation:**
+
+- [`frontend/src/components/ElectionResults/ElectionFilters/SwingRidingControls.vue`](../frontend/src/components/ElectionResults/ElectionFilters/SwingRidingControls.vue)
+- [`frontend/src/components/ElectionResults/ElectionFilters/ElectionFilters.vue`](../frontend/src/components/ElectionResults/ElectionFilters/ElectionFilters.vue)
+- [`frontend/src/components/ElectionResults/ElectionFilters/ResultsModeToggle.vue`](../frontend/src/components/ElectionResults/ElectionFilters/ResultsModeToggle.vue)
+
+**Verification:**
+
+- Manual verification: Choosing all parties disables results-mode control. The swing controls are disabled unless a party is selected and the results mode is set to Swing ridings.
+
 #### Riding text search
 
-- **FR-FLT-010:** After removing leading and trailing whitespace, a non-empty search term shall immediately filter results by district name or district number.
-- **FR-FLT-011:** The search filter starts when a single character is entered.
-- **FR-FLT-012:** The text search looks in both the riding name and the district number.
-- **FR-FLT-013:** The search starts immediately from the first non-whitespace character.
-- **FR-FLT-014:** District-name matching shall be case-insensitive and accent-insensitive.
-- **FR-FLT-015:** A search value containing only whitespace shall be treated as an empty search and shall not filter results.
+##### FR-FLT-010 - Immediately filter
+
+After removing leading and trailing whitespace, a non-empty search term shall immediately filter results by district name or district number.
+
+##### FR-FLT-011 - The search filter starts when a single character is entered
+
+##### FR-FLT-012 - The text search looks in both the riding name and the district number
+
+##### FR-FLT-013 - The search starts immediately from the first non-whitespace character
+
+##### FR-FLT-014 - District-name matching shall be case-insensitive and accent-insensitive
+
+##### FR-FLT-015 - Search contains only whitespace
+
+A search value containing only whitespace shall be treated as an empty search and shall not filter results.
 
 #### Party Drop-down and selection
 
@@ -397,3 +580,11 @@ political party. Detailed requirements will be added before implementation.
 | 2026-10-22 | The inactive View is omitted until riding details exist.                                                                                                                        | This view riding will be implemented later. It would be confusing to users to have an inactive link.                                                       |
 
 ## 12. Requirements Traceability
+
+| Requirement   | Summary                                               | Verification                                                               | Status   |
+| ------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- | -------- |
+| FR-FILTER-001 | Party defaults to All parties                         | `ElectionFilters.test.ts` — displays default filter state                  | Verified |
+| FR-FILTER-002 | Results mode is disabled without a selected party     | `ResultsModeToggle.test.ts` — disables mode controls and displays guidance | Verified |
+| FR-FILTER-003 | Selecting All parties restores All ridings            | `electionResults.test.ts` — clears party and resets results mode           | Verified |
+| FR-FILTER-004 | Swing controls require a party and Swing ridings mode | `SwingRidingControls.test.ts` — disables controls and displays guidance    | Verified |
+| FR-FILTER-005 | Reset restores filters, sorting, and pagination       | `electionResults.test.ts` — resets results-table state                     | Verified |

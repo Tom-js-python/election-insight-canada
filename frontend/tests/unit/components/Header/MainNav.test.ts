@@ -41,7 +41,7 @@ const renderMainNav = async () => {
 }
 
 describe('MainNav', () => {
-  it('displays links to Results and About', async () => {
+  it('[FR-NAV-001] displays links to Results and About', async () => {
     await renderMainNav()
 
     const navigationMenuItems = screen.getAllByRole('link')
@@ -50,7 +50,7 @@ describe('MainNav', () => {
     expect(navigationMenuTexts).toEqual(['Results', 'About'])
   })
 
-  it('displays disabled items for planned sections', async () => {
+  it('[FR-NAV-002] displays disabled items for planned sections', async () => {
     await renderMainNav()
 
     const summaryItem = screen.getByText(/^summary · later$/i)
