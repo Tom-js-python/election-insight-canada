@@ -90,16 +90,13 @@ are introduced. **Last updated: October 2026**
 - [x] Adjust filters text - add the results-mode toggle and the border and title around swing-riding controls
 - [x] Connect filter controls to Pinia state without filtering yet
 - [x] Ensure election selection is unavailable and there is helper text saying 'Additional elections will be added later'
-- [ ] Remove 'View' column for now - comment out code
+- [x] Remove 'View' column for now - comment out code
 - [ ] Modify Riding header to be Riding Name, and add District Number header
 - [ ] Implement the all-parties and selected-party table layouts
 - [ ] Implement riding search
 - [ ] Implement swing-riding filtering
 - [ ] Implement sorting
 - [ ] Implement pagination (right now five per page - not final)
-- [ ] Add empty-results displays
-- [ ] Add error displays
-- [ ] Complete interaction and accessibility tests
 
 ### Prepare for initial deployment
 
@@ -134,6 +131,11 @@ are introduced. **Last updated: October 2026**
 
 - [ ] Add comprehensive unit and integration tests for the backend ETL process
 - [ ] Add Playwright end-to-end tests
+- [ ] Add empty-results displays
+- [ ] Add error displays
+- [ ] Complete interaction and accessibility tests
+- [ ] Ensure 100% front-end test coverage and all requirements have automated tests
+- [ ] Update requirements document, and include all traceability
 
 ### Improve local setup
 

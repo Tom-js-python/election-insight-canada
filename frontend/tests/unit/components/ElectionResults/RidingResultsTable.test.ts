@@ -88,7 +88,6 @@ describe('RidingResultsTable', () => {
     expect(getCellByColumn(ridingRow, /conservative/i)).toHaveTextContent('39.1%')
     expect(getCellByColumn(ridingRow, /vote margin/i)).toHaveTextContent('11,317')
     expect(getCellByColumn(ridingRow, /margin %/i)).toHaveTextContent('17.2%')
-    expect(within(ridingRow).getByRole('button', { name: /view/i })).toBeInTheDocument()
 
     // Test that the correct party-color class is applied
     const winnerCell = getCellByColumn(ridingRow, 'Winner')

@@ -38,10 +38,6 @@
             :sort="sort"
             @sort="changeSort"
           />
-
-          <th scope="col" class="w-20 px-4 py-3">
-            <span class="sr-only">Riding details</span>
-          </th>
         </tr>
       </thead>
 
@@ -85,16 +81,6 @@
 
           <td class="whitespace-nowrap px-4 py-3 text-right tabular-nums">
             {{ formatPercentagePoints(riding.selectedParty?.marginPercentagePoints) }}
-          </td>
-
-          <td class="px-4 py-3 text-right">
-            <button
-              type="button"
-              class="font-medium text-blue-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:text-blue-400"
-              @click="openRiding(riding)"
-            >
-              View
-            </button>
           </td>
         </tr>
       </tbody>
@@ -173,9 +159,6 @@ export default {
       } else {
         return 'NA'
       }
-    },
-    openRiding(riding: RidingTableRow) {
-      console.log(riding)
     },
     partyColor(partyKey: string): string {
       const tailwindKey = partyKey.replaceAll('_', '-')
