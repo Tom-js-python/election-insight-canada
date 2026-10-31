@@ -1,6 +1,25 @@
 <template>
   <div class="overflow-x-auto">
-    <table class="w-full min-w-[900px] border-collapse text-sm">
+    <table class="w-full min-w-[900px] table-fixed border-collapse text-sm">
+      <colgroup v-if="hasSelectedParty">
+        <col class="w-[29%]" />
+        <col class="w-[9%]" />
+        <col class="w-[14%]" />
+        <col class="w-[12%]" />
+        <col class="w-[12%]" />
+        <col class="w-[12%]" />
+        <col class="w-[12%]" />
+      </colgroup>
+
+      <colgroup v-else>
+        <col class="w-[34%]" />
+        <col class="w-[10%]" />
+        <col class="w-[14%]" />
+        <col class="w-[14%]" />
+        <col class="w-[14%]" />
+        <col class="w-[14%]" />
+      </colgroup>
+
       <thead class="bg-slate-100/80 dark:bg-slate-800/70">
         <tr class="border-b border-slate-200 dark:border-slate-700">
           <th
@@ -102,18 +121,18 @@
         >
           <th
             scope="row"
-            class="border-l border-slate-200 px-4 py-3 text-left font-medium text-slate-900 dark:text-slate-100"
+            class="border-l border-slate-200 px-4 py-2 text-left font-medium text-slate-900 dark:text-slate-100"
           >
             {{ riding.districtName }}
           </th>
 
           <td
-            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-left text-xs tabular-nums text-slate-500"
+            class="whitespace-nowrap border-l border-slate-200 px-4 py-2 text-left text-xs tabular-nums text-slate-500"
           >
             {{ riding.districtNumber }}
           </td>
 
-          <td class="whitespace-nowrap border-l border-slate-200 px-4 py-3">
+          <td class="whitespace-nowrap border-l border-slate-200 px-4 py-2">
             <span class="inline-flex items-center gap-2">
               <span
                 class="h-2.5 w-2.5 rounded-full"
@@ -126,36 +145,36 @@
           </td>
 
           <td
-            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+            class="whitespace-nowrap border-l border-slate-200 px-4 py-2 text-center tabular-nums"
           >
             {{ formatPercent(riding.winner.voteShare) }}
           </td>
 
           <template v-if="!hasSelectedParty">
-            <td class="border-l border-slate-200 px-4 py-3 text-center tabular-nums">
+            <td class="border-l border-slate-200 px-4 py-2 text-center tabular-nums">
               {{ formatNumber(riding.winner.marginVotes) }}
             </td>
 
-            <td class="border-l border-slate-200 px-4 py-3 text-center tabular-nums">
+            <td class="border-l border-slate-200 px-4 py-2 text-center tabular-nums">
               {{ formatPercentagePoints(riding.winner.marginPercentagePoints) }}
             </td>
           </template>
 
           <template v-else-if="riding.selectedParty">
             <td
-              class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+              class="whitespace-nowrap border-l border-slate-200 px-4 py-2 text-center tabular-nums"
             >
               {{ formatPercent(riding.selectedParty?.voteShare) }}
             </td>
 
             <td
-              class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+              class="whitespace-nowrap border-l border-slate-200 px-4 py-2 text-center tabular-nums"
             >
               {{ formatNumber(riding.selectedParty?.marginVotes) }}
             </td>
 
             <td
-              class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+              class="whitespace-nowrap border-l border-slate-200 px-4 py-2 text-center tabular-nums"
             >
               {{ formatPercentagePoints(riding.selectedParty?.marginPercentagePoints) }}
             </td>
@@ -164,7 +183,7 @@
           <td
             v-else
             colspan="3"
-            class="border-l border-slate-200 px-4 py-3 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400"
+            class="border-l border-slate-200 px-4 py-2 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400"
           >
             No candidate
           </td>

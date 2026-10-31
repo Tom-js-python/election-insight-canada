@@ -17,9 +17,17 @@
         <div
           class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
         >
-          <riding-results-table :ridings="sortedRows" />
+          <riding-results-table :ridings="paginatedRows" />
 
-          <page-footer :total-results="filteredRowCount" />
+          <page-footer
+            :current-page="pagination.currentPage"
+            :total-pages="totalPages"
+            :visible-page-numbers="visiblePageNumbers"
+            :total-results="filteredRowCount"
+            :first-visible-result="firstVisibleResult"
+            :last-visible-result="lastVisibleResult"
+            @page-change="setCurrentPage"
+          />
         </div>
       </template>
       <p
@@ -67,9 +75,14 @@ export default {
 
   computed: {
     ...mapState(useElectionResultsStore, [
-      'sortedRows',
+      'pagination',
+      'totalPages',
+      'visiblePageNumbers',
+      'paginatedRows',
       'filteredRowCount',
       'noFilteredRowsMessage',
+      'firstVisibleResult',
+      'lastVisibleResult',
       'isLoading',
       'error',
     ]),
@@ -84,7 +97,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(useElectionResultsStore, ['loadElectionData']),
+    ...mapActions(useElectionResultsStore, ['loadElectionData', 'setCurrentPage']),
   },
 }
 </script>

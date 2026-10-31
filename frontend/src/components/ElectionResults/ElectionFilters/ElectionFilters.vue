@@ -1,6 +1,6 @@
 <template>
   <form
-    class="mb-6 grid grid-cols-1 gap-x-6 gap-y-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
+    class="mb-4 grid grid-cols-1 gap-x-6 gap-y-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
     @submit.prevent
   >
     <div class="grid content-start gap-4 sm:grid-cols-2 lg:pt-7">

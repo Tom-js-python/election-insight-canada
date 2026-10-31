@@ -253,6 +253,12 @@ export const useElectionResultsStore = defineStore('electionResults', {
       this.pagination.currentPage = 1
     },
 
+    setCurrentPage(pageNumber: number) {
+      const lastAvailablePage = Math.max(1, this.totalPages)
+
+      this.pagination.currentPage = Math.min(Math.max(pageNumber, 1), lastAvailablePage)
+    },
+
     reset() {
       this.filters = createDefaultFilters()
       this.sort = createDefaultSort()
@@ -287,6 +293,55 @@ export const useElectionResultsStore = defineStore('electionResults', {
     filteredRowCount(): number {
       return this.filteredRows.length
     },
+    totalPages(state): number {
+      return Math.ceil(this.filteredRowCount / state.pagination.rowsPerPage)
+    },
+    paginatedRows(): RidingTableRow[] {
+      const startIndex = (this.pagination.currentPage - 1) * this.pagination.rowsPerPage
+
+      return this.sortedRows.slice(startIndex, startIndex + this.pagination.rowsPerPage)
+    },
+
+    firstVisibleResult(state): number {
+      if (this.filteredRowCount === 0) {
+        return 0
+      }
+
+      return (state.pagination.currentPage - 1) * state.pagination.rowsPerPage + 1
+    },
+
+    lastVisibleResult(state): number {
+      if (this.filteredRowCount === 0) {
+        return 0
+      }
+
+      return Math.min(
+        state.pagination.currentPage * state.pagination.rowsPerPage,
+        this.filteredRowCount,
+      )
+    },
+
+    visiblePageNumbers(state): number[] {
+      const maximumVisiblePages = 5
+
+      if (this.totalPages <= maximumVisiblePages) {
+        return Array.from({ length: this.totalPages }, (_, index) => index + 1)
+      }
+
+      const pagesOnEachSide = Math.floor(maximumVisiblePages / 2)
+
+      let firstPage = Math.max(1, state.pagination.currentPage - pagesOnEachSide)
+
+      let lastPage = firstPage + maximumVisiblePages - 1
+
+      if (lastPage > this.totalPages) {
+        lastPage = this.totalPages
+        firstPage = lastPage - maximumVisiblePages + 1
+      }
+
+      return Array.from({ length: maximumVisiblePages }, (_, index) => firstPage + index)
+    },
+
     noFilteredRowsMessage(state): string {
       const noRidingsFoundWithSearch =
         filterRowsBySearch(this.tableRows, state.filters.ridingSearch).length === 0

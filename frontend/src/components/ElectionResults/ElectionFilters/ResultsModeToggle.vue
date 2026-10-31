@@ -64,7 +64,7 @@
       <p
         v-if="disabled"
         id="results-mode-help"
-        class="mt-4 text-xs text-slate-500 dark:text-slate-500"
+        class="mt-2 text-xs text-slate-500 dark:text-slate-500"
       >
         Select a party to enable swing-riding results.
       </p>
