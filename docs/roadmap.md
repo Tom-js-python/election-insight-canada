@@ -91,7 +91,8 @@ are introduced. **Last updated: October 2026**
 - [x] Connect filter controls to Pinia state without filtering yet
 - [x] Ensure election selection is unavailable and there is helper text saying 'Additional elections will be added later'
 - [x] Remove 'View' column for now - comment out code
-- [ ] Modify Riding header to be Riding Name, and add District Number header
+- [x] Separate riding name and district number columns
+- [ ] Add headings and subheadings - top headings - Riding / District, Winner, Selected Party
 - [ ] Implement the all-parties and selected-party table layouts
 - [ ] Implement riding search
 - [ ] Implement swing-riding filtering

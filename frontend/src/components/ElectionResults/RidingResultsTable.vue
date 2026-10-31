@@ -3,34 +3,54 @@
     <table class="w-full min-w-[900px] border-collapse text-sm">
       <thead class="bg-slate-100/80 dark:bg-slate-800/70">
         <tr class="border-b border-slate-200 dark:border-slate-700">
-          <SortableHeading
-            label="Riding Name"
-            sort-key="districtName"
-            :sort="sort"
-            @sort="changeSort"
-          />
+          <th
+            colspan="2"
+            scope="colgroup"
+            class="px-4 py-2 text-center text-xs font-semibold tracking-wide text-slate-700 dark:text-slate-300"
+          >
+            Riding / District
+          </th>
+
+          <th
+            colspan="2"
+            scope="colgroup"
+            class="border-l border-slate-200 px-4 py-2 text-center text-xs font-semibold tracking-wide text-slate-700 dark:border-slate-700 dark:text-slate-300"
+          >
+            Winner
+          </th>
+
+          <th
+            colspan="3"
+            scope="colgroup"
+            class="border-l border-slate-200 px-4 py-2 text-center text-xs font-semibold tracking-wide text-slate-700 dark:border-slate-700 dark:text-slate-300"
+          >
+            {{ filters.party || 'Selected party' }}
+          </th>
+        </tr>
+        <tr class="border-b border-slate-200 dark:border-slate-700">
+          <SortableHeading label="Name" sort-key="districtName" :sort="sort" @sort="changeSort" />
 
           <SortableHeading
-            label="District Number"
+            label="Number"
             sort-key="districtNumber"
             :sort="sort"
             @sort="changeSort"
           />
 
-          <SortableHeading label="Winner" sort-key="winnerParty" :sort="sort" @sort="changeSort" />
+          <SortableHeading label="Party" sort-key="winnerParty" :sort="sort" @sort="changeSort" />
 
           <SortableHeading
-            label="Winner share"
+            label="Vote share"
             sort-key="winnerVoteShare"
-            alignment="right"
+            alignment="center"
             :sort="sort"
             @sort="changeSort"
           />
 
           <SortableHeading
-            :label="filters.party || 'Selected party'"
+            label="Vote share"
             sort-key="selectedPartyVoteShare"
-            alignment="right"
+            alignment="center"
             :sort="sort"
             @sort="changeSort"
           />
@@ -38,7 +58,7 @@
           <SortableHeading
             label="Vote margin"
             sort-key="selectedPartyMarginVotes"
-            alignment="right"
+            alignment="center"
             :sort="sort"
             @sort="changeSort"
           />
@@ -46,7 +66,7 @@
           <SortableHeading
             label="Margin %"
             sort-key="selectedPartyMarginPercentagePoints"
-            alignment="right"
+            alignment="center"
             :sort="sort"
             @sort="changeSort"
           />
@@ -61,16 +81,18 @@
         >
           <th
             scope="row"
-            class="px-4 py-3 text-left font-medium text-slate-900 dark:text-slate-100"
+            class="border-l border-slate-200 px-4 py-3 text-left font-medium text-slate-900 dark:text-slate-100"
           >
             {{ riding.districtName }}
           </th>
 
-          <td class="whitespace-nowrap px-4 py-3 text-left text-xs tabular-nums text-slate-500">
+          <td
+            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-left text-xs tabular-nums text-slate-500"
+          >
             {{ riding.districtNumber }}
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3">
+          <td class="whitespace-nowrap border-l border-slate-200 px-4 py-3">
             <span class="inline-flex items-center gap-2">
               <span
                 class="h-2.5 w-2.5 rounded-full"
@@ -82,19 +104,27 @@
             </span>
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
+          <td
+            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+          >
             {{ formatPercent(riding.winner.voteShare) }}
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
+          <td
+            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+          >
             {{ formatPercent(riding.selectedParty?.voteShare) }}
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
+          <td
+            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+          >
             {{ formatNumber(riding.selectedParty?.marginVotes) }}
           </td>
 
-          <td class="whitespace-nowrap px-4 py-3 text-center tabular-nums">
+          <td
+            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+          >
             {{ formatPercentagePoints(riding.selectedParty?.marginPercentagePoints) }}
           </td>
         </tr>

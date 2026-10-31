@@ -1,9 +1,10 @@
 <template>
   <th
     scope="col"
-    class="whitespace-nowrap px-4 py-3 text-xs font-medium text-slate-600 dark:text-slate-300"
-    :class="alignment === 'right' ? 'text-right' : 'text-left'"
+    class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-xs font-medium text-slate-600 dark:text-slate-300"
+    :class="'text-' + alignment"
     :aria-sort="isActive() ? sort.direction : 'none'"
+    :data-column-key="sortKey"
   >
     <button
       type="button"
@@ -27,7 +28,7 @@ const props = withDefaults(
     label: string
     sortKey: RidingSortKey
     sort: SortState
-    alignment?: 'left' | 'right'
+    alignment?: 'left' | 'right' | 'center'
   }>(),
   {
     alignment: 'left',

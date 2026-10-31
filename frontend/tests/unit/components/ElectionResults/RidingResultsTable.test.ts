@@ -3,16 +3,31 @@ import { render, screen, within } from '@testing-library/vue'
 import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
 
 import type { RidingTableRow } from '@/types/ridings'
+import type { RidingSortKey } from '@/types/sorting'
 
-const getCellByColumn = (row: HTMLElement, columnName: string | RegExp): HTMLTableCellElement => {
-  const columnHeader = screen.getByRole('columnheader', {
-    name: columnName,
-  }) as HTMLTableCellElement
+const getCellByColumn = (row: HTMLElement, columnKey: RidingSortKey): HTMLTableCellElement => {
+  if (!(row instanceof HTMLTableRowElement)) {
+    throw new Error('Expected an HTML table row')
+  }
 
-  const cell = (row as HTMLTableRowElement).cells[columnHeader.cellIndex]
+  const table = row.closest('table')
 
-  if (typeof cell === 'undefined') {
-    throw new Error(`Could not find ${columnName} in row`)
+  if (!table) {
+    throw new Error('Expected the row to be inside a table')
+  }
+
+  const columnHeader = table.querySelector<HTMLTableCellElement>(
+    `th[data-column-key="${columnKey}"]`,
+  )
+
+  if (!columnHeader) {
+    throw new Error(`Could not find column header with key "${columnKey}"`)
+  }
+
+  const cell = row.cells.item(columnHeader.cellIndex)
+
+  if (!cell) {
+    throw new Error(`Could not find cell for column "${columnKey}"`)
   }
 
   return cell
@@ -72,25 +87,35 @@ describe('RidingResultsTable', () => {
       },
     })
 
-    const expectedHeaders = [
-      /^riding name$/i,
-      /^district number$/i,
-      /^winner$/i,
-      /^winner share$/i,
-      /^conservative$/i,
-      /^vote margin$/i,
-      /^margin %$/i,
-    ]
+    const table = screen.getByRole('table')
+    const headerRows = within(table).getAllByRole('row').slice(0, 2)
 
-    expect(screen.getAllByRole('columnheader')).toHaveLength(expectedHeaders.length)
+    expect(headerRows).toHaveLength(2)
 
-    for (const headerName of expectedHeaders) {
-      expect(
-        screen.getByRole('columnheader', {
-          name: headerName,
-        }),
-      ).toBeInTheDocument()
+    const groupHeaderRow = headerRows[0]
+    const columnHeaderRow = headerRows[1]
+
+    if (!groupHeaderRow || !columnHeaderRow) {
+      throw new Error('Expected the table to contain two header rows')
     }
+
+    const groupHeaders = within(groupHeaderRow).getAllByRole('columnheader')
+    const columnHeaders = within(columnHeaderRow).getAllByRole('columnheader')
+
+    expect(groupHeaders).toHaveLength(3)
+    expect(groupHeaders[0]).toHaveTextContent('Riding / District')
+    expect(groupHeaders[1]).toHaveTextContent('Winner')
+    expect(groupHeaders[2]).toHaveTextContent('Conservative')
+
+    expect(columnHeaders).toHaveLength(7)
+
+    expect(columnHeaders[0]).toHaveTextContent(/^Name/)
+    expect(columnHeaders[1]).toHaveTextContent(/^Number/)
+    expect(columnHeaders[2]).toHaveTextContent(/^Party/)
+    expect(columnHeaders[3]).toHaveTextContent(/^Vote share/)
+    expect(columnHeaders[4]).toHaveTextContent(/^Vote share/)
+    expect(columnHeaders[5]).toHaveTextContent(/^Vote margin/)
+    expect(columnHeaders[6]).toHaveTextContent(/^Margin %/)
   })
 
   it('renders a supplied riding', () => {
@@ -102,8 +127,8 @@ describe('RidingResultsTable', () => {
 
     const rows = screen.getAllByRole('row')
 
-    // One heading row plus two riding rows
-    expect(rows).toHaveLength(3)
+    // Two heading rows plus two riding rows
+    expect(rows).toHaveLength(4)
 
     let ridingRow = screen.getByRole('row', {
       name: /ajax/i,
@@ -112,13 +137,15 @@ describe('RidingResultsTable', () => {
     expect(within(ridingRow).getByText('Ajax')).toBeInTheDocument()
     expect(within(ridingRow).getByText(/35001/i)).toBeInTheDocument()
     expect(within(ridingRow).getByText('Liberal')).toBeInTheDocument()
-    expect(getCellByColumn(ridingRow, /winner share/i)).toHaveTextContent('56.3%')
-    expect(getCellByColumn(ridingRow, /conservative/i)).toHaveTextContent('39.1%')
-    expect(getCellByColumn(ridingRow, /vote margin/i)).toHaveTextContent('11,317')
-    expect(getCellByColumn(ridingRow, /margin %/i)).toHaveTextContent('17.2%')
+    expect(getCellByColumn(ridingRow, 'winnerVoteShare')).toHaveTextContent('56.3%')
+    expect(getCellByColumn(ridingRow, 'selectedPartyVoteShare')).toHaveTextContent('39.1%')
+    expect(getCellByColumn(ridingRow, 'selectedPartyMarginVotes')).toHaveTextContent('11,317')
+    expect(getCellByColumn(ridingRow, 'selectedPartyMarginPercentagePoints')).toHaveTextContent(
+      '17.2%',
+    )
 
     // Test that the correct party-color class is applied
-    const winnerCell = getCellByColumn(ridingRow, 'Winner')
+    const winnerCell = getCellByColumn(ridingRow, 'winnerParty')
     const partyColorMarker = winnerCell.querySelector('[data-party-key="liberal"]')
 
     expect(partyColorMarker).toBeInTheDocument()
