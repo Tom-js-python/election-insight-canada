@@ -7,7 +7,7 @@ import { mapPoliticalParty } from '@/mappers/parties'
 
 import type { ElectionFilters, ResultsMode, Outcome, MarginMeasure } from '@/types/filters'
 import type { PaginationState } from '@/types/pagination'
-import type { SortState } from '@/types/sorting'
+import type { RidingSortKey, SortState } from '@/types/sorting'
 import type { PoliticalParty } from '@/types/parties'
 import type { RidingResult, RidingTableRow } from '@/types/ridings'
 
@@ -79,6 +79,19 @@ export const useElectionResultsStore = defineStore('electionResults', {
       } finally {
         this.isLoading = false
       }
+    },
+
+    changeSort(inKey: RidingSortKey) {
+      if (this.sort.key === inKey) {
+        this.sort.direction = this.sort.direction === 'ascending' ? 'descending' : 'ascending'
+      } else {
+        this.sort = {
+          key: inKey,
+          direction: 'ascending',
+        }
+      }
+
+      this.pagination.currentPage = 1
     },
 
     setSelectedPartyKey(partyKey: string | null) {

@@ -92,12 +92,15 @@ are introduced. **Last updated: October 2026**
 - [x] Ensure election selection is unavailable and there is helper text saying 'Additional elections will be added later'
 - [x] Remove 'View' column for now - comment out code
 - [x] Separate riding name and district number columns
-- [ ] Add headings and subheadings - top headings - Riding / District, Winner, Selected Party
+- [x] Add headings and subheadings - top headings - Riding / District, Winner, Selected Party
+- [x] Send RidingResultsTable the sort data and filters from the store
 - [ ] Implement the all-parties and selected-party table layouts
+- [ ] Create the allRidingResults -> ridingTableRow -> filterTextSearch & filterSwingRidings -> filterAll -> paginatedRows logic in store with getters for total number of filtered rows
+- [ ] Implement pagination (right now five per page - not final)
 - [ ] Implement riding search
 - [ ] Implement swing-riding filtering
 - [ ] Implement sorting
-- [ ] Implement pagination (right now five per page - not final)
+- [ ] Show 'No candidate ran' instead of NA spanning columns
 
 ### Prepare for initial deployment
 

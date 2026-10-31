@@ -1,9 +1,12 @@
 import { render, screen, within } from '@testing-library/vue'
+import { createTestingPinia } from '@pinia/testing'
 
 import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
 
 import type { RidingTableRow } from '@/types/ridings'
 import type { RidingSortKey } from '@/types/sorting'
+
+import { politicalParties } from '@/mocks/politicalParties'
 
 const getCellByColumn = (row: HTMLElement, columnKey: RidingSortKey): HTMLTableCellElement => {
   if (!(row instanceof HTMLTableRowElement)) {
@@ -32,6 +35,40 @@ const getCellByColumn = (row: HTMLElement, columnKey: RidingSortKey): HTMLTableC
 
   return cell
 }
+
+const renderRidingResultsTable = () =>
+  render(RidingResultsTable, {
+    props: {
+      ridings,
+    },
+
+    global: {
+      plugins: [
+        createTestingPinia({
+          initialState: {
+            electionResults: {
+              filters: {
+                selectedPartyKey: 'conservative',
+                resultsMode: 'all',
+                outcome: 'both',
+                marginMeasure: 'percentagePoints',
+                maximumMarginVotes: 1000,
+                maximumMarginPercentagePoints: 10,
+                ridingSearch: '',
+              },
+
+              sort: {
+                key: 'districtNumber',
+                direction: 'ascending',
+              },
+
+              politicalParties,
+            },
+          },
+        }),
+      ],
+    },
+  })
 
 const ridings: RidingTableRow[] = [
   {
@@ -81,11 +118,7 @@ const ridings: RidingTableRow[] = [
 
 describe('RidingResultsTable', () => {
   it('has the correct column headers', () => {
-    render(RidingResultsTable, {
-      props: {
-        ridings,
-      },
-    })
+    renderRidingResultsTable()
 
     const table = screen.getByRole('table')
     const headerRows = within(table).getAllByRole('row').slice(0, 2)
@@ -119,11 +152,7 @@ describe('RidingResultsTable', () => {
   })
 
   it('renders a supplied riding', () => {
-    render(RidingResultsTable, {
-      props: {
-        ridings,
-      },
-    })
+    renderRidingResultsTable()
 
     const rows = screen.getAllByRole('row')
 

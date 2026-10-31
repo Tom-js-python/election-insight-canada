@@ -24,7 +24,7 @@
             scope="colgroup"
             class="border-l border-slate-200 px-4 py-2 text-center text-xs font-semibold tracking-wide text-slate-700 dark:border-slate-700 dark:text-slate-300"
           >
-            {{ filters.party || 'Selected party' }}
+            {{ selectedPartyHeading }}
           </th>
         </tr>
         <tr class="border-b border-slate-200 dark:border-slate-700">
@@ -134,47 +134,49 @@
 </template>
 
 <script lang="ts">
+import { mapActions, mapState } from 'pinia'
+
 import type { PropType } from 'vue'
-import type { RidingSortKey } from '@/types/sorting.ts'
+
+import { useElectionResultsStore } from '@/stores/electionResults.ts'
 
 import SortableHeading from './SortableHeading.vue'
 
-import type { SortState } from '@/types/sorting.ts'
 import type { RidingTableRow } from '@/types/ridings.ts'
 
 export default {
   name: 'RidingResultsTable',
+
   components: {
     SortableHeading,
   },
+
   props: {
     ridings: {
       type: Array as PropType<RidingTableRow[]>,
       required: true,
     },
   },
-  data() {
-    return {
-      sort: {
-        key: 'districtNumber',
-        direction: 'ascending',
-      } as SortState,
-      filters: {
-        outcome: 'win',
-        party: 'Conservative',
-        marginType: 'votes',
-        search: '',
-        maximumMargin: 100,
-      },
-    }
-  },
-  methods: {
-    changeSort(inKey: RidingSortKey) {
-      this.sort = {
-        key: inKey,
-        direction: 'ascending',
+
+  computed: {
+    ...mapState(useElectionResultsStore, ['sort', 'filters', 'politicalParties']),
+
+    selectedPartyHeading(): string {
+      if (!this.filters.selectedPartyKey) {
+        return 'Selected party'
       }
+
+      const selectedParty = this.politicalParties.find(
+        (party) => party.partyKey === this.filters.selectedPartyKey,
+      )
+
+      return selectedParty?.longDisplayNameEnglish ?? 'Selected party'
     },
+  },
+
+  methods: {
+    ...mapActions(useElectionResultsStore, ['changeSort']),
+
     formatPercent(proportion: number | undefined) {
       if (typeof proportion === 'number') {
         const percentageFormatter = new Intl.NumberFormat('en-CA', {
