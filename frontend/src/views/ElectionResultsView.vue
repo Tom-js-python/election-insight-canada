@@ -17,7 +17,7 @@
         <div
           class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
         >
-          <riding-results-table :ridings="filteredRows" />
+          <riding-results-table :ridings="sortedRows" />
 
           <page-footer :total-results="filteredRowCount" />
         </div>
@@ -67,7 +67,7 @@ export default {
 
   computed: {
     ...mapState(useElectionResultsStore, [
-      'filteredRows',
+      'sortedRows',
       'filteredRowCount',
       'noFilteredRowsMessage',
       'isLoading',

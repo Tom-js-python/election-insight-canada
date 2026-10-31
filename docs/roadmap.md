@@ -97,8 +97,10 @@ are introduced. **Last updated: October 2026**
 - [x] Implement the all-parties and selected-party table layouts
 - [x] Show 'No candidate ran' instead of NA spanning columns
 - [x] Implement text search and swing filters
-- [ ] Implement sorting
-- [ ] Implement sorting
+- [x] Implement sorting
+- [ ] Implement pagination
+- [ ] Refactor
+- [ ] Finish requirements traceability
 
 ### Prepare for initial deployment
 
@@ -123,6 +125,7 @@ are introduced. **Last updated: October 2026**
 
 ### Improve application layout
 
+- [ ] Switch from Vue Options API to Vue Component API
 - [ ] Add a spam-protected contact form to the About page
 - [ ] Add basic SEO
 - [ ] Build page to view riding details
