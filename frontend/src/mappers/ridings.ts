@@ -29,8 +29,9 @@ export const createRidingTableRow = (
     throw new Error(`No winning candidate found for district ${riding.districtNumber}`)
   }
 
-  const selectedParty =
-    riding.results.find((candidate) => candidate.partyKey === selectedPartyKey) ?? null
+  const selectedParty = selectedPartyKey
+    ? (riding.results.find((candidate) => candidate.partyKey === selectedPartyKey) ?? null)
+    : null
 
   return {
     districtNumber: riding.districtNumber,

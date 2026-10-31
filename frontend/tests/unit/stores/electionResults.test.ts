@@ -189,7 +189,7 @@ describe('getters', () => {
       },
     })
 
-    expect(store.ridingTableRows).toEqual(expectedConservativeTableRows)
+    expect(store.tableRows).toEqual(expectedConservativeTableRows)
   })
 
   it('reports whether a political party is selected', () => {

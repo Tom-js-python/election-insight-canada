@@ -11,15 +11,24 @@
     <template v-else>
       <election-filters />
 
-      <results-heading :total-results="ridingTableRows.length" />
+      <template v-if="filteredRowCount > 0">
+        <results-heading :total-results="filteredRowCount" />
 
-      <div
-        class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+        <div
+          class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+        >
+          <riding-results-table :ridings="filteredRows" />
+
+          <page-footer :total-results="filteredRowCount" />
+        </div>
+      </template>
+      <p
+        v-else
+        role="status"
+        class="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center text-lg font-medium text-slate-700 shadow-sm dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-300"
       >
-        <riding-results-table :ridings="ridingTableRows" />
-
-        <page-footer :total-results="ridingTableRows.length" />
-      </div>
+        {{ noFilteredRowsMessage }}
+      </p>
     </template>
   </main>
 </template>
@@ -58,8 +67,9 @@ export default {
 
   computed: {
     ...mapState(useElectionResultsStore, [
-      'politicalParties',
-      'ridingTableRows',
+      'filteredRows',
+      'filteredRowCount',
+      'noFilteredRowsMessage',
       'isLoading',
       'error',
     ]),

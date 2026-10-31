@@ -31,6 +31,50 @@ const createDefaultPagination = (): PaginationState => ({
   rowsPerPage: 5,
 })
 
+const filterRowsBySearch = (rows: RidingTableRow[], searchTerm: string): RidingTableRow[] => {
+  const normalizedSearch = searchTerm.trim().toLocaleLowerCase('en-CA')
+
+  if (!normalizedSearch) {
+    return rows
+  }
+
+  return rows.filter((row) => {
+    const districtName = row.districtName.toLocaleLowerCase('en-CA')
+    const districtNumber = row.districtNumber.toString()
+
+    return districtName.includes(normalizedSearch) || districtNumber.includes(normalizedSearch)
+  })
+}
+
+const filterRowsBySwingCriteria = (
+  rows: RidingTableRow[],
+  filters: ElectionFilters,
+): RidingTableRow[] => {
+  if (!filters.selectedPartyKey || filters.resultsMode !== 'swing') {
+    return rows
+  }
+
+  return rows.filter((row) => {
+    const candidate = row.selectedParty
+
+    if (!candidate) {
+      return false
+    }
+
+    const matchesOutcome = filters.outcome === 'both' || candidate.outcome === filters.outcome
+
+    const margin =
+      filters.marginMeasure === 'votes' ? candidate.marginVotes : candidate.marginPercentagePoints
+
+    const maximumMargin =
+      filters.marginMeasure === 'votes'
+        ? filters.maximumMarginVotes
+        : filters.maximumMarginPercentagePoints
+
+    return matchesOutcome && margin <= maximumMargin
+  })
+}
+
 interface ElectionResultsState {
   allRidingResults: RidingResult[]
   politicalParties: PoliticalParty[]
@@ -140,10 +184,15 @@ export const useElectionResultsStore = defineStore('electionResults', {
     },
   },
   getters: {
-    ridingTableRows(state): RidingTableRow[] {
+    tableRows(state): RidingTableRow[] {
       return state.allRidingResults.map((riding) =>
         createRidingTableRow(riding, state.filters.selectedPartyKey),
       )
+    },
+    filteredRows(state): RidingTableRow[] {
+      const searchFilteredRows = filterRowsBySearch(this.tableRows, state.filters.ridingSearch)
+
+      return filterRowsBySwingCriteria(searchFilteredRows, state.filters)
     },
     hasSelectedParty: (state): boolean => state.filters.selectedPartyKey !== null,
     selectedPoliticalParty(state): PoliticalParty | null {
@@ -155,6 +204,24 @@ export const useElectionResultsStore = defineStore('electionResults', {
         state.politicalParties.find((party) => party.partyKey === state.filters.selectedPartyKey) ??
         null
       )
+    },
+    filteredRowCount(): number {
+      return this.filteredRows.length
+    },
+    noFilteredRowsMessage(state): string {
+      const noRidingsFoundWithSearch =
+        filterRowsBySearch(this.tableRows, state.filters.ridingSearch).length === 0
+      const noRidingsFoundWithSwingCriteria =
+        filterRowsBySwingCriteria(this.tableRows, state.filters).length === 0
+
+      if (noRidingsFoundWithSearch) {
+        if (noRidingsFoundWithSwingCriteria)
+          return 'No ridings match either the search term or the swing-riding criteria.'
+        else return 'No ridings match the search term.'
+      } else {
+        if (noRidingsFoundWithSwingCriteria) return 'No ridings match the swing-riding criteria.'
+        else return 'No ridings match both the search term and the swing-riding criteria.'
+      }
     },
   },
 })
