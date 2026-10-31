@@ -94,13 +94,13 @@ are introduced. **Last updated: October 2026**
 - [x] Separate riding name and district number columns
 - [x] Add headings and subheadings - top headings - Riding / District, Winner, Selected Party
 - [x] Send RidingResultsTable the sort data and filters from the store
-- [ ] Implement the all-parties and selected-party table layouts
+- [x] Implement the all-parties and selected-party table layouts
+- [x] Show 'No candidate ran' instead of NA spanning columns
 - [ ] Create the allRidingResults -> ridingTableRow -> filterTextSearch & filterSwingRidings -> filterAll -> paginatedRows logic in store with getters for total number of filtered rows
 - [ ] Implement pagination (right now five per page - not final)
 - [ ] Implement riding search
 - [ ] Implement swing-riding filtering
 - [ ] Implement sorting
-- [ ] Show 'No candidate ran' instead of NA spanning columns
 
 ### Prepare for initial deployment
 

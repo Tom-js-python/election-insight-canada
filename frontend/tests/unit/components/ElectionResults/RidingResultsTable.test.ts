@@ -185,6 +185,6 @@ describe('RidingResultsTable', () => {
       name: /Côte-du-Sud-Rivière-du-Loup-Kataskomiq-Témiscouata/i,
     })
 
-    expect(within(ridingRow).getAllByText('NA')).toHaveLength(3)
+    expect(within(ridingRow).getAllByText('No candidate')).toHaveLength(1)
   })
 })

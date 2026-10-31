@@ -50,7 +50,7 @@ export default {
   },
 
   computed: {
-    ...mapState(useElectionResultsStore, ['filters', 'politicalParties']),
+    ...mapState(useElectionResultsStore, ['filters', 'politicalParties', 'hasSelectedParty']),
 
     selectedPartyKey: {
       get(): string {
@@ -132,7 +132,7 @@ export default {
     },
 
     resultsModeDisabled(): boolean {
-      return !this.filters.selectedPartyKey
+      return !this.hasSelectedParty
     },
 
     swingControlsDisabled(): boolean {

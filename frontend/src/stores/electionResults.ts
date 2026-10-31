@@ -145,5 +145,16 @@ export const useElectionResultsStore = defineStore('electionResults', {
         createRidingTableRow(riding, state.filters.selectedPartyKey),
       )
     },
+    hasSelectedParty: (state): boolean => state.filters.selectedPartyKey !== null,
+    selectedPoliticalParty(state): PoliticalParty | null {
+      if (!state.filters.selectedPartyKey) {
+        return null
+      }
+
+      return (
+        state.politicalParties.find((party) => party.partyKey === state.filters.selectedPartyKey) ??
+        null
+      )
+    },
   },
 })

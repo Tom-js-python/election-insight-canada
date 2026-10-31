@@ -173,7 +173,7 @@ describe('Election results store', () => {
   })
 })
 
-describe('ridingTableRows getter', () => {
+describe('getters', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.resetAllMocks()
@@ -190,5 +190,15 @@ describe('ridingTableRows getter', () => {
     })
 
     expect(store.ridingTableRows).toEqual(expectedConservativeTableRows)
+  })
+
+  it('reports whether a political party is selected', () => {
+    const store = useElectionResultsStore()
+
+    expect(store.hasSelectedParty).toBe(false)
+
+    store.setSelectedPartyKey('conservative')
+
+    expect(store.hasSelectedParty).toBe(true)
   })
 })

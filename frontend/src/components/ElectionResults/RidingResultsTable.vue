@@ -12,7 +12,7 @@
           </th>
 
           <th
-            colspan="2"
+            :colspan="hasSelectedParty ? 2 : 4"
             scope="colgroup"
             class="border-l border-slate-200 px-4 py-2 text-center text-xs font-semibold tracking-wide text-slate-700 dark:border-slate-700 dark:text-slate-300"
           >
@@ -20,6 +20,7 @@
           </th>
 
           <th
+            v-if="hasSelectedParty"
             colspan="3"
             scope="colgroup"
             class="border-l border-slate-200 px-4 py-2 text-center text-xs font-semibold tracking-wide text-slate-700 dark:border-slate-700 dark:text-slate-300"
@@ -47,29 +48,49 @@
             @sort="changeSort"
           />
 
-          <SortableHeading
-            label="Vote share"
-            sort-key="selectedPartyVoteShare"
-            alignment="center"
-            :sort="sort"
-            @sort="changeSort"
-          />
+          <template v-if="!hasSelectedParty">
+            <SortableHeading
+              label="Vote margin"
+              sort-key="winnerMarginVotes"
+              alignment="center"
+              :sort="sort"
+              @sort="changeSort"
+            />
 
-          <SortableHeading
-            label="Vote margin"
-            sort-key="selectedPartyMarginVotes"
-            alignment="center"
-            :sort="sort"
-            @sort="changeSort"
-          />
+            <SortableHeading
+              label="Margin %"
+              sort-key="winnerMarginPercentagePoints"
+              alignment="center"
+              :sort="sort"
+              @sort="changeSort"
+            />
+          </template>
 
-          <SortableHeading
-            label="Margin %"
-            sort-key="selectedPartyMarginPercentagePoints"
-            alignment="center"
-            :sort="sort"
-            @sort="changeSort"
-          />
+          <template v-else>
+            <SortableHeading
+              label="Vote share"
+              sort-key="selectedPartyVoteShare"
+              alignment="center"
+              :sort="sort"
+              @sort="changeSort"
+            />
+
+            <SortableHeading
+              label="Vote margin"
+              sort-key="selectedPartyMarginVotes"
+              alignment="center"
+              :sort="sort"
+              @sort="changeSort"
+            />
+
+            <SortableHeading
+              label="Margin %"
+              sort-key="selectedPartyMarginPercentagePoints"
+              alignment="center"
+              :sort="sort"
+              @sort="changeSort"
+            />
+          </template>
         </tr>
       </thead>
 
@@ -110,22 +131,42 @@
             {{ formatPercent(riding.winner.voteShare) }}
           </td>
 
-          <td
-            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
-          >
-            {{ formatPercent(riding.selectedParty?.voteShare) }}
-          </td>
+          <template v-if="!hasSelectedParty">
+            <td class="border-l border-slate-200 px-4 py-3 text-center tabular-nums">
+              {{ formatNumber(riding.winner.marginVotes) }}
+            </td>
+
+            <td class="border-l border-slate-200 px-4 py-3 text-center tabular-nums">
+              {{ formatPercentagePoints(riding.winner.marginPercentagePoints) }}
+            </td>
+          </template>
+
+          <template v-else-if="riding.selectedParty">
+            <td
+              class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+            >
+              {{ formatPercent(riding.selectedParty?.voteShare) }}
+            </td>
+
+            <td
+              class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+            >
+              {{ formatNumber(riding.selectedParty?.marginVotes) }}
+            </td>
+
+            <td
+              class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+            >
+              {{ formatPercentagePoints(riding.selectedParty?.marginPercentagePoints) }}
+            </td>
+          </template>
 
           <td
-            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
+            v-else
+            colspan="3"
+            class="border-l border-slate-200 px-4 py-3 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400"
           >
-            {{ formatNumber(riding.selectedParty?.marginVotes) }}
-          </td>
-
-          <td
-            class="whitespace-nowrap border-l border-slate-200 px-4 py-3 text-center tabular-nums"
-          >
-            {{ formatPercentagePoints(riding.selectedParty?.marginPercentagePoints) }}
+            No candidate
           </td>
         </tr>
       </tbody>
@@ -159,18 +200,15 @@ export default {
   },
 
   computed: {
-    ...mapState(useElectionResultsStore, ['sort', 'filters', 'politicalParties']),
+    ...mapState(useElectionResultsStore, [
+      'sort',
+      'filters',
+      'hasSelectedParty',
+      'selectedPoliticalParty',
+    ]),
 
     selectedPartyHeading(): string {
-      if (!this.filters.selectedPartyKey) {
-        return 'Selected party'
-      }
-
-      const selectedParty = this.politicalParties.find(
-        (party) => party.partyKey === this.filters.selectedPartyKey,
-      )
-
-      return selectedParty?.longDisplayNameEnglish ?? 'Selected party'
+      return this.selectedPoliticalParty?.longDisplayNameEnglish ?? 'Selected party'
     },
   },
 
