@@ -11,130 +11,14 @@ import type { RidingSortKey, SortState } from '@/types/sorting'
 import type { PoliticalParty } from '@/types/parties'
 import type { RidingResult, RidingTableRow } from '@/types/ridings'
 
-const createDefaultFilters = (): ElectionFilters => ({
-  selectedPartyKey: null,
-  resultsMode: 'all',
-  outcome: 'both',
-  marginMeasure: 'percentagePoints',
-  maximumMarginVotes: 1_000,
-  maximumMarginPercentagePoints: 10,
-  ridingSearch: '',
-})
-
-const createDefaultSort = (): SortState => ({
-  key: 'districtNumber',
-  direction: 'ascending',
-})
-
-const createDefaultPagination = (): PaginationState => ({
-  currentPage: 1,
-  rowsPerPage: 5,
-})
-
-const filterRowsBySearch = (rows: RidingTableRow[], searchTerm: string): RidingTableRow[] => {
-  const normalizedSearch = searchTerm.trim().toLocaleLowerCase('en-CA')
-
-  if (!normalizedSearch) {
-    return rows
-  }
-
-  return rows.filter((row) => {
-    const districtName = row.districtName.toLocaleLowerCase('en-CA')
-    const districtNumber = row.districtNumber.toString()
-
-    return districtName.includes(normalizedSearch) || districtNumber.includes(normalizedSearch)
-  })
-}
-
-const filterRowsBySwingCriteria = (
-  rows: RidingTableRow[],
-  filters: ElectionFilters,
-): RidingTableRow[] => {
-  if (!filters.selectedPartyKey || filters.resultsMode !== 'swing') {
-    return rows
-  }
-
-  return rows.filter((row) => {
-    const candidate = row.selectedParty
-
-    if (!candidate) {
-      return false
-    }
-
-    const matchesOutcome = filters.outcome === 'both' || candidate.outcome === filters.outcome
-
-    const margin =
-      filters.marginMeasure === 'votes' ? candidate.marginVotes : candidate.marginPercentagePoints
-
-    const maximumMargin =
-      filters.marginMeasure === 'votes'
-        ? filters.maximumMarginVotes
-        : filters.maximumMarginPercentagePoints
-
-    return matchesOutcome && margin <= maximumMargin
-  })
-}
-
-type SortValue = string | number | null
-
-const sortValueGetters: Record<RidingSortKey, (row: RidingTableRow) => SortValue> = {
-  districtName: (row) => row.districtName,
-  districtNumber: (row) => row.districtNumber,
-
-  winnerParty: (row) => row.winner.partyName,
-  winnerVoteShare: (row) => row.winner.voteShare,
-  winnerMarginVotes: (row) => row.winner.marginVotes,
-  winnerMarginPercentagePoints: (row) => row.winner.marginPercentagePoints,
-
-  selectedPartyVoteShare: (row) => row.selectedParty?.voteShare ?? null,
-  selectedPartyMarginVotes: (row) => row.selectedParty?.marginVotes ?? null,
-  selectedPartyMarginPercentagePoints: (row) => row.selectedParty?.marginPercentagePoints ?? null,
-}
-
-const compareSortValues = (firstValue: string | number, secondValue: string | number): number => {
-  if (typeof firstValue === 'string' && typeof secondValue === 'string') {
-    return firstValue.localeCompare(secondValue, 'en-CA', {
-      sensitivity: 'base',
-      numeric: true,
-    })
-  }
-
-  return Number(firstValue) - Number(secondValue)
-}
-
-const sortRidingRows = (rows: RidingTableRow[], sort: SortState): RidingTableRow[] => {
-  const getSortValue = sortValueGetters[sort.key]
-
-  const directionMultiplier = sort.direction === 'ascending' ? 1 : -1
-
-  return [...rows].sort((firstRow, secondRow) => {
-    const firstValue = getSortValue(firstRow)
-    const secondValue = getSortValue(secondRow)
-
-    // Missing selected-party candidates remain at the end
-    // regardless of sort direction.
-    if (firstValue === null && secondValue === null) {
-      return firstRow.districtNumber - secondRow.districtNumber
-    }
-
-    if (firstValue === null) {
-      return 1
-    }
-
-    if (secondValue === null) {
-      return -1
-    }
-
-    const comparison = compareSortValues(firstValue, secondValue) * directionMultiplier
-
-    if (comparison !== 0) {
-      return comparison
-    }
-
-    // Deterministic secondary ordering for equal values.
-    return firstRow.districtNumber - secondRow.districtNumber
-  })
-}
+import { createDefaultFilters, createDefaultSort, createDefaultPagination } from '@/utils/defaults'
+import {
+  filterRowsBySearch,
+  filterRowsBySwingCriteria,
+  getNoFilteredRowsMessage,
+} from '@/utils/filtering'
+import { sortRidingRows } from '@/utils/sorting'
+import { getVisiblePageNumbers } from '@/utils/pagination'
 
 interface ElectionResultsState {
   allRidingResults: RidingResult[]
@@ -224,7 +108,8 @@ export const useElectionResultsStore = defineStore('electionResults', {
     },
 
     setResultsMode(resultsMode: ResultsMode) {
-      this.filters.resultsMode = resultsMode
+      this.filters.resultsMode = this.filters.selectedPartyKey === null ? 'all' : resultsMode
+
       this.pagination.currentPage = 1
     },
 
@@ -279,6 +164,12 @@ export const useElectionResultsStore = defineStore('electionResults', {
     sortedRows(state): RidingTableRow[] {
       return sortRidingRows(this.filteredRows, state.sort)
     },
+    paginatedRows(): RidingTableRow[] {
+      const startIndex = (this.pagination.currentPage - 1) * this.pagination.rowsPerPage
+
+      return this.sortedRows.slice(startIndex, startIndex + this.pagination.rowsPerPage)
+    },
+
     hasSelectedParty: (state): boolean => state.filters.selectedPartyKey !== null,
     selectedPoliticalParty(state): PoliticalParty | null {
       if (!state.filters.selectedPartyKey) {
@@ -290,18 +181,17 @@ export const useElectionResultsStore = defineStore('electionResults', {
         null
       )
     },
+
     filteredRowCount(): number {
       return this.filteredRows.length
     },
+    noFilteredRowsMessage(state): string {
+      return getNoFilteredRowsMessage(this.tableRows, state.filters)
+    },
+
     totalPages(state): number {
       return Math.ceil(this.filteredRowCount / state.pagination.rowsPerPage)
     },
-    paginatedRows(): RidingTableRow[] {
-      const startIndex = (this.pagination.currentPage - 1) * this.pagination.rowsPerPage
-
-      return this.sortedRows.slice(startIndex, startIndex + this.pagination.rowsPerPage)
-    },
-
     firstVisibleResult(state): number {
       if (this.filteredRowCount === 0) {
         return 0
@@ -309,7 +199,6 @@ export const useElectionResultsStore = defineStore('electionResults', {
 
       return (state.pagination.currentPage - 1) * state.pagination.rowsPerPage + 1
     },
-
     lastVisibleResult(state): number {
       if (this.filteredRowCount === 0) {
         return 0
@@ -320,42 +209,8 @@ export const useElectionResultsStore = defineStore('electionResults', {
         this.filteredRowCount,
       )
     },
-
     visiblePageNumbers(state): number[] {
-      const maximumVisiblePages = 5
-
-      if (this.totalPages <= maximumVisiblePages) {
-        return Array.from({ length: this.totalPages }, (_, index) => index + 1)
-      }
-
-      const pagesOnEachSide = Math.floor(maximumVisiblePages / 2)
-
-      let firstPage = Math.max(1, state.pagination.currentPage - pagesOnEachSide)
-
-      let lastPage = firstPage + maximumVisiblePages - 1
-
-      if (lastPage > this.totalPages) {
-        lastPage = this.totalPages
-        firstPage = lastPage - maximumVisiblePages + 1
-      }
-
-      return Array.from({ length: maximumVisiblePages }, (_, index) => firstPage + index)
-    },
-
-    noFilteredRowsMessage(state): string {
-      const noRidingsFoundWithSearch =
-        filterRowsBySearch(this.tableRows, state.filters.ridingSearch).length === 0
-      const noRidingsFoundWithSwingCriteria =
-        filterRowsBySwingCriteria(this.tableRows, state.filters).length === 0
-
-      if (noRidingsFoundWithSearch) {
-        if (noRidingsFoundWithSwingCriteria)
-          return 'No ridings match either the search term or the swing-riding criteria.'
-        else return 'No ridings match the search term.'
-      } else {
-        if (noRidingsFoundWithSwingCriteria) return 'No ridings match the swing-riding criteria.'
-        else return 'No ridings match both the search term and the swing-riding criteria.'
-      }
+      return getVisiblePageNumbers(state.pagination.currentPage, this.totalPages)
     },
   },
 })
