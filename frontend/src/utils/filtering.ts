@@ -1,18 +1,22 @@
 import type { RidingTableRow } from '@/types/ridings'
 import type { ElectionFilters } from '@/types/filters'
 
+// normalize('NFD') splits accented characters into base and diacritical mark - then
+// regex replacement removes diacritical marks
+const removeAccents = (str: string): string => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+
 export const filterRowsBySearch = (
   rows: RidingTableRow[],
   searchTerm: string,
 ): RidingTableRow[] => {
-  const normalizedSearch = searchTerm.trim().toLocaleLowerCase('en-CA')
+  const normalizedSearch = removeAccents(searchTerm.trim().toLocaleLowerCase('en-CA'))
 
   if (!normalizedSearch) {
     return rows
   }
 
   return rows.filter((row) => {
-    const districtName = row.districtName.toLocaleLowerCase('en-CA')
+    const districtName = removeAccents(row.districtName.toLocaleLowerCase('en-CA'))
     const districtNumber = row.districtNumber.toString()
 
     return districtName.includes(normalizedSearch) || districtNumber.includes(normalizedSearch)
