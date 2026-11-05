@@ -6,4 +6,6 @@ export interface ApiPoliticalParty {
   long_display_name_french: string
   short_display_name_english: string
   short_display_name_french: string
+  abbreviation_english: string
+  abbreviation_french: string
 }

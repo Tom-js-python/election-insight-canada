@@ -83,15 +83,23 @@ are introduced. **Last updated: October 2026**
 
 ### Complete the interactive riding-results table
 
-- [ ] Refine the results-page layout and user experience
-- [ ] Connect filter controls to Pinia state
-- [ ] Filter by riding name, political party and outcome
-- [ ] Filter by maximum vote margin or percentage-point margin
-- [ ] Add client-side sorting
-- [ ] Add table pagination
-- [ ] Add empty-results and error displays
-- [ ] Add tests for filtering, sorting and pagination
-- [ ] Refine responsive and accessible table behaviour
+- [x] Write the detailed requirements document to refine the results-page layout and user experience
+- [x] Add abbreviation_english and abbreviation_french to backend political party table
+- [x] Add inactive Summary to navigation bar
+- [x] Add filter, sort, and pagination types and defaults to Pinia
+- [x] Adjust filters text - add the results-mode toggle and the border and title around swing-riding controls
+- [x] Connect filter controls to Pinia state without filtering yet
+- [x] Ensure election selection is unavailable and there is helper text saying 'Additional elections will be added later'
+- [x] Remove 'View' column for now - comment out code
+- [x] Separate riding name and district number columns
+- [x] Add headings and subheadings - top headings - Riding / District, Winner, Selected Party
+- [x] Send RidingResultsTable the sort data and filters from the store
+- [x] Implement the all-parties and selected-party table layouts
+- [x] Show 'No candidate ran' instead of NA spanning columns
+- [x] Implement text search and swing filters
+- [x] Implement sorting
+- [x] Implement pagination
+- [x] Refactor
 
 ### Prepare for initial deployment
 
@@ -116,14 +124,23 @@ are introduced. **Last updated: October 2026**
 
 ### Improve application layout
 
+- [ ] Switch from Vue Options API to Vue Component API
 - [ ] Add a spam-protected contact form to the About page
 - [ ] Add basic SEO
 - [ ] Build page to view riding details
+- [ ] Add the Election Summary Requirements page
+- [ ] Add the View riding column back and implement the page
 
 ### Improve testing
 
+- [ ] Finish requirements traceability
 - [ ] Add comprehensive unit and integration tests for the backend ETL process
 - [ ] Add Playwright end-to-end tests
+- [ ] Add empty-results displays
+- [ ] Add error displays
+- [ ] Complete interaction and accessibility tests
+- [ ] Ensure 100% front-end test coverage and all requirements have automated tests
+- [ ] Update requirements document, and include all traceability
 
 ### Improve local setup
 

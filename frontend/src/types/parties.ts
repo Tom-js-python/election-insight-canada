@@ -6,4 +6,6 @@ export interface PoliticalParty {
   longDisplayNameFrench: string
   shortDisplayNameEnglish: string
   shortDisplayNameFrench: string
+  abbreviationEnglish: string
+  abbreviationFrench: string
 }

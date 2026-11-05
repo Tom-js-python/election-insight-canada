@@ -31,6 +31,8 @@ def test_riding_results_response_shape():
     "long_display_name_french",
     "short_display_name_english",
     "short_display_name_french",
+    "abbreviation_english",
+    "abbreviation_french",
   }
 
   # Running set on a dictionary in Python returns a set containing only the dictionary's keys
@@ -49,9 +51,10 @@ def test_political_parties_contains_expected_bloc_mapping():
   assert isinstance(bloc,dict) 
 
   assert bloc["source_name_english"] == "Bloc Québécois"
-  assert bloc["short_display_name_english"] == "BQ"
-  assert bloc["short_display_name_french"] == "BQ"
-
+  assert bloc["short_display_name_english"] == "Bloc"
+  assert bloc["short_display_name_french"] == "Bloc"
+  assert bloc["abbreviation_english"] == "BQ"
+  assert bloc["abbreviation_french"] == "BQ"
 
 def test_political_parties_maps_source_name_to_dipslay_name():
   """ Test the NDP party - since it's source name is different from it's long display name """
@@ -67,4 +70,4 @@ def test_political_parties_maps_source_name_to_dipslay_name():
   assert ndp["source_name_english"] == "NDP-New Democratic Party"
   assert ndp["long_display_name_english"] == "New Democratic Party"
   assert ndp["short_display_name_french"] == "NPD"
-
+  assert ndp["abbreviation_french"] == "NPD"

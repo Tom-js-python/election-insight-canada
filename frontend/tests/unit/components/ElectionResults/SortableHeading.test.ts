@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/vue'
 import userEvent from '@testing-library/user-event'
 
 import SortableHeading from '@/components/ElectionResults/SortableHeading.vue'
+import type { RidingSortKey, SortDirection } from '@/types/sorting'
 
 const getSortButton = () =>
   screen.getByRole('button', {
@@ -26,7 +27,7 @@ describe('SortableHeading', () => {
     render(SortableHeading, {
       props: {
         label: 'Winner share',
-        sortKey: 'winnerShare',
+        sortKey: 'winnerVoteShare',
         sort: {
           key: 'districtName',
           direction: 'ascending',
@@ -37,20 +38,20 @@ describe('SortableHeading', () => {
 
     await user.click(getSortButton())
 
-    expect(changeSort).toHaveBeenCalledExactlyOnceWith('winnerShare')
+    expect(changeSort).toHaveBeenCalledExactlyOnceWith('winnerVoteShare')
   })
 
   it.each([
     ['districtName', 'ascending', '↕'],
-    ['winnerShare', 'ascending', '↑'],
-    ['winnerShare', 'descending', '↓'],
+    ['winnerVoteShare', 'ascending', '↑'],
+    ['winnerVoteShare', 'descending', '↓'],
   ] as const)(
     'displays the correct indicator when sorting by %s in %s order',
-    (activeSortKey, direction, expectedSymbol) => {
+    (activeSortKey: RidingSortKey, direction: SortDirection, expectedSymbol) => {
       render(SortableHeading, {
         props: {
           label: 'Winner share',
-          sortKey: 'winnerShare',
+          sortKey: 'winnerVoteShare',
           sort: {
             key: activeSortKey,
             direction,
@@ -69,7 +70,7 @@ describe('SortableHeading', () => {
     render(SortableHeading, {
       props: {
         label: 'Winner share',
-        sortKey: 'winnerShare',
+        sortKey: 'winnerVoteShare',
         alignment,
         sort: {
           key: 'districtName',

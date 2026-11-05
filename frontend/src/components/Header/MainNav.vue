@@ -1,5 +1,12 @@
 <template>
   <nav aria-label="Primary navigation" class="flex items-center gap-1 overflow-x-auto">
+    <span
+      class="whitespace-nowrap px-3 py-2 text-sm text-slate-400 dark:text-slate-600"
+      aria-disabled="true"
+    >
+      Summary · later
+    </span>
+
     <RouterLink
       to="/"
       class="whitespace-nowrap rounded-md bg-slate-100 px-3 py-2 text-sm font-medium text-slate-900 dark:bg-slate-800 dark:text-slate-100"
@@ -7,11 +14,17 @@
       Results
     </RouterLink>
 
-    <span class="whitespace-nowrap px-3 py-2 text-sm text-slate-400 dark:text-slate-600">
+    <span
+      class="whitespace-nowrap px-3 py-2 text-sm text-slate-400 dark:text-slate-600"
+      aria-disabled="true"
+    >
       Map · later
     </span>
 
-    <span class="whitespace-nowrap px-3 py-2 text-sm text-slate-400 dark:text-slate-600">
+    <span
+      class="whitespace-nowrap px-3 py-2 text-sm text-slate-400 dark:text-slate-600"
+      aria-disabled="true"
+    >
       Projection Lab · later
     </span>
 

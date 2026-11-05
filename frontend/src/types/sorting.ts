@@ -1,4 +1,17 @@
+export type SortDirection = 'ascending' | 'descending'
+
+export type RidingSortKey =
+  | 'districtName'
+  | 'districtNumber'
+  | 'winnerParty'
+  | 'winnerVoteShare'
+  | 'winnerMarginVotes'
+  | 'winnerMarginPercentagePoints'
+  | 'selectedPartyVoteShare'
+  | 'selectedPartyMarginVotes'
+  | 'selectedPartyMarginPercentagePoints'
+
 export interface SortState {
-  key: string
-  direction: 'ascending' | 'descending'
+  key: RidingSortKey
+  direction: SortDirection
 }

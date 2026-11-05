@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/vue'
+import { render, screen } from '@testing-library/vue'
 
 import PageHeading from '@/components/ElectionResults/PageHeading.vue'
 
@@ -13,17 +13,24 @@ describe('PageHeading', () => {
     expect(pageHeading).toBeInTheDocument()
   })
 
-  it('displays the 2025 general election as the selected election', () => {
+  it('displays the current election as unavailable for selection', () => {
     render(PageHeading)
 
     const electionSelect = screen.getByRole('combobox', {
       name: /election/i,
     })
 
-    const electionOptions = within(electionSelect).getAllByRole('option')
+    expect(electionSelect).toBeDisabled()
+    expect(electionSelect).toHaveValue('2025')
+    expect(electionSelect).toHaveAccessibleDescription(/additional elections will be added later/i)
+
+    const electionOptions = screen.getAllByRole('option')
 
     expect(electionOptions).toHaveLength(1)
-    expect(electionOptions[0]).toHaveTextContent(/2025 general election/i)
-    expect(electionSelect).toHaveValue('2025')
+
+    const electionOption = electionOptions[0] as HTMLOptionElement
+
+    expect(electionOption).toHaveTextContent(/2025 general election/i)
+    expect(electionOption.selected).toBe(true)
   })
 })

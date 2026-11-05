@@ -52,5 +52,7 @@ PARTIES_STATIC_REQUIRED_COLUMNS = [
   ("long_display_name_english", "English long display names"),
   ("long_display_name_french", "French long display names"),
   ("short_display_name_english", "English short display names"),
-  ("short_display_name_french", "French short display names")
+  ("short_display_name_french", "French short display names"),
+  ("abbreviation_english", "English abbreviation"),
+  ("abbreviation_french", "French abbreviation")
 ]

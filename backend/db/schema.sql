@@ -28,7 +28,7 @@ CREATE TABLE elections (
 );
 
 CREATE TABLE electoral_districts (
-  district_number INT,
+  district_number INT NOT NULL,
   election_id INT NOT NULL REFERENCES elections(id),
   name_english TEXT NOT NULL,
   name_french TEXT NOT NULL,
@@ -42,7 +42,9 @@ CREATE TABLE political_parties (
   long_display_name_english TEXT NOT NULL UNIQUE,
   long_display_name_french TEXT NOT NULL UNIQUE,
   short_display_name_english TEXT NOT NULL UNIQUE,
-  short_display_name_french TEXT NOT NULL UNIQUE
+  short_display_name_french TEXT NOT NULL UNIQUE,
+  abbreviation_english TEXT NOT NULL UNIQUE,
+  abbreviation_french TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE political_party_source_names (
@@ -53,8 +55,8 @@ CREATE TABLE political_party_source_names (
 
 CREATE TABLE polling_divisions (
   id INT primary key GENERATED ALWAYS AS IDENTITY,
-  district_number INT NOT NULL REFERENCES electoral_districts(district_number),
-  election_id INT NOT NULL REFERENCES elections(id),
+  district_number INT NOT NULL,
+  election_id INT NOT NULL,
   division_number TEXT NOT NULL,
   division_name TEXT NOT NULL,
   void_poll_indicator BOOLEAN NOT NULL DEFAULT FALSE,
@@ -62,19 +64,25 @@ CREATE TABLE polling_divisions (
   combined_with_number TEXT,
   rejected_ballots_for_poll INT NOT NULL CHECK (rejected_ballots_for_poll >= 0),
   electors_for_poll INT NOT NULL CHECK (electors_for_poll >= 0),
+  CONSTRAINT polling_divisions_district_fk
+	  FOREIGN KEY (election_id, district_number)
+	  REFERENCES electoral_districts (election_id, district_number),
   UNIQUE (election_id, district_number, division_number)
 );
 
 CREATE TABLE candidates (
   id INT primary key GENERATED ALWAYS AS IDENTITY,
-  election_id INT NOT NULL REFERENCES elections(id),
+  election_id INT NOT NULL,
   family_name TEXT NOT NULL,
   middle_name TEXT,
   first_name TEXT NOT NULL,
   political_party_key TEXT NOT NULL REFERENCES political_parties(party_key),
-  district_number INT NOT NULL REFERENCES electoral_districts(district_number),
+  district_number INT NOT NULL,
   incumbent_indicator BOOLEAN NOT NULL DEFAULT FALSE,
   elected_candidate BOOLEAN NOT NULL DEFAULT FALSE,
+  CONSTRAINT candidates_district_fk
+	  FOREIGN KEY (election_id, district_number)
+	  REFERENCES electoral_districts (election_id, district_number),
   UNIQUE NULLS NOT DISTINCT (election_id, family_name, middle_name, first_name, district_number)
 );
 
@@ -84,6 +92,4 @@ CREATE TABLE vote_counts (
   vote_count INT NOT NULL CHECK (vote_count >= 0),
   PRIMARY KEY (polling_division_id, candidate_id)
 );
-
-
 

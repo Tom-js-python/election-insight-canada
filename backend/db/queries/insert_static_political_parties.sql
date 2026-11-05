@@ -5,7 +5,9 @@ INSERT INTO political_parties(
     long_display_name_english,
     long_display_name_french,
     short_display_name_english,
-    short_display_name_french
+    short_display_name_french,
+    abbreviation_english,
+    abbreviation_french
 )
 VALUES %s
 ON CONFLICT (party_key) DO UPDATE SET
@@ -18,4 +20,8 @@ ON CONFLICT (party_key) DO UPDATE SET
     short_display_name_english =
         EXCLUDED.short_display_name_english,
     short_display_name_french =
-        EXCLUDED.short_display_name_french;
+        EXCLUDED.short_display_name_french,
+    abbreviation_english = 
+        EXCLUDED.abbreviation_english,
+    abbreviation_french = 
+        EXCLUDED.abbreviation_french

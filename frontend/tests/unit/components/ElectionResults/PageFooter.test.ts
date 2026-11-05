@@ -1,12 +1,23 @@
 import { render, screen } from '@testing-library/vue'
-import userEvent from '@testing-library/user-event'
 
 import PageFooter from '@/components/ElectionResults/PageFooter.vue'
 
-const renderPageFooter = (totalResults = 27) =>
+const renderPageFooter = (
+  currentPage = 4,
+  totalPages = 69,
+  visiblePageNumbers = [2, 3, 4, 5, 6],
+  totalResults = 343,
+  firstVisibleResult = 16,
+  lastVisibleResult = 20,
+) =>
   render(PageFooter, {
     props: {
+      currentPage,
+      totalPages,
+      visiblePageNumbers,
       totalResults,
+      firstVisibleResult,
+      lastVisibleResult,
     },
   })
 
@@ -16,27 +27,20 @@ describe('PageFooter', () => {
 
     const resultsSummary = screen.getByText(/showing/i)
 
-    expect(resultsSummary).toHaveTextContent(/of 27$/i)
+    expect(resultsSummary).toHaveTextContent(/of 343$/i)
   })
 
-  it('marks a selected page as the current page', async () => {
-    const user = userEvent.setup()
-
+  it('marks a selected page as the current page', () => {
     renderPageFooter()
 
-    const firstPageButton = screen.getByRole('button', {
-      name: /go to page 1/i,
+    const currentPageButton = screen.getByRole('button', {
+      name: /go to page 4/i,
     })
-    const secondPageButton = screen.getByRole('button', {
-      name: /go to page 2/i,
+    const notCurrentPageButton = screen.getByRole('button', {
+      name: /go to page 5/i,
     })
 
-    expect(firstPageButton).toHaveAttribute('aria-current', 'page')
-    expect(secondPageButton).not.toHaveAttribute('aria-current')
-
-    await user.click(secondPageButton)
-
-    expect(firstPageButton).not.toHaveAttribute('aria-current')
-    expect(secondPageButton).toHaveAttribute('aria-current', 'page')
+    expect(currentPageButton).toHaveAttribute('aria-current', 'page')
+    expect(notCurrentPageButton).not.toHaveAttribute('aria-current')
   })
 })

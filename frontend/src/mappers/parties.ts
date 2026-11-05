@@ -9,4 +9,6 @@ export const mapPoliticalParty = (party: ApiPoliticalParty): PoliticalParty => (
   longDisplayNameFrench: party.long_display_name_french,
   shortDisplayNameEnglish: party.short_display_name_english,
   shortDisplayNameFrench: party.short_display_name_french,
+  abbreviationEnglish: party.abbreviation_english,
+  abbreviationFrench: party.abbreviation_french,
 })
