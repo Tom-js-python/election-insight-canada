@@ -98,9 +98,8 @@ are introduced. **Last updated: October 2026**
 - [x] Show 'No candidate ran' instead of NA spanning columns
 - [x] Implement text search and swing filters
 - [x] Implement sorting
-- [ ] Implement pagination
-- [ ] Refactor
-- [ ] Finish requirements traceability
+- [x] Implement pagination
+- [x] Refactor
 
 ### Prepare for initial deployment
 
@@ -134,6 +133,7 @@ are introduced. **Last updated: October 2026**
 
 ### Improve testing
 
+- [ ] Finish requirements traceability
 - [ ] Add comprehensive unit and integration tests for the backend ETL process
 - [ ] Add Playwright end-to-end tests
 - [ ] Add empty-results displays

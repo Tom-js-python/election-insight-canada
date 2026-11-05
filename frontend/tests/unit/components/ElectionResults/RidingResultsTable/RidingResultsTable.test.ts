@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/vue'
 import { createTestingPinia } from '@pinia/testing'
 
-import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
+import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable/RidingResultsTable.vue'
 
 import type { RidingTableRow } from '@/types/ridings'
 import type { RidingSortKey } from '@/types/sorting'

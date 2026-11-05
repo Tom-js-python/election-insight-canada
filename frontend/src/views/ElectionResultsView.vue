@@ -46,7 +46,7 @@ import ElectionFilters from '@/components/ElectionResults/ElectionFilters/Electi
 import PageFooter from '@/components/ElectionResults/PageFooter.vue'
 import PageHeading from '@/components/ElectionResults/PageHeading.vue'
 import ResultsHeading from '@/components/ElectionResults/ResultsHeading.vue'
-import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable.vue'
+import RidingResultsTable from '@/components/ElectionResults/RidingResultsTable/RidingResultsTable.vue'
 
 import { mapActions, mapState } from 'pinia'
 
