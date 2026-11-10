@@ -9,7 +9,8 @@
 
     <RouterLink
       to="/"
-      class="whitespace-nowrap rounded-md bg-slate-100 px-3 py-2 text-sm font-medium text-slate-900 dark:bg-slate-800 dark:text-slate-100"
+      class="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 dark:text-slate-200 dark:hover:bg-slate-800"
+      exact-active-class="bg-slate-100 dark:bg-slate-800"
     >
       Results
     </RouterLink>
@@ -30,7 +31,8 @@
 
     <RouterLink
       to="/about"
-      class="whitespace-nowrap rounded-md px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+      class="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 dark:text-slate-200 dark:hover:bg-slate-800"
+      exact-active-class="bg-slate-100 dark:bg-slate-800"
     >
       About
     </RouterLink>
