@@ -1,9 +1,9 @@
 SELECT 	district_number, district_name, candidate_name, party_key, party_name, vote_count,
 				vote_share, outcome, margin_votes, margin_percentage_points
-FROM calculated_results
+FROM {view_name}
 WHERE district_number IN (
 	SELECT district_number
-	FROM calculated_results
+	FROM {view_name}
 	WHERE party_key = %(party_key)s 
 	AND CASE
 			WHEN %(max_margin_votes)s::integer IS NOT NULL

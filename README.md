@@ -264,7 +264,7 @@ yarn db:create-tables
 
 ### 6. Download Elections Canada data
 
-Go to <>. Download the data for Canada / poll-by-poll results, format 2, to the data/raw directory. Unzip this file.
+Go to <https://elections.ca/content.aspx?section=res&dir=rep/off/45gedata&document=bypro&lang=e>. Download the data for Canada / poll-by-poll results, format 2, to the data/raw directory. Unzip this file.
 
 ### 7. Load the data
 
@@ -272,7 +272,13 @@ Go to <>. Download the data for Canada / poll-by-poll results, format 2, to the 
 yarn db:load-2025-csv
 ```
 
-### 8. Run the development server
+### 8. Build the materialized view for the 2025 election
+
+```bash
+yarn db:build-view-2025
+```
+
+### 9. Run the development server
 
 ```bash
 yarn dev
@@ -284,7 +290,7 @@ Once both development servers are running, the application is available at:
 - FastAPI documentation: <http://localhost:8000/docs>
 - Health endpoint: <http://localhost:8000/health>
 
-### 9. Run the tests, type checks, linting and formatting before committing
+### 10. Run the tests, type checks, linting and formatting before committing
 
 ```bash
 yarn precommit
