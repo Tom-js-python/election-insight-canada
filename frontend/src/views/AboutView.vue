@@ -85,6 +85,8 @@
         Election Insight Canada is a work in progress. The
         <a
           href="https://github.com/Tom-js-python/election-insight-canada/blob/main/docs/roadmap.md"
+          target="_blank"
+          rel="noopener"
           class="rounded-sm font-medium text-red-700 underline underline-offset-2 hover:text-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:text-red-400 dark:hover:text-red-300"
         >
           project roadmap on GitHub
@@ -107,12 +109,16 @@
       <div class="mt-4 flex flex-wrap gap-3">
         <a
           href="https://github.com/Tom-js-python/election-insight-canada"
+          target="_blank"
+          rel="noopener"
           class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
         >
           View source on GitHub
         </a>
         <a
           href="https://www.linkedin.com/in/thomas-brown-823364326/"
+          target="_blank"
+          rel="noopener"
           class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
         >
           Connect on LinkedIn
