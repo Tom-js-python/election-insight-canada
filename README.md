@@ -2,9 +2,11 @@
 
 A full-stack data application for exploring Canadian federal election results, built with Python, FastAPI, PostgreSQL, Vue and TypeScript.
 
-The initial PostgreSQL ETL pipeline and FastAPI backend are complete. The Vue frontend now loads 2025 riding results and political-party data through a tested API client and Pinia store. Current development is focused on client-side filtering, sorting and pagination.
+The initial PostgreSQL ETL pipeline and FastAPI backend are complete. The Vue frontend now loads 2025 riding results and political-party data through a tested API client and Pinia store. Client-side filtering, sorting and pagination is complete, and the basic site is up and running on a public-facing server.
 
-**Current focus:** Building the interactive 2025 riding-results table using Vue, TypeScript, Pinia and Tailwind CSS.
+The site is currently live at [Election Insight Canada](https://www.electioninsightcanada.ca/).
+
+**Current focus:** Post-launch testing, usability improvements and broader device testing.
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 ![Frontend](https://img.shields.io/badge/frontend-Vue%203-green)
@@ -15,7 +17,22 @@ The initial PostgreSQL ETL pipeline and FastAPI backend are complete. The Vue fr
 
 ## 🧩 The Problem
 
-### 🗳️ 1. Estimating seat counts from polling data
+### 📊 1. Working with Elections Canada data
+
+Elections Canada provides detailed CSV datasets, but they are difficult to work with directly.
+
+Common challenges:
+
+- Data is split across many files (one file for each of the 343 ridings)
+- Significant redundancy within and across datasets
+- Hard to answer simple analytical questions (e.g., “Which ridings were decided by fewer than 300 votes?”)
+- When combined, the number of rows of data for just the 2025 election is 476,685, making manual exploration cumbersome
+
+This project transforms raw election data into a structured, queryable format.
+
+Election data is sourced from Elections Canada. This is an independent portfolio project and is not affiliated with or endorsed by Elections Canada. The software license does not replace any terms applicable to the source data.
+
+### 🗳️ 2. Estimating seat counts from polling data
 
 Canada uses a **first-past-the-post** electoral system with multiple parties. The 2025 federal election was contested across 343 individual ridings, and translating national polling percentages into seat counts is not straightforward.
 
@@ -37,21 +54,6 @@ Because of these factors, national polling results do **not directly translate**
 
 ---
 
-### 📊 2. Working with Elections Canada data
-
-Elections Canada provides detailed CSV datasets, but they are difficult to work with directly.
-
-Common challenges:
-
-- Data is split across many files (one file for each of the 343 ridings)
-- Significant redundancy within and across datasets
-- Hard to answer simple analytical questions (e.g., “Which ridings were decided by fewer than 300 votes?”)
-- When combined, the number of rows of data for just the 2025 election is 476,685, making it hard to analyze in Excel
-
-This project transforms raw election data into a structured, queryable format.
-
----
-
 ## ⚙️ Technical Highlights
 
 - Built a REST API with Python and FastAPI for querying Canadian federal election results
@@ -65,29 +67,25 @@ This project transforms raw election data into a structured, queryable format.
 - Built a typed frontend API client with structured error handling and request cancellation
 - Added explicit API-to-application mappers and TypeScript data models
 - Integrated FastAPI data with a Pinia store and Vue components
-- Added loading, error, retry and request-cancellation state
+- Added loading and error states, request cancellation, and store-level support for retrying failed requests.
 - Configured CORS for local frontend development
 - Added frontend component, API-client, mapper and store tests with Vitest and Vue Testing Library
+- Precomputed riding-level results in a PostgreSQL materialized view to avoid repeating aggregations for every API request
 
 ---
-
-## Screenshot
-
-![Frontend Screenshot](docs/frontend-screenshot.png)
-
-_Figure 1. The Vue results table displaying 2025 federal election data loaded from the FastAPI backend._
 
 ## 🚀 What This Project Does
 
 ### 🧠 Core Capabilities (Current / Phase 1)
 
-- Ingests official Elections Canada CSV data
-- Stores data in a normalized PostgreSQL database
-- Provides structured access via a FastAPI backend
-- Enables queries such as:
-  - Results by riding
-  - Candidate vote breakdowns
-  - Identifying swing ridings (close races)
+- Ingests official Elections Canada CSV data.
+- Stores data in a normalized PostgreSQL database.
+- Provides structured access via a FastAPI backend.
+- Enables exploration of all 343 ridings from the 2025 election.
+- Supports searching by riding name or district number.
+- Compares winner and selected-party results.
+- Filters close races by outcome and vote or percentage-point margin.
+- Supports sorting and pagination.
 
 ---
 
@@ -98,7 +96,7 @@ _Figure 1. The Vue results table displaying 2025 federal election data loaded fr
 - Instant seat-projection updates as vote assumptions change
 - Interactive map visualization
 - Historical election comparisons
-- Filtering by party, province, and riding
+- Filtering by province
 
 Development priorities and planned features are tracked in the [detailed roadmap](docs/roadmap.md).
 
@@ -142,6 +140,7 @@ election-insight-canada/
 │
 ├── docs/
 │   ├── elections-canada-data-dictionary.md
+│   ├── requirements.md
 │   └── roadmap.md
 │
 ├── README.md
@@ -168,18 +167,14 @@ election-insight-canada/
 ## 🗺️ Development Roadmap
 
 The 2025 election data pipeline and initial FastAPI backend are complete.
-Current development is focused on adding functional filtering, sorting and pagination to the Vue riding-results table.
+The interactive riding-results table is implemented. Current development focuses on post-launch testing, usability improvements and testing across devices.
 
 ### Current priorities
 
-- Implement client-side filtering and sorting
-- Add pagination to the riding-results table
-- Connect the existing controls to Pinia state
-- Add tests for the interactive table behaviour
+- Post-launch testing, usability improvements and broader device testing.
 
 ### Later phases
 
-- Deploy the application to Linode
 - Add an interactive riding map
 - Support historical elections and by-elections
 - Develop and backtest polling-based seat-projection models
@@ -258,6 +253,8 @@ VITE_API_BASE_URL=http://localhost:8000
 
 ### 5. Create the database tables
 
+**Warning**: This command drops and recreates the application tables, deleting existing data. Run it only for initial setup or an intentional database rebuild.
+
 ```bash
 yarn db:create-tables
 ```
@@ -284,7 +281,7 @@ yarn db:build-view-2025
 yarn dev
 ```
 
-Once both development servers are running, the application is available at:
+Once both development servers are running, the application is available locally at:
 
 - Vue frontend: <http://localhost:5173>
 - FastAPI documentation: <http://localhost:8000/docs>
@@ -318,6 +315,7 @@ Canadian elections are a great example: simple on the surface, but deeply comple
 - [Elections Canada data dictionary](docs/elections-canada-data-dictionary.md)
 - [API documentation](http://localhost:8000/docs) — available while the backend is running
 - [Contributing guide](CONTRIBUTING.md)
+- [Detailed Requirements](docs/requirements.md)
 
 ---
 
@@ -335,7 +333,7 @@ Returns election results for Canadian federal electoral districts, including can
 
 `GET /political-parties`
 
-Returns canonical political-party data, including stable keys and English and French source, long-display and short-display names.
+Returns canonical political-party data, including stable keys and English and French source, long-display and short-display names, as well as English and French abbreviations.
 
 ### Swing Ridings
 
@@ -354,7 +352,7 @@ Required query parameters:
 Example:
 
 ```http
-GET /ridings/swing/2025?party_key=conservative&outcome=win&max_margin_votes=1000`
+GET /ridings/swing/2025?party_key=conservative&outcome=win&max_margin_votes=1000
 ```
 
 Interactive API documentation is available through FastAPI's Swagger UI at <http://localhost:8000/docs> when the backend is running locally.
@@ -371,7 +369,7 @@ Run the backend tests with:
 yarn backend:test
 ```
 
-The frontend includes an automated Vitest unit test suite.
+The frontend includes an automated Vitest unit test suite. Significant parts of the frontend tests have been deferred, however.
 
 Run the frontend tests with:
 
@@ -397,8 +395,6 @@ Built and maintained by **Tom Brown**
 Contributions, bug reports and implementation suggestions are welcome.
 
 Before beginning a substantial change, please open an issue so the proposed approach can be discussed. Development conventions, testing commands and the pull-request process are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-Issues suitable for new contributors are labelled `good first issue`.
 
 ---
 
