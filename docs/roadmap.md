@@ -100,39 +100,40 @@ are introduced. **Last updated: November 2026**
 - [x] Implement pagination
 - [x] Extract store utilities and split table and filter components.
 
-## Current Phase
-
 ### Prepare for initial deployment
 
 - [x] Replace the About-page stub with a project overview and public profile links
 - [x] Create a project logo and favicon
 - [x] Verify frontend production environment-variable handling
-- [ ] Verify backend production environment-variable handling
-- [ ] Restrict production CORS origins
-- [ ] Verify that all pre-commit checks pass for the initial release
+- [x] Verify backend production environment-variable handling
+- [x] Restrict production CORS origins
+- [x] Verify that all pre-commit checks pass for the initial release
 - [x] Build and smoke-test the deployed frontend
-- [ ] Smoke-test the complete deployed application
+- [x] Smoke-test the complete deployed application
 
 ### Initial deployment
 
-- [ ] Deploy the frontend, backend and 2025 data to the existing Linode server
-- [ ] Configure the FastAPI application as a managed service
-- [ ] Configure Nginx as a reverse proxy
+- [x] Deploy the frontend, backend and 2025 data to the existing Linode server
+- [x] Configure the FastAPI application as a managed service
+- [x] Configure Nginx as a reverse proxy
 - [x] Configure Nginx as a static-file server
 - [x] Configure HTTPS
-- [ ] Configure production database access and backups
-- [ ] Verify the deployed health, API and frontend routes
-- [ ] Document deployment and operational procedures
+- [x] Configure production database access and backups
+- [x] Verify the deployed health, API and frontend routes
+- [x] Document deployment and operational procedures
 
-## Later Phases
+## Current Phase
 
 ### Improve application layout
 
+- [ ] Post-launch testing, usability improvements and broader device testing
 - [ ] Optionally refactor from Vue Options API to Vue Composition API
 - [ ] Add a spam-protected contact form to the About page
 - [ ] Add basic SEO
-- [ ] Implement the riding-details page and restore the View column.
+- [ ] Implement the riding-details page and restore the View column
 - [ ] Add the Election Summary Requirements page
+
+## Later Phases
 
 ### Improve testing
 
@@ -140,7 +141,7 @@ are introduced. **Last updated: November 2026**
 - [ ] Add Playwright end-to-end tests
 - [ ] Test empty-results and error displays
 - [ ] Complete interaction and accessibility tests
-- [ ] Expand automated coverage of implemented behaviour, edge cases and accessibility requirements.
+- [ ] Expand automated coverage of implemented behaviour, edge cases and accessibility requirements
 - [ ] Update requirements document, and finish requirements traceability
 
 ### Improve local setup
