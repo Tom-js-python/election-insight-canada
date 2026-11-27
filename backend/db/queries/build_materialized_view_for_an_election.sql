@@ -1,3 +1,4 @@
+CREATE MATERIALIZED VIEW {view_name} AS
 WITH candidate_vote_counts AS
 	(SELECT
 		ed.district_number,
@@ -43,9 +44,8 @@ candidate_metrics AS
 		    WHEN elected_candidate THEN vote_count - runner_up_vote_count
 		    ELSE winner_vote_count - vote_count
 		END AS margin_votes
-	FROM riding_metrics),
-calculated_results AS
-	(SELECT district_number, district_name, candidate_name, party_key, party_name, vote_count,
+	FROM riding_metrics)
+SELECT district_number, district_name, candidate_name, party_key, party_name, vote_count,
 			vote_count::numeric / NULLIF(total_votes,0) AS vote_share, outcome, margin_votes,
 			margin_votes::numeric * 100 / NULLIF(total_votes, 0) AS margin_percentage_points
-	FROM candidate_metrics)
+FROM candidate_metrics;

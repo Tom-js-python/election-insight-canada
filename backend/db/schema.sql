@@ -7,6 +7,8 @@ Script to create the Election Insight Canada database
 -- election_insight_canada database as user eic_computer_access
 
 -- Drop tables in reverse order of creation
+DROP MATERIALIZED VIEW IF EXISTS calculated_results;
+DROP MATERIALIZED VIEW IF EXISTS calculated_results_2025;
 DROP TABLE IF EXISTS candidate_vote_counts;
 DROP TABLE IF EXISTS vote_counts;
 DROP TABLE IF EXISTS candidate_elections;

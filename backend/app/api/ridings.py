@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.db import get_connection
 from common.sql import load_sql
+from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 from app.schemas.ridings import RidingResult
 
@@ -10,13 +11,16 @@ router = APIRouter(prefix="/ridings", tags=["ridings"])
 @router.get("/all/2025", response_model=list[RidingResult])
 def get_all_ridings_2025():
 
-    query = load_sql("get_riding_results_for_an_election_shared.sql",
-                     "get_all_riding_results_for_an_election_end.sql")
+    election_year = 2025
+    election_label = "45th General Election"
+    view_name = f"calculated_results_{election_year}"
+
+    query = sql.SQL(load_sql("get_all_riding_results_for_an_election.sql")).format(view_name=sql.Identifier(view_name))
 
     conn = get_connection()
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(query, {"election_label": "45th General Election"})
+            cur.execute(query, {"election_label": election_label})
             rows = cur.fetchall()
 
         grouped_results = {}

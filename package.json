@@ -6,6 +6,7 @@
   "scripts": {
     "db:create-tables": "cd backend && uv run -m scripts.create_tables",
     "db:load-2025-csv": "cd backend && uv run -m scripts.load_2025_csv",
+    "db:build-view-2025": "cd backend && uv run -m scripts.build_view_2025",
     "db:discover-party-names": "cd backend && uv run -m scripts.discover_party_names",
     "frontend:install": "yarn --cwd frontend install",
     "frontend:format": "yarn --cwd frontend format",

@@ -2,7 +2,7 @@
 
 This roadmap describes the planned development of Election Insight Canada.
 Priorities may change as the application is tested and new election datasets
-are introduced. **Last updated: October 2026**
+are introduced. **Last updated: November 2026**
 
 ## Completed
 
@@ -22,6 +22,7 @@ are introduced. **Last updated: October 2026**
 - [x] Add Pydantic request and response models
 - [x] Add pytest coverage for the initial API
 - [x] Add environment-based database configuration
+- [x] Precompute riding results in a materialized view and update both riding endpoints to query it.
 
 ### Project documentation
 
@@ -79,12 +80,10 @@ are introduced. **Last updated: October 2026**
 - [x] Add a root pre-commit command for formatting, linting, type checking and tests
 - [x] Document the development commands
 
-## Current Phase
-
 ### Complete the interactive riding-results table
 
-- [x] Write the detailed requirements document to refine the results-page layout and user experience
-- [x] Add abbreviation_english and abbreviation_french to backend political party table
+- [x] Write the [detailed requirements document](requirements.md) to refine the results-page layout and user experience
+- [x] Add `abbreviation_english` and `abbreviation_french` to backend political party table
 - [x] Add inactive Summary to navigation bar
 - [x] Add filter, sort, and pagination types and defaults to Pinia
 - [x] Adjust filters text - add the results-mode toggle and the border and title around swing-riding controls
@@ -99,23 +98,28 @@ are introduced. **Last updated: October 2026**
 - [x] Implement text search and swing filters
 - [x] Implement sorting
 - [x] Implement pagination
-- [x] Refactor
+- [x] Extract store utilities and split table and filter components.
+
+## Current Phase
 
 ### Prepare for initial deployment
 
-- [ ] Replace the About-page stub with a project overview and public profile links
-- [ ] Create a project logo and favicon
-- [ ] Verify production environment-variable handling
+- [x] Replace the About-page stub with a project overview and public profile links
+- [x] Create a project logo and favicon
+- [x] Verify frontend production environment-variable handling
+- [ ] Verify backend production environment-variable handling
 - [ ] Restrict production CORS origins
 - [ ] Verify that all pre-commit checks pass for the initial release
-- [ ] Perform a production build and local smoke test
+- [x] Build and smoke-test the deployed frontend
+- [ ] Smoke-test the complete deployed application
 
 ### Initial deployment
 
 - [ ] Deploy the frontend, backend and 2025 data to the existing Linode server
 - [ ] Configure the FastAPI application as a managed service
-- [ ] Configure Nginx as a reverse proxy and static-file server
-- [ ] Configure HTTPS
+- [ ] Configure Nginx as a reverse proxy
+- [x] Configure Nginx as a static-file server
+- [x] Configure HTTPS
 - [ ] Configure production database access and backups
 - [ ] Verify the deployed health, API and frontend routes
 - [ ] Document deployment and operational procedures
@@ -124,23 +128,20 @@ are introduced. **Last updated: October 2026**
 
 ### Improve application layout
 
-- [ ] Switch from Vue Options API to Vue Component API
+- [ ] Optionally refactor from Vue Options API to Vue Composition API
 - [ ] Add a spam-protected contact form to the About page
 - [ ] Add basic SEO
-- [ ] Build page to view riding details
+- [ ] Implement the riding-details page and restore the View column.
 - [ ] Add the Election Summary Requirements page
-- [ ] Add the View riding column back and implement the page
 
 ### Improve testing
 
-- [ ] Finish requirements traceability
 - [ ] Add comprehensive unit and integration tests for the backend ETL process
 - [ ] Add Playwright end-to-end tests
-- [ ] Add empty-results displays
-- [ ] Add error displays
+- [ ] Test empty-results and error displays
 - [ ] Complete interaction and accessibility tests
-- [ ] Ensure 100% front-end test coverage and all requirements have automated tests
-- [ ] Update requirements document, and include all traceability
+- [ ] Expand automated coverage of implemented behaviour, edge cases and accessibility requirements.
+- [ ] Update requirements document, and finish requirements traceability
 
 ### Improve local setup
 

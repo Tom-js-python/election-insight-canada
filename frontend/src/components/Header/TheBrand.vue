@@ -3,7 +3,7 @@
     <span
       class="grid h-9 w-9 place-items-center rounded-lg bg-red-700 text-sm font-medium text-white dark:bg-red-600"
     >
-      EI
+      <Logo aria-hidden="true" />
     </span>
 
     <span>Election Insight Canada</span>
@@ -11,7 +11,11 @@
 </template>
 
 <script lang="ts">
+import Logo from '@/assets/icon.svg?component'
 export default {
   name: 'TheBrand',
+  components: {
+    Logo,
+  },
 }
 </script>

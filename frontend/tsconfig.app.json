@@ -6,6 +6,8 @@
     // Extra safety for array and object lookups, but may have false positives.
     "noUncheckedIndexedAccess": true,
 
+    "types": ["vite-svg-loader", "vite/client"],
+
     // Path mapping for cleaner imports.
     "paths": {
       "@/*": ["./src/*"]
